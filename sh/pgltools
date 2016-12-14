@@ -23,7 +23,8 @@ if [ $# -eq 0 ]; then
 echo "============================================"
  exit 1
 fi
-
+export save_LC=$LC_ALL
+export LC_ALL=C
 script_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
 if ! type "pypy" > /dev/null 2>&1; then
 	if [ $1 = "merge" ]; then
@@ -216,3 +217,4 @@ else
 		echo "Invalid command given"
 	fi
 fi
+export LC_ALL=$SAVE_LC
