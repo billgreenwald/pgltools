@@ -1,0 +1,218 @@
+#!/bin/bash
+if [ $# -eq 0 ]; then
+ echo "pgltools 1.0 Methods:"
+ echo "============================================"
+ echo "2D methods:"
+ echo "samTopgl: convert a sam file to a pgl file"
+ echo "formatpgl: convert a bedpe like file to a pgl file."
+ echo "sort: sort a pgl file.  All commands below require sorted inputs"
+ echo "merge:  find the union of two pgl files"
+ echo "intersect:  find the intersection of two pgl files"
+ echo "window:  filter a pgl file on a specified window for either or both contact(s)"
+ echo "subtract:  find the parts of contacts of a pgl file that do not overlap another"
+ echo "closest: find the closest contacts between two pgl files"
+ echo "coverage:  find the coverage of a pgl files contacts on another be2d file"
+ echo "expand:  expand both loci for each paired-loci by a given distance"
+ echo "browser: format a pgl file for viewing with the UCSC Genome Browser"
+ echo "conveRt: format a pgl file for use with the GenomicInteractions R package"
+ echo "============================================"
+ echo "1D methods:"
+ echo "intersect1D: find the intersection of a pgl file and a bed file"
+ echo "subtract1D: find the parts of contacts from a pgl file that do not overlap regions from a bed file"
+ echo "closest1D:  find the closest contacts in a pgl file to a set of regions in a bed file"
+echo "============================================"
+ exit 1
+fi
+
+script_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
+if ! type "pypy" > /dev/null 2>&1; then
+	if [ $1 = "merge" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/merge.py
+		else
+			shift
+			python $script_path/../Python/merge.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "intersect" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/intersect.py
+		else
+			shift	
+			python $script_path/../Python/intersect.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "browser" ]; then
+		shift
+		python $script_path/../Python/browser.py "$@"
+	elif [ $1 = "conveRt" ]; then
+		shift
+		python $script_path/../Python/conveRt.py "$@"
+	elif [ $1 = "sort" ]; then
+		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
+	elif [ $1 = "formatbe2d" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+		else
+			python $script_path/../Python/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "window" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/window.py
+		else
+			shift
+			python $script_path/../Python/window.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+		fi
+	elif [ $1 = "subtract" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/subtract.py
+		else
+			shift 
+			python $script_path/../Python/subtract.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "closest1D" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/closest1D.py
+		else
+			shift 
+			python $script_path/../Python/closest1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "closest" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/closest.py
+		else
+			shift
+			python $script_path/../Python/closest.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "intersect1D" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/intersect1D.py
+		else
+			shift
+			python $script_path/../Python/intersect1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "subtract1D" ]; then 
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/subtract1D.py
+		else
+			shift
+			python $script_path/../Python/subtract1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "coverage" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/coverage.py
+		else
+			shift
+			python $script_path/../Python/coverage.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "samTopgl" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/samTopgl.py
+		else
+			shift
+			python $script_path/../Python/samTopgl.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "expand" ]; then
+		if [ $# -eq 1 ]; then
+			python $script_path/../Python/expand.py
+		else
+			shift
+			python $script_path/../Python/expand.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	else
+		echo "Invalid command given"
+	fi
+else
+	if [ $1 = "merge" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/merge.py
+		else
+			shift
+			pypy $script_path/../Python/merge.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "intersect" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/intersect.py
+		else
+			shift	
+			pypy $script_path/../Python/intersect.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "browser" ]; then
+		shift
+		pypy $script_path/../Python/browser.py "$@"
+	elif [ $1 = "conveRt" ]; then
+		shift
+		pypy $script_path/../Python/conveRt.py "$@"
+	elif [ $1 = "sort" ]; then
+		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
+	elif [ $1 = "formatbe2d" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+		else
+			pypy $script_path/../Python/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "window" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/window.py
+		else
+			shift
+			pypy $script_path/../Python/window.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+		fi
+	elif [ $1 = "subtract" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/subtract.py
+		else
+			shift 
+			pypy $script_path/../Python/subtract.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "closest1D" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/closest1D.py
+		else
+			shift 
+			pypy $script_path/../Python/closest1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "closest" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/closest.py
+		else
+			shift
+			pypy $script_path/../Python/closest.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "intersect1D" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/intersect1D.py
+		else
+			shift
+			pypy $script_path/../Python/intersect1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "subtract1D" ]; then 
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/subtract1D.py
+		else
+			shift
+			pypy $script_path/../Python/subtract1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "coverage" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/coverage.py
+		else
+			shift
+			pypy $script_path/../Python/coverage.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "samTopgl" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/samTopgl.py
+		else
+			shift
+			pypy $script_path/../Python/samTopgl.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	elif [ $1 = "expand" ]; then
+		if [ $# -eq 1 ]; then
+			pypy $script_path/../Python/expand.py
+		else
+			shift
+			pypy $script_path/../Python/expand.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+		fi
+	else
+		echo "Invalid command given"
+	fi
+fi
