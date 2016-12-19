@@ -49,7 +49,7 @@ if ! type "pypy" > /dev/null 2>&1; then
 		python $script_path/../Python/conveRt.py "$@"
 	elif [ $1 = "sort" ]; then
 		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
-	elif [ $1 = "formatbe2d" ]; then
+	elif [ $1 = "formatpgl" ]; then
 		if [ $# -eq 1 ]; then
 			python $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		else
@@ -144,7 +144,7 @@ else
 		pypy $script_path/../Python/conveRt.py "$@"
 	elif [ $1 = "sort" ]; then
 		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
-	elif [ $1 = "formatbe2d" ]; then
+	elif [ $1 = "formatpgl" ]; then
 		if [ $# -eq 1 ]; then
 			pypy $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		else
