@@ -194,10 +194,10 @@ else:
     header,A=processFile(args['a'])
     
 if checkSorted(A)==1:
-    print ("File A is not sorted.  Please use be2dtools sort2D [FILE]")
+    print ("File A is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(A)==2:
-    print ("File A is not a be2dfile.  Please use be2dtools formatbe2d [FILE]")
+    print ("File A is not a pgl file.  Please use pgltools formatpgl [FILE]")
     exit()
 
 if args["b"]!="%#$":
@@ -206,10 +206,10 @@ if args['stdInB']:
     _,B=processStdin()
     
 if checkSorted(B)==1:
-    print ("File B is not sorted.  Please use be2dtools sort2D [FILE]")
+    print ("File B is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(B)==2:
-    print ("File B is not a be2dfile.  Please use be2dtools formatbe2d [FILE]")
+    print ("File B is not a pgl file.  Please use pgltools formatpgl [FILE]")
     exit()
 
 res=overlap2D(A,B)

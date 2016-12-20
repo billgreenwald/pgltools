@@ -18,6 +18,7 @@ parser.add_argument('-b',help="File Path for file b.  Required for merge and int
 parser.add_argument('-stdInB',help="Will use stdin for file b.",action='store_true')
 parser.add_argument('-v',help="Returns entries in A that do not overlap any entries in B.",action='store_true')
 parser.add_argument('-bA',help="Keep the annotations from file B instead of file A.",action='store_true')
+parser.add_argument('-allA',help="Keep the annotations from both files.  Annotations from A will come first.",action='store_true')
 parser.add_argument('-m',help="Returns the union of contacts instead of the intersection of contacts.",action='store_true')
 parser.add_argument('-mc',help="Returns only unions of contacts where an overlap between files occurred",action='store_true')
 parser.add_argument('-u',help="Returns the A contact if an intersection is found.",action='store_true')
@@ -58,7 +59,7 @@ def formatContactsV(contacts,delim):
 
 # In[43]:
 
-def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots):
+def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     i=0
     k=0
@@ -144,6 +145,11 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots):
                             tempAnnots=["A,B"]
                             tempAnnots.extend(BAnnotations)
                             newPeaks.append([[chr1,start1,end1,chr2,start2,end2],tempAnnots])
+                        elif useAllAnnots:
+                            tempAnnots=["A,B"]
+                            tempAnnots.extend(AAnnotations)
+                            tempAnnots.extend(BAnnotations)
+                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2],tempAnnots])
                         else:
                             tempAnnots=["A,B"]
                             tempAnnots.extend(Aannotations)
@@ -153,6 +159,10 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots):
                     elif dashU:
                         if useBAnnots:
                             newPeaks.append([[chrA1,startA1,endA1,chrA2,startA2,endA2],BAnnotations])
+                        elif useAllAnnots:
+                            tempAnnots=Aannotations[:]
+                            tempAnnots.extend(BAnnotations)
+                            newPeaks.append([[chrA1,startA1,endA1,chrA2,startA2,endA2],tempAnnots])
                         else:
                             newPeaks.append([[chrA1,startA1,endA1,chrA2,startA2,endA2],Aannotations])
                     else:
@@ -164,6 +174,10 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots):
                         chr2=str(chrA2)
                         if useBAnnots:
                             newPeaks.append([[chr1,start1,end1,chr2,start2,end2],BAnnotations])
+                        elif useAllAnnots:
+                            tempAnnots=Aannotations[:]
+                            tempAnnots.extend(BAnnotations)
+                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2],tempAnnots])
                         else:
                             newPeaks.append([[chr1,start1,end1,chr2,start2,end2],Aannotations])
                     if k==len(contactsB)-1:
@@ -197,10 +211,10 @@ else:
     header,A=processFile(args['a'])
     
 if checkSorted(A)==1:
-    print ("File A is not sorted.  Please use be2dtools sort2D [FILE]")
+    print ("File A is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(A)==2:
-    print ("File A is not a be2dfile.  Please use be2dtools formatbe2d [FILE]")
+    print ("File A is not a pgl file.  Please use pgltools formatpgl [FILE]")
     exit()
 
 if args["b"]!="%#$":
@@ -209,13 +223,13 @@ if args['stdInB']:
     _,B=processStdin()
     
 if checkSorted(B)==1:
-    print ("File B is not sorted.  Please use be2dtools sort2D [FILE]")
+    print ("File B is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(B)==2:
-    print ("File B is not a be2dfile.  Please use be2dtools formatbe2d [FILE]")
+    print ("File B is not a pgl file.  Please use pgltools formatpgl [FILE]")
     exit()
 
-res=overlap2D(A,B,args['v'],args['m'],args['mc'],args['u'],args['bA'])
+res=overlap2D(A,B,args['v'],args['m'],args['mc'],args['u'],args['bA'],args['allA'])
 
 if not args['v']:
     res=formatContacts(res,"\t")
