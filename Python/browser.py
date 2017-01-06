@@ -18,7 +18,7 @@ parser.add_argument('-N',help="Specify column for naming entry.  If not given, e
 parser.add_argument('-S',help="Specify column for scoring entry.  If not given, entries are scored uniformly", required=False,default=0,type=int)
 parser.add_argument('-P',help="Specify column for pValue of entry.  If not given, pValue is ignored", required=False,default=0,type=int)
 parser.add_argument('-Q',help="Specify column for qValue of entry.  If not given, qValue is ignored", required=False,default=0,type=int)
-parser.add_argument('-tN',help="Track name. If not given, track is named \"pgl_track\"", required=False,default="be2d_track")
+parser.add_argument('-tN',help="Track name. If not given, track is named \"pgl_track\"", required=False,default="pgl_track")
 args = vars(parser.parse_args())
 
 
