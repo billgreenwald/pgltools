@@ -18,6 +18,7 @@ parser.add_argument('-c',help="Specify Column for operation to be performed on. 
 parser.add_argument('-o',help="Specify operation to be performed on column.  Requires -c.  1 indexed", required=False,default="%#$")
 parser.add_argument('-delim',help="Delimeter for -o collapse or -o distinct. Default \",\"", required=False,default=",")
 parser.add_argument('-d',help="Distance allowed between contacts for merging. Default 0", required=False,default=0,type=int)
+parser.add_argument('-noH',help="Skip generation of header from merge commands.", required=False,action='store_true')
 args = vars(parser.parse_args())
 
 
@@ -324,7 +325,8 @@ useOld=False
 if len(header)>0:
     if len(header[0].split())>6+len(A[0][-1]):
         useOld=True
-print createHeader(header.split(),cols,commands,useOld)
+if not args['noH']:
+    print createHeader(header.split(),cols,commands,useOld)
 print("\n".join(res))
 
 
