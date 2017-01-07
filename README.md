@@ -107,7 +107,7 @@ pgltools sort1D [FILE]
 ## 2D Operations:
 
 ![pgltools merge](/Images/Merge.PNG?raw=true)
-Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns, except count.  If no annotations are present in the file, count can be used by passing -c 0.  If annotations are present, use any annotation column or -c 0.  Syntax:
+Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns, except count.  If no annotations are present in the file, count can be used by passing -c 0.  If annotations are present, use any annotation column or -c 0.  A header will be automatically generated labeling the file with the operations used.  Syntax:
 ```
 pgltools merge [options]
 ```
