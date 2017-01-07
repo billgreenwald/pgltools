@@ -107,7 +107,7 @@ pgltools sort1D [FILE]
 ## 2D Operations:
 
 ![pgltools merge](/Images/Merge.PNG?raw=true)
-Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns, except count.  If no annotations are present in the file, count can be used by passing -c 0.  If annotations are present, use any annotation column or -c 0.  A header will be automatically generated labeling the file with the operations used.  Syntax:
+Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns, except count.  If no annotations are present in the file, count can be used by passing -c 0.  If annotations are present, use any annotation column or -c 0.  A header will be automatically generated for the resulting file unless -noH is used.  Syntax:
 ```
 pgltools merge [options]
 ```
@@ -119,6 +119,7 @@ options:
 -o [OPERATION]:  perform the specified operation when merging.  operations listed below
 -delim: change the delimeter for -o collapse and -o distinct.  Default is ","
 -d: Distance allowed between loci for merging.  default 0
+-noH: Do not create a header for the output file.
 ```
 operations (*NOTE* that the program assumes you have passed columns with correct types for the desired operations).  A comma separated list may be given (ie -c 10,10,11,12 -o sum,min,sum,collapse):  
 * sum -- sum the values from the specified column.  *Numeric*
