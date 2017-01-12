@@ -147,7 +147,7 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
                             newPeaks.append([[chr1,start1,end1,chr2,start2,end2],tempAnnots])
                         elif useAllAnnots:
                             tempAnnots=["A,B"]
-                            tempAnnots.extend(AAnnotations)
+                            tempAnnots.extend(Aannotations)
                             tempAnnots.extend(BAnnotations)
                             newPeaks.append([[chr1,start1,end1,chr2,start2,end2],tempAnnots])
                         else:
