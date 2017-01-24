@@ -110,12 +110,18 @@ def overlap2D(contactsA,contactsB):
             #we have a two options: second bins overlap or they dont.
 
                 if startA2 < startB2 and endA2 < startB2:
-                    k+=1
-                    continue
+                    if k==len(contactsB)-1:
+                        i+=1
+                        k=restartK
+                    else:
+                        k+=1
 
                 elif startB2 < startA2 and endB2 < startA2:
-                    k+=1
-                    continue 
+                    if k==len(contactsB)-1:
+                        i+=1
+                        k=restartK
+                    else:
+                        k+=1
 
 
                 else:

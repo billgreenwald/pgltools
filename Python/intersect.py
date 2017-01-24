@@ -1,10 +1,11 @@
 
 # coding: utf-8
 
-# In[8]:
+# In[29]:
 
 import argparse
 import sys
+from IPython.core.debugger import Tracer
 from pgltools_library import *
 
 
@@ -45,19 +46,19 @@ elif args['stdInB']==False and args['b']=="%#$":
     exit(1)
 
 
-# In[ ]:
+# In[2]:
 
 def formatContacts(contacts,delim):
     return [delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in contacts]
 
 
-# In[ ]:
+# In[3]:
 
 def formatContactsV(contacts,delim):
     return [delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in contacts]
 
 
-# In[43]:
+# In[39]:
 
 def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
@@ -70,7 +71,7 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
     newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
     while i<len(contactsA) and k<len(contactsB):
-        
+
         chrA1=contactsA[i][0]
         startA1=contactsA[i][1]
         endA1=contactsA[i][2]
@@ -123,12 +124,18 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
             #we have a two options: second bins overlap or they dont.
 
                 if startA2 < startB2 and endA2 < startB2:
-                    k+=1
-                    continue
+                    if k==len(contactsB)-1:
+                        i+=1
+                        k=restartK
+                    else:
+                        k+=1
 
                 elif startB2 < startA2 and endB2 < startA2:
-                    k+=1
-                    continue 
+                    if k==len(contactsB)-1:
+                        i+=1
+                        k=restartK
+                    else:
+                        k+=1
 
             #bins overlap
                 else:
@@ -203,7 +210,7 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
         return newPeaks
 
 
-# In[14]:
+# In[40]:
 
 if args['stdInA']:
     header,A=processStdin()
