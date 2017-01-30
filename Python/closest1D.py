@@ -63,57 +63,59 @@ def closest1D(contactsA,bedB):
         endA2=contactsA[i][5]
 
         if chrA1==chrA2:
-            for k in range(len(bedB[chrA1])):
-                chrB=chrA1
-                startB=bedB[chrA1][k][0]
-                endB=bedB[chrA1][k][1]
-                if startA1 < startB and endA1 < startB:
-                    bin1Dist=startB-endA1
-                elif startB < startA1 and endB < startA1:
-                    bin1Dist=startA1-endB
-                else:
-                    bin1Dist=0
-                if startA2 < startB and endA2 < startB:
-                    bin2Dist=startB-endA2
-                elif startB < startA2 and endB < startA2:
-                    bin2Dist=startA2-endB
-                else:
-                    bin2Dist=0
+            if chrA1 in bedB:
+                for k in range(len(bedB[chrA1])):
+                    chrB=chrA1
+                    startB=bedB[chrA1][k][0]
+                    endB=bedB[chrA1][k][1]
+                    if startA1 < startB and endA1 < startB:
+                        bin1Dist=startB-endA1
+                    elif startB < startA1 and endB < startA1:
+                        bin1Dist=startA1-endB
+                    else:
+                        bin1Dist=0
+                    if startA2 < startB and endA2 < startB:
+                        bin2Dist=startB-endA2
+                    elif startB < startA2 and endB < startA2:
+                        bin2Dist=startA2-endB
+                    else:
+                        bin2Dist=0
 
-                minDist=min(bin1Dist,bin2Dist)
+                    minDist=min(bin1Dist,bin2Dist)
 
-                if minDist < distance or distance==-1:
-                    distance=minDist
-                    closestFeature=(chrB,k)
+                    if minDist < distance or distance==-1:
+                        distance=minDist
+                        closestFeature=(chrB,k)
 
         else:
-            for k in range(len(bedB[chrA1])):
-                chrB=chrA1
-                startB=bedB[chrA1][k][0]
-                endB=bedB[chrA1][k][1]
-                if startA1 < startB and endA1 < startB:
-                    bin1Dist=startB-endA1
-                elif startB < startA1 and endB < startA1:
-                    bin1Dist=startA1-endB
-                else:
-                    bin1Dist=0
-                if bin1Dist < distance or distance==-1:
-                    distance=minDist
-                    closestFeature=(chrB,k)
-
-        for k in range(len(bedB[chrA2])):
-                chrB=chrA2
-                startB=bedB[chrA1][k][0]
-                endB=bedB[chrA1][k][1]
-                if startA2 < startB and endA2 < startB:
-                    bin2Dist=startB-endA2
-                elif startB < startA2 and endB < startA2:
-                    bin2Dist=startA2-endB
-                else:
-                    bin2Dist=0
-                if bin2Dist < distance or distance==-1:
-                    distance=minDist
-                    closestFeature=(chrB,k)
+            if chrA1 in bedB:
+                for k in range(len(bedB[chrA1])):
+                    chrB=chrA1
+                    startB=bedB[chrA1][k][0]
+                    endB=bedB[chrA1][k][1]
+                    if startA1 < startB and endA1 < startB:
+                        bin1Dist=startB-endA1
+                    elif startB < startA1 and endB < startA1:
+                        bin1Dist=startA1-endB
+                    else:
+                        bin1Dist=0
+                    if bin1Dist < distance or distance==-1:
+                        distance=minDist
+                        closestFeature=(chrB,k)
+            if chrA2 in bedB:
+                for k in range(len(bedB[chrA2])):
+                        chrB=chrA2
+                        startB=bedB[chrA1][k][0]
+                        endB=bedB[chrA1][k][1]
+                        if startA2 < startB and endA2 < startB:
+                            bin2Dist=startB-endA2
+                        elif startB < startA2 and endB < startA2:
+                            bin2Dist=startA2-endB
+                        else:
+                            bin2Dist=0
+                        if bin2Dist < distance or distance==-1:
+                            distance=minDist
+                            closestFeature=(chrB,k)
 
         if closestFeature!=-1:
             entry=[closestFeature[0]]

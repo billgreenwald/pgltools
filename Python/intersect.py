@@ -5,7 +5,6 @@
 
 import argparse
 import sys
-from IPython.core.debugger import Tracer
 from pgltools_library import *
 
 

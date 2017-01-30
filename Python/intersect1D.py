@@ -70,166 +70,168 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB):
             difChrom=False
             
             if chrA1==chrA2:
-                for k in range(len(bedB[chrA1])): 
-                    Aannots=contactsA[i][6][:]
+                if chrA1 in bedB:
+                    for k in range(len(bedB[chrA1])): 
+                        Aannots=contactsA[i][6][:]
 
-                    chrB=chrA1
-                    startB=max(bedB[chrB][k][0]-padB,0)
-                    endB=bedB[chrB][k][1]+padB
-                    Bannots=bedB[chrB][k][2]
+                        chrB=chrA1
+                        startB=max(bedB[chrB][k][0]-padB,0)
+                        endB=bedB[chrB][k][1]+padB
+                        Bannots=bedB[chrB][k][2]
 
-                    overlapA=False
-                    overlapB=False
-                    if startA1 < startB and endA1 < startB:
-                        pass
-                    elif startB < startA1 and endB < startA1:
-                        pass
-                    else:
-                        overlapA=True
-
-                    if startA2 < startB and endA2 < startB:
-                        pass
-                    elif startB < startA2 and endB < startA2:
-                        pass
-                    else:
-                        overlapB=True
-
-                    if overlapA and overlapB:
-                        if not aLocations:
-                            chr1=str(chrA1)
-                            start1=str(max(startA1,startB))
-                            end1=str(min(endA1,endB))
-                            start2=str(max(startA2,startB))
-                            end2=str(min(endA2,endB))
-                            chr2=str(chrA2)
+                        overlapA=False
+                        overlapB=False
+                        if startA1 < startB and endA1 < startB:
+                            pass
+                        elif startB < startA1 and endB < startA1:
+                            pass
                         else:
-                            chr1=chrA1
-                            start1=startA1
-                            end1=endA1
+                            overlapA=True
+
+                        if startA2 < startB and endA2 < startB:
+                            pass
+                        elif startB < startA2 and endB < startA2:
+                            pass
+                        else:
+                            overlapB=True
+
+                        if overlapA and overlapB:
+                            if not aLocations:
+                                chr1=str(chrA1)
+                                start1=str(max(startA1,startB))
+                                end1=str(min(endA1,endB))
+                                start2=str(max(startA2,startB))
+                                end2=str(min(endA2,endB))
+                                chr2=str(chrA2)
+                            else:
+                                chr1=chrA1
+                                start1=startA1
+                                end1=endA1
+                                chr2=chrA2
+                                start2=startA2
+                                end2=endA2
+                            if useBAnnots:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
+                            elif useAllAnnots:
+                                for ann in Bannots:
+                                    if ann not in Aannots:
+                                        Aannots.append(ann)
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
+                            else:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
+
+                        elif overlapA:
+                            if not aLocations:
+                                chr1=str(chrA1)
+                                start1=str(max(startA1,startB))
+                                end1=str(min(endA1,endB))
+                            else:
+                                chr1=chrA1
+                                start1=startA1
+                                end1=endA1
                             chr2=chrA2
                             start2=startA2
                             end2=endA2
-                        if useBAnnots:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
-                        elif useAllAnnots:
-                            for ann in Bannots:
-                                if ann not in Aannots:
-                                    Aannots.append(ann)
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
-                        else:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
+                            if useBAnnots:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
+                            elif useAllAnnots:
+                                for ann in Bannots:
+                                    if ann not in Aannots:
+                                        Aannots.append(ann)
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
+                            else:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
 
-                    elif overlapA:
-                        if not aLocations:
-                            chr1=str(chrA1)
-                            start1=str(max(startA1,startB))
-                            end1=str(min(endA1,endB))
-                        else:
+                        elif overlapB:
                             chr1=chrA1
                             start1=startA1
                             end1=endA1
-                        chr2=chrA2
-                        start2=startA2
-                        end2=endA2
-                        if useBAnnots:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
-                        elif useAllAnnots:
-                            for ann in Bannots:
-                                if ann not in Aannots:
-                                    Aannots.append(ann)
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
-                        else:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
+                            if not aLocations:
+                                start2=str(max(startA2,startB))
+                                end2=str(min(endA2,endB))
+                                chr2=str(chrA2)
+                            else:
+                                chr2=chrA2
+                                start2=startA2
+                                end2=endA2
+                            if useBAnnots:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
+                            elif useAllAnnots:
+                                for ann in Bannots:
+                                    if ann not in Aannots:
+                                        Aannots.append(ann)
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
+                            else:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
 
-                    elif overlapB:
-                        chr1=chrA1
-                        start1=startA1
-                        end1=endA1
-                        if not aLocations:
-                            start2=str(max(startA2,startB))
-                            end2=str(min(endA2,endB))
-                            chr2=str(chrA2)
-                        else:
-                            chr2=chrA2
-                            start2=startA2
-                            end2=endA2
-                        if useBAnnots:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
-                        elif useAllAnnots:
-                            for ann in Bannots:
-                                if ann not in Aannots:
-                                    Aannots.append(ann)
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
-                        else:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
-            
             else:
-                for k in range(len(bedB[chrA1])):
-                    
-                    chrB=chrA1
-                    startB=max(bedB[chrB][k][0]-padB,0)
-                    endB=bedB[chrB][k][1]+padB
-                    Bannots=bedB[chrB][k][2]
-                    
-                    difChrom=True
-                    if startA1 < startB and endA1 < startB:
-                        continue
-                    elif startB < startA1 and endB < startA1:
-                        break
-                    else:
-                        if not aLocations:
-                            chr1=str(chrA1)
-                            start1=str(max(startA1,startB))
-                            end1=str(min(endA1,endB))
+                if chrA1 in bedB:
+                    for k in range(len(bedB[chrA1])):
+
+                        chrB=chrA1
+                        startB=max(bedB[chrB][k][0]-padB,0)
+                        endB=bedB[chrB][k][1]+padB
+                        Bannots=bedB[chrB][k][2]
+
+                        difChrom=True
+                        if startA1 < startB and endA1 < startB:
+                            continue
+                        elif startB < startA1 and endB < startA1:
+                            break
+                        else:
+                            if not aLocations:
+                                chr1=str(chrA1)
+                                start1=str(max(startA1,startB))
+                                end1=str(min(endA1,endB))
+                            else:
+                                chr1=chrA1
+                                start1=startA1
+                                end1=endA1
+                            chr2=chrA2
+                            start2=startA2
+                            end2=endA2
+                            if useBAnnots:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
+                            elif useAllAnnots:
+                                for ann in Bannots:
+                                    if ann not in Aannots:
+                                        Aannots.append(ann)
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
+                            else:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
+                if chrA2 in bedB:    
+                    for k in range(len(bedB[chrA2])):
+
+                        chrB=chrA2
+                        startB=max(bedB[chrB][k][0]-padB,0)
+                        endB=bedB[chrB][k][1]+padB
+                        Bannots=bedB[chrB][k][2]
+
+                        if startA2 < startB and endA2 < startB:
+                            continue
+                        elif startB < startA2 and endB < startA2:
+                            break
                         else:
                             chr1=chrA1
                             start1=startA1
                             end1=endA1
-                        chr2=chrA2
-                        start2=startA2
-                        end2=endA2
-                        if useBAnnots:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
-                        elif useAllAnnots:
-                            for ann in Bannots:
-                                if ann not in Aannots:
-                                    Aannots.append(ann)
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
-                        else:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
-                    
-                for k in range(len(bedB[chrA2])):
-                    
-                    chrB=chrA2
-                    startB=max(bedB[chrB][k][0]-padB,0)
-                    endB=bedB[chrB][k][1]+padB
-                    Bannots=bedB[chrB][k][2]
-                    
-                    if startA2 < startB and endA2 < startB:
-                        continue
-                    elif startB < startA2 and endB < startA2:
-                        break
-                    else:
-                        chr1=chrA1
-                        start1=startA1
-                        end1=endA1
-                        if not aLocations:
-                            start2=str(max(startA2,startB))
-                            end2=str(min(endA2,endB))
-                            chr2=str(chrA2)
-                        else:
-                            chr2=chrA2
-                            start2=startA2
-                            end2=endA2
-                        if useBAnnots:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
-                        elif useAllAnnots:
-                            for ann in Bannots:
-                                if ann not in Aannots:
-                                    Aannots.append(ann)
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
-                        else:
-                            newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
+                            if not aLocations:
+                                start2=str(max(startA2,startB))
+                                end2=str(min(endA2,endB))
+                                chr2=str(chrA2)
+                            else:
+                                chr2=chrA2
+                                start2=startA2
+                                end2=endA2
+                            if useBAnnots:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
+                            elif useAllAnnots:
+                                for ann in Bannots:
+                                    if ann not in Aannots:
+                                        Aannots.append(ann)
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
+                            else:
+                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
                 
     return newPeaks
 

@@ -88,51 +88,53 @@ def overlap1D(contactsA,bedB):
         Aannots=contactsA[i][6]
 
         if chrA1==chrA2:
-            for k in range(len(bedB[chrA1])):
-                chrB=chrA1
-                startB=bedB[chrB][k][0]
-                endB=bedB[chrB][k][1]
-                
-                if startA1 < startB and endA1 < startB:
-                    pass
-                elif startB < startA1 and endB < startA1:
-                    pass
-                else:
-                    newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,1))
+            if chrA1 in bedB:
+                for k in range(len(bedB[chrA1])):
+                    chrB=chrA1
+                    startB=bedB[chrB][k][0]
+                    endB=bedB[chrB][k][1]
 
-                if startA2 < startB and endA2 < startB:
-                    pass
-                elif startB < startA2 and endB < startA2:
-                    pass
-                else:
-                    newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,2))
+                    if startA1 < startB and endA1 < startB:
+                        pass
+                    elif startB < startA1 and endB < startA1:
+                        pass
+                    else:
+                        newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,1))
+
+                    if startA2 < startB and endA2 < startB:
+                        pass
+                    elif startB < startA2 and endB < startA2:
+                        pass
+                    else:
+                        newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,2))
 
 
         else:
-            for k in range(len(bedB[chrA1])):
-                chrB=chrA1
-                startB=bedB[chrB][k][0]
-                endB=bedB[chrB][k][1]
-                
-                if startA1 < startB and endA1 < startB:
-                    continue
-                elif startB < startA1 and endB < startA1:
-                    break
-                else:
-                    newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,1))
+            if chrA1 in bedB:
+                for k in range(len(bedB[chrA1])):
+                    chrB=chrA1
+                    startB=bedB[chrB][k][0]
+                    endB=bedB[chrB][k][1]
 
+                    if startA1 < startB and endA1 < startB:
+                        continue
+                    elif startB < startA1 and endB < startA1:
+                        break
+                    else:
+                        newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,1))
 
-            for k in range(len(bedB[chrA2])):
-                chrB=chrA2
-                startB=bedB[chrB][k][0]
-                endB=bedB[chrB][k][1]
-                
-                if startA2 < startB and endA2 < startB:
-                    continue
-                elif startB < startA2 and endB < startA2:
-                    break
-                else:
-                    newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,2))
+            if chrA2 in bedB:
+                for k in range(len(bedB[chrA2])):
+                    chrB=chrA2
+                    startB=bedB[chrB][k][0]
+                    endB=bedB[chrB][k][1]
+
+                    if startA2 < startB and endA2 < startB:
+                        continue
+                    elif startB < startA2 and endB < startA2:
+                        break
+                    else:
+                        newPeaks.extend(subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,2))
                 
     return newPeaks
 
