@@ -53,7 +53,7 @@ if ! type "pypy" > /dev/null 2>&1; then
 		python $script_path/../Python/conveRt.py "$@"
 	elif [ $1 = "juicebox" ]; then
                 shift
-                python $script_path/../Python/juicebox.py -a $1
+                python $script_path/../Python/juicebox.py "$@"
 	elif [ $1 = "findLoops" ]; then
                 shift
                 python $script_path/../Python/findLoops.py -a $1
@@ -70,7 +70,7 @@ if ! type "pypy" > /dev/null 2>&1; then
 		fi
 	elif [ $1 = "formatTripSparse" ]; then
                 shift
-                python $script_path/../Python/formatTripSparse.py "$@"
+                python $script_path/../Python/formatTripSparse.py "$@" |  python $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 	elif [ $1 = "window" ]; then
 		if [ $# -eq 1 ]; then
 			python $script_path/../Python/window.py
@@ -168,10 +168,10 @@ else
 		fi
 	 elif [ $1 = "formatTripSparse" ]; then
                 shift
-                pypy $script_path/../Python/formatTripSparse.py "$@"
+                pypy $script_path/../Python/formatTripSparse.py "$@" | pypy $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 	elif [ $1 = "juicebox" ]; then
                 shift
-                pypy $script_path/../Python/juicebox.py -a $1
+                pypy $script_path/../Python/juicebox.py "$@"
         elif [ $1 = "findLoops" ]; then
                 shift
                 pypy $script_path/../Python/findLoops.py -a $1

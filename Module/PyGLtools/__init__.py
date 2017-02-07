@@ -526,10 +526,7 @@ def coverage(contactsA,contactsB,dashZ=False):
     i=0
     k=0
     restartK=-1
-    if dashZ:
-        newPeaks=[[x[:6]] for x in contactsA]
-    else:
-        newPeaks=[]
+    newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
     while i<len(contactsA) and k<len(contactsB):
             
@@ -613,7 +610,11 @@ def coverage(contactsA,contactsB,dashZ=False):
             Counts[r]+=1
         else:
             Counts[r]=1
-    newPeaks=[x+"\t"+str(Counts[x]-1) for x in list(set(newPeaks))]
+    
+    if not dashZ:
+        newPeaks=[x+"\t"+str(Counts[x]-1) for x in list(set(newPeaks)) if Counts[x]-1>=1]
+    else:
+        newPeaks=[x+"\t"+str(Counts[x]-1) for x in list(set(newPeaks))]
 
     if len(header)!=0:
         output=header+"\n"

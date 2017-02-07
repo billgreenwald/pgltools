@@ -48,15 +48,12 @@ def formatCoverage(contacts,delim):
 
 # In[ ]:
 
-def overlap2D(contactsA,contactsB,dashZ):
+def overlap2D(contactsA,contactsB):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     i=0
     k=0
     restartK=-1
-    if dashZ:
-        newPeaks=[[x[:6]] for x in contactsA]
-    else:
-        newPeaks=[]
+    newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
     while i<len(contactsA) and k<len(contactsB):
             
@@ -162,7 +159,7 @@ elif checkSorted(B)==2:
     print ("File B is not a pgl file.  Please use pgltools formatbedpe [FILE]")
     exit()
     
-res=overlap2D(A,B,args['z'])
+res=overlap2D(A,B)
 res=formatCoverage(res,"\t")
 Counts={}
 for r in res:
@@ -170,7 +167,11 @@ for r in res:
         Counts[r]+=1
     else:
         Counts[r]=1
-res=[x+"\t"+str(Counts[x]-1) for x in list(set(res))]
+
+if args['z']:
+    res=[x+"\t"+str(Counts[x]-1) for x in list(set(res))]
+else:
+    res=[x+"\t"+str(Counts[x]-1) for x in list(set(res)) if Counts[x]-1>=1]
 
 if len(header)!=0:
     print(header)
