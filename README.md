@@ -30,6 +30,14 @@ python setup.py install
 
 All method names in PyGLtools are the same as the UNIX tool suite.  Command line arguments are instead function arguments, and can be viewed as one would view the docstring of a particular function (usually through tab completion).
 
+All input and output for the python module are effectively the same as that of the UNIX tool suite.  Input data for functions should be the raw text from the file, and output will be raw text that, when printed or written out to a file, will be a PGL file.  For example, if we want to read in a file, run merge, and print the resulting file, all within python, we would do the following:
+```
+import PyGLtools
+myFile="\n".join[line.strip() for line in open(FILE_LOCATION)]
+merged=PyGLtools.merge(myFile)
+print merged
+```
+
 ## The pgl file format:
 
 The pgl file format consists of 6 columns, plus any additional annotations.  The six required columns are locus A chromosome, locus A start, locus A end, locus B chromosome, locus B start, locus B end.  After these six columns, any additional columns may be included as annotations.  These columns will be perserved by pgltools, and can be manipulated with pgltools merge.  As annotations are arbitrary, header lines may be indcluded in pgl files by starting a line with "#" and will be carried over from the "A" file when using pgltools methods.  **In addition to the six required columns, pgl files are formatted such that each locus A comes before its partner locus B.**  The included **formatpgl** operation will fix any loci violating this rule in addition to sorting the file.  Example pgl files are provided below:
