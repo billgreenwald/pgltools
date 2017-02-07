@@ -1,16 +1,34 @@
 # pgltools
 
-pgltools is a software suite designed for working with pgl files.  pgl files are designed for working with paired-loci data, such as contacts from a Hi-C experiment.  All methods output to stdout.
+pgltools is a software suite designed for working with pgl files.  pgl files are designed for working with paired-loci data, such as contacts from a Hi-C experiment. Pgltools is available both as a tool suite for the UNIX command line,  and as a python module.
 
 ## Software Dependencies
 
 pgltools is written in Python 2.7, and does not require any external packages.  As such, all operations, except for coverage, have been tested in pypy.  Pypy is an alternative python compiler, and is recommended for use with this tool suite.  Pypy is available on most linux distributions, and can be installed via "apt-get" or "yum".  <b>By utilizing pypy, pgltools sees a 5-7x speed up on all operations, and about a 25% decrease in the amount of RAM utilized</b>.
 
-pgltools will automatically detect if pypy is installed, and will run through pypy if so.  Otherwise, it will default to python.
+The UNIX version of pgltools will automatically detect if pypy is installed, and will run through pypy if so.  Otherwise, it will default to python.
 
 ## Installation:
 
+### UNIX
 To install pgltools, clone the directory to the desired location, and add the /sh folder to your system PATH variable.  Methods can then be called with pgltools [command].  To view the avaiable commands, or the available arguments for a command, call pgltools with no command, or call pgltools [command] with no arguments.
+
+### Python Module:
+The python module version of pgltools, PyGLtools, is avaiable for installation both from this repository, and on PyPI.
+
+#### PyPI
+To install PyGLtools from PyPI, simply run: 
+```
+pip install PyGLtools
+```
+
+#### From github
+cd into the "Module" subdirectory and run:
+```
+python setup.py install
+```
+
+All method names in PyGLtools are the same as the UNIX tool suite.  Command line arguments are instead function arguments, and can be viewed as one would view the docstring of a particular function (usually through tab completion).
 
 ## The pgl file format:
 
@@ -36,20 +54,36 @@ chr10 1000 10000 chr10 1 100 Annotation1 Annotation2
 
 ## File Formatting and Converting Operations:
 
-### formatpgl:
+### formatbedpe:
 
 Converts a bedpe (as defined by bedtools) or similarly formated file to a sorted pgl file:
 ```
-pgltools formatpgl [FILE]
+pgltools formatbedpe [FILE]
 ```
 Example, storing output to output.pgl:
 ```
-pgltools formatpgl myFile.bedpe > output.pgl
+pgltools formatbedpe myFile.bedpe > output.pgl
+```
+
+### formatTripSparse:
+
+Converts a set of Triplet Sparse Matrix files to a pgl file:
+```
+pgltools formatTripSparse [options]
+```
+options:
+```
+-ts [FILE]:  Triplet Sparse Matrix file.  
+-an [FILE]:  Annotation file accompanying Triplet Sparse Matrix File.
+```
+Example, storing output to output.pgl:
+```
+pgltools formatTripSparse -ts myFile.tripSparse -an myFile.annotations > output.pgl
 ```
 
 ### browser:
 
-Formats a pgl file for viewing in the UCSC Genome Browser:
+Formats a pgl file for viewing in the UCSC Genome Browser.  Columns are 1 indexed:
 ```
 pgltools browser [options]
 ```
@@ -71,7 +105,7 @@ pgltools browser myFile.pgl > output.bed
 
 ### conveRt:
 
-Formats a pgl file for use with the GenomicInteractions R package.  Use the "chiapet.tool" format while importing.  Syntax:
+Formats a pgl file for use with the GenomicInteractions R package.  Use the "chiapet.tool" format while importing. Columns are 1 indexed:
 ```
 pgltools conveRt [options]
 ```
@@ -88,20 +122,53 @@ Example, storing output to output.pgl:
 pgltools conveRt myFile.pgl > output.chiapetTool
 ```
 
-### sort2D:
-Sorts a pgl file.  A sorted pgl file is sorted by columns 1-6 in order with columns 1 and 4 treated as strings.  The sort2D file will not flip paired-loci that have locus B occuring before locus A as a pgl file is required to follow this format.  If a file does not follow this formatting, use the "formatpgl" operation.  Most commands below require sorted files.  Syntax:
+### juicebox:
+
+Formats a pgl file for use visualization with JuiceBox.  Columns are 1 indexed:
 ```
-pgltools sort2D [FILE]
+pgltools juicebox [options]
+```
+options:
+```
+-a [FILE]:  use [FILE] as input.  
+-stdInA:  use stdin as input file.
+-N [COLUMN_NUMBER]:  Specify column for entry name .  If not given, names are "Contact_[Line #]"
+-C [COLUMN_NUMBER]:  Specify column for entry color.  If not given, colors are set to black
 ```
 Example, storing output to output.pgl:
 ```
-pgltools sort2D myFile.pgl > output.pgl
+pgltools juicebox -a myFile.pgl -N 7 > output.chiapetTool
+```
+### findLoops:
+
+Outputs regions from anchor to anchor for each PGL entry as a BED file.  Intra-chromosomal PGLs will have one entry of col1, col2, col6.  Inter-chromosomal regions will have two entries, one for each anchor:
+```
+pgltools findLoops [FILE]
+```
+Example, storing output to output.pgl:
+```
+pgltools findLoops myFile.pgl > output.bed
 ```
 
-### sort1D
-Sorts a bed file as required for pgl tools.  A sorted bed file is sorted by columns 1-3 in order with column 1 treated as a string.  Syntax:
+### condense:
+
+Outputs a two BED entries per PGL, one for each anchor.  Annotations will be written for both entries.:
 ```
-pgltools sort1D [FILE]
+pgltools condense [FILE]
+```
+Example, storing output to output.pgl:
+```
+pgltools condense myFile.pgl > output.bed
+```
+
+### sort:
+Sorts a pgl file.  A sorted pgl file is sorted by columns 1-6 in order with columns 1 and 4 treated as strings.  The sort2D file will not flip paired-loci that have locus B occuring before locus A as a pgl file is required to follow this format.  If a file does not follow this formatting, use the "formatbedpe" operation.  Most commands below require sorted files.  Syntax:
+```
+pgltools sort [FILE]
+```
+Example, storing output to output.pgl:
+```
+pgltools sort myFile.pgl > output.pgl
 ```
 
 ## 2D Operations:
@@ -157,7 +224,10 @@ options:
 -v:  Returns entries in A that do not overlap any entries in B
 -m:  Returns the union of loci instead of the intersection of loci
 -mc:  Returns only unions of loci where an overlap between files occurred
--u: Returns the original loci from A if an overlap occurs (ie report an overlap happened).  An entry will be generated per overlap.
+-wa: Returns the original loci from A if an overlap occurs.
+-wb: Returns the original loci from B if an overlap occurs.
+-wo: Returns the original loci from A and B if an overlap occurs, as well as the number of bases overlapping per anchor
+-u: Report an overlap happened.  An entry will be generated per overlap.
 -bA:  Keep the annotations from file B instead of file A
 ```
 Example, storing output to output.pgl:
@@ -200,7 +270,7 @@ pgltools subtract -a myFile.pgl -b myOtherFile.pgl > output.pgl
 ```
 
 ![pgltools closest](/Images/Closest.PNG?raw=true)
-Finds the closest loci in file B for each loci in file A.  Locus A chromosomes must match, and locus B chromosomes must match to be considered for distance.  If no loci share the same chromosomal composition, the paired-loci from file A will not be matched with a paired-loci from file B.  The output fil will have 12 columns, with annotations overwritten: the six columns from file A followed by the six columns from file B if a paired-loci was found, else 6 ".".  Syntax:
+Finds the closest loci in file B for each loci in file A.  Locus A chromosomes must match, and locus B chromosomes must match to be considered for distance.  If no loci share the same chromosomal composition, the paired-loci from file A will not be matched with a paired-loci from file B.  The output fil will have 13 columns, with annotations overwritten: the six columns from file A followed by the six columns from file B if a paired-loci was found, followed by the distance between the two PGLs, else 7 ".".  Syntax:
 ```
 pgltools closest [options]
 ```
@@ -216,7 +286,7 @@ Example, storing output to output.pgl:
 pgltools closest -a myFile.pgl -b myOtherFile.pgl > output.pgl
 ```
 
-![pgltools merge](/Images/Coverage.PNG?raw=true)
+![pgltools coverage](/Images/Coverage.PNG?raw=true)
 Finds the coverage of file B on file A.  Any overlap of loci are counted in coverage calculation.  Syntax:
 ```
 pgltools coverage [options]
@@ -227,6 +297,7 @@ options:
 -stdInA:  use stdin as input file.
 -b [FILE]:  use [FILE] as input.  
 -stdInB:  use stdin as input file.
+-z: Report entries that have 0 coverage
 ```
 Example, storing output to output.pgl:
 ```
@@ -320,7 +391,7 @@ pgltools subtract1D -a myFile.pgl -b myOtherFile.bed > output.pgl
 ```
 
 ![pgltools closest1D](/Images/Closest1D.PNG?raw=true)
-Finds the closest region in bed file B for each loci in file A.  Syntax:
+Finds the closest region in bed file B for each PGL in file A.  Returns either 10 or 14 columns, depending on the -ba option.  A header will automatically be generated.  The first 6 columns are the PGL, the next 3 are the closest entry from bed file B, and the 10th is the distance.  If -ba is given, two entries are reported, one for each anchor.  The Syntax:
 ```
 pgltools closest [options]
 ```
@@ -330,6 +401,7 @@ options:
 -stdInA:  use stdin as input file.
 -b [bedFILE]:  use [bedFILE] as input.  
 -stdInB:  use stdin as input file.
+-ba:  Report the closest bed entry for both anchor.
 ```
 Example, storing output to output.pgl:
 ```
