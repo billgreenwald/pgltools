@@ -1,10 +1,11 @@
 #!/bin/bash
 if [ $# -eq 0 ]; then
- echo "pgltools 1.0 Methods:"
+ echo "pgltools 1.1 Methods:"
  echo "============================================"
  echo "2D methods:"
  echo "samTopgl: convert a sam file to a pgl file"
- echo "formatpgl: convert a bedpe like file to a pgl file."
+ echo "formatbedpe: convert a bedpe like file to a pgl file."
+ echo "formatTripSparse: convert a Triplet Sparse Matrix file set to a pgl file."
  echo "sort: sort a pgl file.  All commands below require sorted inputs"
  echo "merge:  find the union of two pgl files"
  echo "intersect:  find the intersection of two pgl files"
@@ -15,6 +16,9 @@ if [ $# -eq 0 ]; then
  echo "expand:  expand both loci for each paired-loci by a given distance"
  echo "browser: format a pgl file for viewing with the UCSC Genome Browser"
  echo "conveRt: format a pgl file for use with the GenomicInteractions R package"
+ echo "juicebox: format a pgl file for viewing with juicebox."
+ echo "findLoops: output the internal region (including anchors) of each pgl"
+ echo "condense: output a bed file with 2 entries per pgl entry, one for each anchor"
  echo "============================================"
  echo "1D methods:"
  echo "intersect1D: find the intersection of a pgl file and a bed file"
@@ -47,14 +51,26 @@ if ! type "pypy" > /dev/null 2>&1; then
 	elif [ $1 = "conveRt" ]; then
 		shift
 		python $script_path/../Python/conveRt.py "$@"
+	elif [ $1 = "juicebox" ]; then
+                shift
+                python $script_path/../Python/juicebox.py -a $1
+	elif [ $1 = "findLoops" ]; then
+                shift
+                python $script_path/../Python/findLoops.py -a $1
+	elif [ $1 = "collapse" ]; then
+                shift
+                awk '{if (NR>1) if (NF > 6) print $1 "\t" $2 "\t" $3 "\tA\t" substr($0,index($0,$7)) "\n" $4 "\t" $5 "\t" $6 "\tB\t" substr($0,index($0,$7)) ; else print $1 "\t" $2 "\t" $3 "\tA\n" $4 "\t" $5 "\t" $6 "\tB"}' $1
 	elif [ $1 = "sort" ]; then
 		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
-	elif [ $1 = "formatpgl" ]; then
+	elif [ $1 = "formatbedpe" ]; then
 		if [ $# -eq 1 ]; then
 			python $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		else
 			python $script_path/../Python/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
+	elif [ $1 = "formatTripSparse" ]; then
+                shift
+                python $script_path/../Python/formatTripSparse.py "$@"
 	elif [ $1 = "window" ]; then
 		if [ $# -eq 1 ]; then
 			python $script_path/../Python/window.py
@@ -144,12 +160,24 @@ else
 		pypy $script_path/../Python/conveRt.py "$@"
 	elif [ $1 = "sort" ]; then
 		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
-	elif [ $1 = "formatpgl" ]; then
+	elif [ $1 = "formatbedpe" ]; then
 		if [ $# -eq 1 ]; then
 			pypy $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		else
 			pypy $script_path/../Python/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
+	 elif [ $1 = "formatTripSparse" ]; then
+                shift
+                pypy $script_path/../Python/formatTripSparse.py "$@"
+	elif [ $1 = "juicebox" ]; then
+                shift
+                pypy $script_path/../Python/juicebox.py -a $1
+        elif [ $1 = "findLoops" ]; then
+                shift
+                pypy $script_path/../Python/findLoops.py -a $1
+	elif [ $1 = "collapse" ]; then
+                shift
+		awk '{if (NR>1) if (NF > 6) print $1 "\t" $2 "\t" $3 "\tA\t" substr($0,index($0,$7)) "\n" $4 "\t" $5 "\t" $6 "\tB\t" substr($0,index($0,$7)) ; else print $1 "\t" $2 "\t" $3 "\tA\n" $4 "\t" $5 "\t" $6 "\tB"}' $1
 	elif [ $1 = "window" ]; then
 		if [ $# -eq 1 ]; then
 			pypy $script_path/../Python/window.py

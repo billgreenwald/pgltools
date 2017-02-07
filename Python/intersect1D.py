@@ -247,7 +247,7 @@ if checkSorted(A)==1:
     print ("File A is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(A)==2:
-    print ("File A is not a pgl file.  Please use pgltools formatpgl [FILE]")
+    print ("File A is not a pgl file.  Please use pgltools formatbedpe [FILE]")
     exit()
 
 

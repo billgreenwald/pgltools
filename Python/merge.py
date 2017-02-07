@@ -295,7 +295,7 @@ if checkSorted(A)==1:
     print ("File A is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(A)==2:
-    print ("File A is not a pgl file.  Please use pgltools formatpgl [FILE]")
+    print ("File A is not a pgl file.  Please use pgltools formatbedpe [FILE]")
     exit()
 
 if args['c']!="%#$":
@@ -307,7 +307,7 @@ else:
 
 if len(cols)>0:
     if max(cols)>6+len(A[0][-1]):
-        print ("A -c argument surpassed the number of columns in the be2d file given")
+        print ("A -c argument surpassed the number of columns in the pgl file given")
         exit()
     
 res=merge(A,[x-1 for x in cols],commands,args['d'])

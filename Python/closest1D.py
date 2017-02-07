@@ -16,6 +16,7 @@ parser.add_argument('-a',help="File Path for file a.  Required unless -stdInA is
 parser.add_argument('-stdInA',help="Will use stdin for file a.  ", required=False,action='store_true')
 parser.add_argument('-b',help="File Path for file b.  Required unless -stdInB is used", required=False,default="%#$")
 parser.add_argument('-stdInB',help="Will use stdin for file b.",action='store_true')
+parser.add_argument('-ba',help="Report the closest feature for each anchor in the PGL, rather than the absolute closest feature.",action='store_true')
 args = vars(parser.parse_args())
 
 
@@ -47,12 +48,19 @@ def formatDoubleContacts(contacts,delim):
 
 # In[ ]:
 
-def closest1D(contactsA,bedB):
+def closest1D(contactsA,bedB,dashBA):
      #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
     for i in range(len(contactsA)):
-        distance=-1
+        if dashBA:
+            Anch1Distance=-1
+            Anch2Distance=-1
+            Anch1Feat=-1
+            Anch2Feat=-1
+        else:
+            distance=-1
+        
         closestFeature=-1
 
         chrA1=contactsA[i][0]
@@ -82,10 +90,20 @@ def closest1D(contactsA,bedB):
                         bin2Dist=0
 
                     minDist=min(bin1Dist,bin2Dist)
+                    
+                    
+                    if not dashBA:
+                        if minDist < distance or distance==-1:
+                            distance=minDist
+                            closestFeature=(chrB,k)
+                    else:
+                        if bin1Dist < Anch1Distance or Anch1Distance==-1:
+                            Anch1Distance=bin1Dist
+                            Anch1Feat=(chrB,k)
+                        if bin2Dist < Anch2Distance or Anch2Distance==-1:
+                            Anch2Distance=bin2Dist
+                            Anch2Feat=(chrB,k)
 
-                    if minDist < distance or distance==-1:
-                        distance=minDist
-                        closestFeature=(chrB,k)
 
         else:
             if chrA1 in bedB:
@@ -99,9 +117,15 @@ def closest1D(contactsA,bedB):
                         bin1Dist=startA1-endB
                     else:
                         bin1Dist=0
-                    if bin1Dist < distance or distance==-1:
-                        distance=minDist
-                        closestFeature=(chrB,k)
+                        
+                    if not dashBA:
+                        if bin1Dist < distance or distance==-1:
+                            distance=bin1Dist
+                            closestFeature=(chrB,k)
+                    else:
+                        if bin1Dist < Anch1Distance or Anch1Distance==-1:
+                            Anch1Distance=bin1Dist
+                            Anch1Feat=(chrB,k)
             if chrA2 in bedB:
                 for k in range(len(bedB[chrA2])):
                         chrB=chrA2
@@ -113,16 +137,38 @@ def closest1D(contactsA,bedB):
                             bin2Dist=startA2-endB
                         else:
                             bin2Dist=0
-                        if bin2Dist < distance or distance==-1:
-                            distance=minDist
-                            closestFeature=(chrB,k)
+                        if not dashBA:
+                            if bin2Dist < distance or distance==-1:
+                                distance=bin2Dist
+                                closestFeature=(chrB,k)
+                        else:
+                            if bin2Dist < Anch2Distance or Anch2Distance==-1:
+                                Anch2Distance=bin2Dist
+                                Anch2Feat=(chrB,k)
 
-        if closestFeature!=-1:
-            entry=[closestFeature[0]]
-            entry.extend(bedB[closestFeature[0]][closestFeature[1]][:2])
-            newPeaks.append([contactsA[i][:6],entry])
+        if not dashBA:
+            if closestFeature!=-1:
+                entry=[closestFeature[0]]
+                entry.extend(bedB[closestFeature[0]][closestFeature[1]][:2])
+                entry.append(str(distance))
+                newPeaks.append([contactsA[i][:6],entry])
+            else:
+                newPeaks.append([contactsA[i][:6],[".",".",".","."]])
         else:
-            newPeaks.append([contactsA[i][:6],[".",".","."]])
+            entry=[]
+            if Anch1Feat!=-1:
+                entry=[Anch1Feat[0]]
+                entry.extend(bedB[Anch1Feat[0]][Anch1Feat[1]][:2])
+                entry.append(str(Anch1Distance))
+            else:
+                entry.extend([".",".",".","."])
+            if Anch2Feat!=-1:
+                entry.append(Anch2Feat[0])
+                entry.extend(bedB[Anch2Feat[0]][Anch2Feat[1]][:2])
+                entry.append(str(Anch2Distance))
+            else:
+                entry.extend([".",".",".","."])
+            newPeaks.append([contactsA[i][:6],entry])
                 
     return newPeaks
 
@@ -139,12 +185,19 @@ if args["b"]!="%#$":
 if args['stdInB']:
     _,B=processStdinBed()
 
-res=closest1D(A,B)
+res=closest1D(A,B,args['ba'])
     
 res=formatDoubleContacts(res,"\t") 
 
-if len(header)!=0:
-    print(header)
+# if len(header)!=0:
+#     print(header)
+
+if not args['ba']:
+    print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])
+else:
+    print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
+                     "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])
+
 print("\n".join(res))
 
 

@@ -42,7 +42,7 @@ elif args['stdInB']==False and args['b']=="%#$":
 # In[ ]:
 
 def formatDoubleContacts(contacts,delim):
-    return [delim.join([delim.join([str(y) for y in x[0]]),delim.join([str(y) for y in x[1]])]) for x in contacts]
+    return [delim.join([delim.join([str(y) for y in x[0]]),delim.join([str(y) for y in x[1]]),str(x[2])]) for x in contacts]
 
 
 # In[ ]:
@@ -91,9 +91,9 @@ def closest2D(contactsA,contactsB):
                     closestFeature=i
 
         if closestFeature!=-1:
-            newPeaks.append([contactsB[k][:6],contactsA[closestFeature][:6]])
+            newPeaks.append([contactsB[k][:6],contactsA[closestFeature][:6],distance])
         else:
-            newPeaks.append([contactsB[k][:6],[".",".",".",".",".","."]])
+            newPeaks.append([contactsB[k][:6],[".",".",".",".",".","."],"."])
                 
     return newPeaks
 
@@ -113,8 +113,12 @@ if args['stdInB']:
 
 res=closest2D(B,A)
 res=formatDoubleContacts(res,"\t")
-if len(header)!=0:
-    print(header)
+# if len(header)!=0:
+#     print(header)
+
+print "\t".join(["#fileA_chrA","fileA_startA","fileA_stopA","fileA_chrB","fileA_startB","fileA_stopB",
+                 "fileB_chrA","fileB_startA","fileB_stopA","fileB_chrB","fileB_startB","fileB_stopB","Distance"])
+
 print("\n".join(res))
 
 

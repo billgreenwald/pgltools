@@ -16,7 +16,7 @@ parser._optionals.title = "Arguments"
 parser.add_argument('-a',help="File Path for file a.  Required unless -stdInA is used", required=False,default="%#$")
 parser.add_argument('-stdInA',help="Will use stdin for file a.  ", required=False,action='store_true')
 parser.add_argument('-delim',help="Read end delimeter.  default \"/\"", required=False,default="/")
-parser.add_argument('-ins',help="Insert size of library sequencing.  Functions as an upper bound on split read distance. Default 1KB",required=False,type=int,default=1000)
+parser.add_argument('-ins',help="Insert size of library sequencing.  Functions as an upper bound on split read distance. Default 1000 bp",required=False,type=int,default=1000)
 args = vars(parser.parse_args())
 
 
@@ -70,7 +70,7 @@ def processRead(name,chrom,start,length,cigar,flipped):
 
 # In[3]:
 
-def samTobe2dStdIn(delim,insertSize):
+def samTopglStdIn(delim,insertSize):
     #reads are stored as name,chrom,start,end
     reads=[]
     contacts=[]
@@ -203,7 +203,7 @@ def samTobe2dStdIn(delim,insertSize):
 
 # In[ ]:
 
-def samTobe2d(samfile,delim,insertSize):
+def samTopgl(samfile,delim,insertSize):
     #reads are stored as name,chrom,start,end
     reads=[]
     contacts=[]
@@ -359,83 +359,12 @@ def samTobe2d(samfile,delim,insertSize):
     return header,contacts
 
 
-# In[13]:
-
-# def samTobe2d(samfile,delim):
-#     #reads are stored as name,chrom,start,end
-#     reads=[]
-#     contacts=[]
-#     header=""
-#     for line in open(samfile,"r"):
-#         if line[0]=="#":
-#             header+=line.strip()+"\n"
-#             continue
-#         line=line.split()
-#         if len(reads)==0:
-#             if line[1]=="16":
-#                 reads.append(processRead(line[0],line[2],int(line[3]),len(line[9]),line[5],True))
-#             else:
-#                 reads.append(processRead(line[0],line[2],int(line[3]),len(line[9]),line[5],False))
-#         elif reads[-1][0].split(delim)[0]==line[0].split(delim)[0]:
-#             if line[1]=="16":
-#                 reads.append(processRead(line[0],line[2],int(line[3]),len(line[9]),line[5],True))
-#             else:
-#                 reads.append(processRead(line[0],line[2],int(line[3]),len(line[9]),line[5],False))
-#         else:
-#             if len(reads)<2:
-#                 pass
-#             elif len(reads)==2:
-#                 if reads[0][1]<reads[1][1]:
-#                     contacts.append([reads[0][1],reads[0][2],reads[0][3],reads[1][1],reads[1][2],reads[1][3],reads[0][0]+","+reads[1][0]])
-#                 elif reads[0][1]>reads[1][1]:
-#                     contacts.append([reads[1][1],reads[1][2],reads[1][3],reads[0][1],reads[0][2],reads[0][3],reads[1][0]+","+reads[0][0]])
-#                 else:
-#                     if reads[0][2]<reads[1][2]:
-#                         contacts.append([reads[0][1],reads[0][2],reads[0][3],reads[1][1],reads[1][2],reads[1][3],reads[0][0]+","+reads[1][0]])
-#                     elif reads[0][2]>reads[1][2]:
-#                         contacts.append([reads[1][1],reads[1][2],reads[1][3],reads[0][1],reads[0][2],reads[0][3],reads[1][0]+","+reads[0][0]])
-#             else:
-#                 minRead=[]
-#                 maxRead=[]
-#                 for read in reads:
-#                     if len(minRead)==0 or minRead[1] > read[1] or (minRead[2] > read[2] and minRead[1]==read[1]):
-#                         minRead=read
-#                     if len(maxRead)==0 or maxRead[2] < read[2] or maxRead[1] < read[1] or (maxRead[2] < read[2] and maxRead[1]==read[1]):
-#                         maxRead=read
-#                 contacts.append([minRead[1],minRead[2],minRead[3],maxRead[1],maxRead[2],maxRead[3],minRead[0]+","+maxRead[0]])
-#             reads=[[line[0],line[2],int(line[3]),int(line[3])-len(line[9])]]
-            
-#     if len(reads)<2:
-#             pass
-#     elif len(reads)==2:
-#         if reads[0][1]<reads[1][1]:
-#             contacts.append([reads[0][1],reads[0][2],reads[0][3],reads[1][1],reads[1][2],reads[1][3],reads[0][0]+","+reads[1][0]])
-#         elif reads[0][1]>reads[1][1]:
-#             contacts.append([reads[1][1],reads[1][2],reads[1][3],reads[0][1],reads[0][2],reads[0][3],reads[1][0]+","+reads[0][0]])
-#         else:
-#             if reads[0][2]<reads[1][2]:
-#                 contacts.append([reads[0][1],reads[0][2],reads[0][3],reads[1][1],reads[1][2],reads[1][3],reads[0][0]+","+reads[1][0]])
-#             elif reads[0][2]>reads[1][2]:
-#                 contacts.append([reads[1][1],reads[1][2],reads[1][3],reads[0][1],reads[0][2],reads[0][3],reads[1][0]+","+reads[0][0]])
-#     else:
-#         minRead=[]
-#         maxRead=[]
-#         for read in reads:
-#             if len(minRead)==0 or minRead[1] > read[1] or (minRead[2] > read[2] and minRead[1]==read[1]):
-#                 minRead=read
-#             if len(maxRead)==0 or maxRead[2] < read[2] or maxRead[1] < read[1] or (maxRead[2] < read[2] and maxRead[1]==read[1]):
-#                 maxRead=read
-#         contacts.append([minRead[1],minRead[2],minRead[3],maxRead[1],maxRead[2],maxRead[3],minRead[0]+","+maxRead[0]])
-    
-#     return header,contacts
-
-
 # In[14]:
 
 if args['stdInA']:
-    header,res=samTobe2dStdIn(args['delim'],args['ins'])
+    header,res=samTopglStdIn(args['delim'],args['ins'])
 else:
-    header,res=samTobe2d(args['a'],args['delim'],args['ins'])
+    header,res=samTopgl(args['a'],args['delim'],args['ins'])
 
 res=formatContacts(res)
 

@@ -19,9 +19,12 @@ parser.add_argument('-stdInB',help="Will use stdin for file b.",action='store_tr
 parser.add_argument('-v',help="Returns entries in A that do not overlap any entries in B.",action='store_true')
 parser.add_argument('-bA',help="Keep the annotations from file B instead of file A.",action='store_true')
 parser.add_argument('-allA',help="Keep the annotations from both files.  Annotations from A will come first.",action='store_true')
-parser.add_argument('-m',help="Returns the union of contacts instead of the intersection of contacts.",action='store_true')
-parser.add_argument('-mc',help="Returns only unions of contacts where an overlap between files occurred",action='store_true')
-parser.add_argument('-u',help="Returns the A contact if an intersection is found.",action='store_true')
+parser.add_argument('-m',help="Returns the union of PGLs instead of the intersection of PGLs.",action='store_true')
+parser.add_argument('-mc',help="Returns only unions of PGLs where an overlap between files occurred",action='store_true')
+parser.add_argument('-u',help="Returns unique original entries from A where an intersection is found.",action='store_true')
+parser.add_argument('-wa',help="Returns the original PGLs from A if an intersection is found.",action='store_true')
+parser.add_argument('-wb',help="Returns the original PGLs from B if an intersection is found.",action='store_true')
+parser.add_argument('-wo',help="Returns the original PGLs, as well as the number of overlapping bases per anchor, if an intersection is found.",action='store_true')
 args = vars(parser.parse_args())
 
 
@@ -59,11 +62,11 @@ def formatContactsV(contacts,delim):
 
 # In[39]:
 
-def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots):
+def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots,dashWO,dashWA,dashWB):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     i=0
     k=0
-    if dashM or dashMC:
+    if dashM or dashMC or dashU:
         addedIs=set()
         addedKs=set()
     restartK=-1
@@ -138,6 +141,9 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
 
             #bins overlap
                 else:
+                    if dashM or dashMC or dashU:
+                        addedIs.add(i)
+                        addedKs.add(k)
                     if dashV:
                         newPeaks.append(i)
                     elif dashM or dashMC:
@@ -160,9 +166,7 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
                             tempAnnots=["A,B"]
                             tempAnnots.extend(Aannotations)
                             newPeaks.append([[chr1,start1,end1,chr2,start2,end2],tempAnnots])
-                        addedIs.add(i)
-                        addedKs.add(k)
-                    elif dashU:
+                    elif dashWA:
                         if useBAnnots:
                             newPeaks.append([[chrA1,startA1,endA1,chrA2,startA2,endA2],BAnnotations])
                         elif useAllAnnots:
@@ -171,6 +175,22 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
                             newPeaks.append([[chrA1,startA1,endA1,chrA2,startA2,endA2],tempAnnots])
                         else:
                             newPeaks.append([[chrA1,startA1,endA1,chrA2,startA2,endA2],Aannotations])
+                    elif dashWB:
+                        if useBAnnots:
+                            newPeaks.append([[chrB1,startB1,endB1,chrB2,startB2,endB2],BAnnotations])
+                        elif useAllAnnots:
+                            tempAnnots=Aannotations[:]
+                            tempAnnots.extend(BAnnotations)
+                            newPeaks.append([[chrB1,startB1,endB1,chrB2,startB2,endB2],tempAnnots])
+                        else:
+                            newPeaks.append([[chrB1,startB1,endB1,chrB2,startB2,endB2],Aannotations])
+                    elif dashWO:
+                            overlapAnch1=str(max(endA1,endB1)-min(startA1,startB1)-abs(startA1-startB1)-abs(endA1-endB1))
+                            overlapAnch2=str(max(endA2,endB2)-min(startA2,startB2)-abs(startA2-startB2)-abs(endA2-endB2))
+                            tempAnnots=[chrB1,startB1,endB1,chrB2,startB2,endB2,overlapAnch1,overlapAnch2]
+                            tempAnnots.extend(Aannotations)
+                            tempAnnots.extend(BAnnotations)
+                            newPeaks.append([[chrA1,startA1,endA1,chrA2,startA2,endA2],tempAnnots])
                     else:
                         chr1=str(chrA1)
                         start1=str(max(startA1,startB1))
@@ -205,6 +225,8 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
                 newPeaks.append([contactsB[i][:6],tempAnnots])
     if dashV:
         return [contactsA[i] for i in range(len(contactsA)) if i not in newPeaks]
+    elif dashU:
+        return [contactsA[i] for i in range(len(contactsA)) if i in addedIs]
     else:
         return newPeaks
 
@@ -220,7 +242,7 @@ if checkSorted(A)==1:
     print ("File A is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(A)==2:
-    print ("File A is not a pgl file.  Please use pgltools formatpgl [FILE]")
+    print ("File A is not a pgl file.  Please use pgltools formatbedpe [FILE]")
     exit()
 
 if args["b"]!="%#$":
@@ -232,12 +254,12 @@ if checkSorted(B)==1:
     print ("File B is not sorted.  Please use pgltools sort [FILE]")
     exit()
 elif checkSorted(B)==2:
-    print ("File B is not a pgl file.  Please use pgltools formatpgl [FILE]")
+    print ("File B is not a pgl file.  Please use pgltools formatbedpe [FILE]")
     exit()
 
-res=overlap2D(A,B,args['v'],args['m'],args['mc'],args['u'],args['bA'],args['allA'])
+res=overlap2D(A,B,args['v'],args['m'],args['mc'],args['u'],args['bA'],args['allA'],args['wo'],args['wa'],args['wb'])
 
-if not args['v']:
+if not args['v'] and not args['u']:
     res=formatContacts(res,"\t")
 else:
     res=formatContactsV(res,"\t")
