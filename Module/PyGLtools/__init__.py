@@ -35,25 +35,18 @@ def _checkSorted(contacts):
 
 # In[ ]:
 
-def sort(contacts):
-    return sorted(contacts)
-
-
-# In[ ]:
-
-def _processBedFile(fileName):
+def _processBedFile(FILENAME):
     bed={}
     header=""
-    with open(fileName,"r") as f:
-        for line in f:
-            if line[0]=="#":
-                header+=line.strip()+"\n"
+    for line in FILENAME.split("\n"):
+        if line[0]=="#":
+            header+=line.strip()+"\n"
+        else:
+            line=line.strip().split()
+            if line[0] in bed:
+                bed[line[0]].append([int(line[1]),int(line[2]),line[3:]])
             else:
-                line=line.strip().split()
-                if line[0] in bed:
-                    bed[line[0]].append([int(line[1]),int(line[2]),line[3:]])
-                else:
-                    bed[line[0]]=[[int(line[1]),int(line[2]),line[3:]]]
+                bed[line[0]]=[[int(line[1]),int(line[2]),line[3:]]]
     return header,bed
 
 
@@ -68,8 +61,7 @@ def _processFile(FILENAME):
         else:
             x=line.split()
             if len(x)<6:
-                print("Missing one of the required 6 columns")
-                exit()
+                return ("Missing one of the required 6 columns")
             else:
                 processedFile.append([x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]])
     return header[:-2],processedFile
@@ -77,12 +69,18 @@ def _processFile(FILENAME):
 
 # In[ ]:
 
-def _processGenome(genomeFile):
-    lines=[line.strip().split() for line in open(genomeFile,"r")]
-    if len([x for x in lines if len(x)!=2 and len(x) !=0])!=0:
-        print "Genome file has more than 2 columns"
-        exit()
-    return {x[0]:int(x[1]) for x in lines if len(x)==2}
+def sort(contacts):
+    header,contacts=_processFile(contacts)
+    delim="\t"
+    contacts=sorted(contacts,key=lambda x:(x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5])))
+    contacts=[delim.join([str(y) for y in x[:6]])+delim+delim.join([str(y) for y in x[6]]) for x in contacts]
+    if len(header)!=0:
+        output=header+"\n"
+    else:
+        output=""
+    output+="\n".join(contacts)
+    
+    return output
 
 
 # In[ ]:
@@ -217,10 +215,10 @@ def _operation(operatedOnList,operation,delim):
 
 # In[ ]:
 
-def browser(contacts,nameCol=-1,scoreCol=-1,pCol=-1,qCol=-1):
+def browser(contacts,trackName="pgltrack",nameCol=-1,scoreCol=-1,pCol=-1,qCol=-1):
     """Format contacts for viewing in the UCSC Genome Browser"""
     
-    contacts=_processFile(contacts)
+    _,contacts=_processFile(contacts)
     res=[]
     i=-1
     for contact in contacts:
@@ -257,7 +255,7 @@ def browser(contacts,nameCol=-1,scoreCol=-1,pCol=-1,qCol=-1):
         
         res.append("\t".join([chrom,start,end,name,score,strand,thickStart,thickEnd,rgb,blockCount,blockSizes,blockStarts,signalValue,pValue,qValue]))
         
-    output="track name="+args['tN']+" type=gappedPeak"
+    output="track name="+trackName+" type=gappedPeak"
     output+="\n".join(res)
     return output
 
@@ -317,10 +315,10 @@ def closest(contactsA,contactsB):
         else:
             newPeaks.append([contactsB[k][:6],[".",".",".",".",".","."],"."])
     delim="\t"
-    results = [delim.join([delim.join([str(y) for y in x[0]]),delim.join([str(y) for y in x[1]]),str(x[2])]) for x in newPeaks]
+    newPeaks = [delim.join([delim.join([str(y) for y in x[0]]),delim.join([str(y) for y in x[1]]),str(x[2])]) for x in newPeaks]
     output= "\t".join(["#fileA_chrA","fileA_startA","fileA_stopA","fileA_chrB","fileA_startB","fileA_stopB",
                  "fileB_chrA","fileB_startA","fileB_stopA","fileB_chrB","fileB_startB","fileB_stopB","Distance"])
-    output+="\n".join(res)
+    output+="\n".join(newPeaks)
     
     return output
 
@@ -453,60 +451,27 @@ def closest1D(contactsA,bedB,dashBA=False):
             else:
                 entry.extend([".",".",".","."])
             newPeaks.append([contactsA[i][:6],entry])
-    delim="\t"            
-    newPeaks=[delim.join([str(y) for y in x[:-1]])+delim+delim.join(x[-1]) for x in newPeaks]
     
-    if not args['ba']:
-        output= "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])
+    delim="\t"       
+
+    newPeaks=[delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[-1]]) for x in newPeaks]
+    
+    if not dashBA:
+        output= "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])+"\n"
     else:
         output= "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
-                         "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])
+                         "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])+"\n"
 
-    output=("\n".join(newPeaks))
+    output+="\n".join(newPeaks)
     
     return output
 
 
 # In[ ]:
 
-def formatbedpe(contacts):
-    """Convert a bedpe like file to a PGL file."""
-    header=""
-    lines=[]
-    for line in open(FILENAME,"r"):
-        if line[0]=="#":
-            header+=line.strip()+"\n"
-        else:
-            lines.append(line.strip().split())
-    contacts=lines
-    i=0
-    while i<len(contacts):
-        contact=contacts[i]
-        if contact[0] > contact[3]:
-            contacts[i]=[contact[3],contact[4],contact[5],contact[0],contact[1],contact[2],contact[6]]
-        elif contact[0]==contact[3]:
-            if contact[1] > contact[4]:
-                contacts[i]=[contact[3],contact[4],contact[5],contact[0],contact[1],contact[2],contact[6]]
-            elif contact[1]==contact[4]:
-                if contact[2] > contact[5]:
-                    contacts[i]=[contact[3],contact[4],contact[5],contact[0],contact[1],contact[2],contact[6]]
-        i+=1
-
-    contacts=formatContacts(res,"\t")
-    if len(header)!=0:
-        output=header
-    else:
-        output=""
-    output+="\n".join(contacts)
-    
-    return output
-
-
-# In[ ]:
-
-def conveRt(contacts,countCol,pCol=-1,qCol=-1):
+def conveRt(contacts,countCol=-1,pCol=-1,qCol=-1):
     """Concert contacts to a format for use with the GenomicInteractions package."""
-    _,A=_processFile(contacts)
+    header,contacts=_processFile(contacts)
     res=[]
     i=-1
     for contact in contacts:
@@ -524,13 +489,15 @@ def conveRt(contacts,countCol,pCol=-1,qCol=-1):
             qValue="0"
         
         res.append("\t".join([contact[0],str(contact[1]),str(contact[2]),contact[3],str(contact[4]),str(contact[5]),count,pValue,qValue]))
-    delim="\t"    
-    res=[delim.join([str(y) for y in x[:-1]])+delim+delim.join(x[-1]) for x in res]
+    delim="\t" 
+    
     if len(header)!=0:
-        output=header
+        output=header+"\n"
     else:
         output=""
     output+="\n".join(res)
+    
+    return output
 
 
 # In[ ]:
@@ -550,9 +517,9 @@ def coverage(contactsA,contactsB,dashZ=False):
         
     _,contactsB=_processFile(contactsB)
 
-    if _checkSorted(B)==1:
+    if _checkSorted(contactsB)==1:
         return ("contactsB is not sorted.  Please use PyGLtools.sort(contactsB)")
-    elif _checkSorted(B)==2:
+    elif _checkSorted(contactsB)==2:
         return ("contactsB is not a pgl file.  Please use PyGLtools.formatbedpe(contactsB)")
 
     
@@ -649,7 +616,7 @@ def coverage(contactsA,contactsB,dashZ=False):
     newPeaks=[x+"\t"+str(Counts[x]-1) for x in list(set(newPeaks))]
 
     if len(header)!=0:
-        output=header
+        output=header+"\n"
     else:
         output=""
     output+="\n".join(newPeaks)
@@ -663,7 +630,6 @@ def expand(contacts,d,genome={}):
     """expand contacts by size d.  a genome (dict of chr:length) can be provided to stop a contact expanding past chromosomal boundaries."""
     
     header,contacts=_processFile(contacts)
-    genome=_processGenome(args['g'])
     
     missing=set()
     if len(genome)!=0:
@@ -691,11 +657,11 @@ def expand(contacts,d,genome={}):
             contact[2]=contact[2]+d
             contact[4]=max(0,contact[4]-d)
             contact[5]=contact[5]+d
-    
-    contacts=formatContacts(contacts,"\t")
+    delim="\t"
+    contacts=[delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in contacts]
 
     if len(header)!=0:
-        output=header
+        output=header+"\n"
     else:
         output=""
     output="\n".join(contacts)
@@ -707,7 +673,7 @@ def expand(contacts,d,genome={}):
 
 def findLoops(contacts):
     """Find the internal regions (including anchors) to each entry in contacts."""
-    _,A=_processFile(contacts)
+    _,contacts=_processFile(contacts)
     
     res=[]
     i=-1
@@ -744,6 +710,44 @@ def formatTripSparse(annotations,tripSparseMatrix):
 
 # In[ ]:
 
+def formatbedpe(FILENAME):
+    """Convert a bedpe like file to a PGL file."""
+    header=""
+    lines=[]
+    for line in FILENAME.split("\n"):
+        if line[0]=="#":
+            header+=line.strip()+"\n"
+        else:
+            lines.append(line.strip().split())
+    contacts=[[x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]] for x in lines]
+    header=header[:-2]
+    i=0
+    while i<len(contacts):
+        contact=contacts[i]
+        if contact[0] > contact[3]:
+            contacts[i]=[contact[3],contact[4],contact[5],contact[0],contact[1],contact[2],contact[6]]
+        elif contact[0]==contact[3]:
+            if contact[1] > contact[4]:
+                contacts[i]=[contact[3],contact[4],contact[5],contact[0],contact[1],contact[2],contact[6]]
+            elif contact[1]==contact[4]:
+                if contact[2] > contact[5]:
+                    contacts[i]=[contact[3],contact[4],contact[5],contact[0],contact[1],contact[2],contact[6]]
+        i+=1
+    
+    delim="\t"
+    contacts=[delim.join([str(y) for y in x[:-1]])+delim+delim.join(x[-1]) for x in contacts]
+    
+    if len(header)!=0:
+        output=header+"\n"
+    else:
+        output=""
+    output+="\n".join(contacts)
+    
+    return output
+
+
+# In[ ]:
+
 def intersect(contactsA,contactsB,dashV=False,dashM=False,dashMC=False,dashU=False,useBAnnots=False,useAllAnnots=False,dashWO=False,dashWA=False,dashWB=False):
     """Find the intersecting PGLs of contactsA and contactsB"""
     
@@ -757,9 +761,9 @@ def intersect(contactsA,contactsB,dashV=False,dashM=False,dashMC=False,dashU=Fal
         
     _,contactsB=_processFile(contactsB)
 
-    if _checkSorted(B)==1:
+    if _checkSorted(contactsB)==1:
         return ("contactsB is not sorted.  Please use PyGLtools.sort(contactsB)")
-    elif _checkSorted(B)==2:
+    elif _checkSorted(contactsB)==2:
         return ("contactsB is not a pgl file.  Please use PyGLtools.formatbedpe(contactsB)")
     
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
@@ -927,13 +931,15 @@ def intersect(contactsA,contactsB,dashV=False,dashM=False,dashMC=False,dashU=Fal
     elif dashU:
         newPeaks=[contactsA[i] for i in range(len(contactsA)) if i in addedIs]
     
-    if not args['v'] and not args['u']:
+    delim="\t"
+    
+    if not dashV and not dashU:
         newPeaks=[delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in newPeaks]
     else:
         newPeaks=[delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in newPeaks]
 
     if len(header)!=0:
-        output=header
+        output=header+"\n"
     else:
         output=""
     output+="\n".join(newPeaks)
@@ -1163,7 +1169,7 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                 i+=1
     else:
         if len(header)!=0:
-            output=header
+            output=header+"\n"
         else:
             output=""
     output+="\n".join(newPeaks)
@@ -1179,12 +1185,10 @@ def juicebox(contacts,nameCol=-1,colorCol=-1):
 
     minNumCols=min([6+len(y[-1]) for y in contacts])
 
-    if any([x<0 for x in [nameCol,colorCol]]):
-        print "Valid column numbers must be given.  Column numbering starts with 1"
-        exit(1)
+    if any([x<1 and x!=-1 for x in [nameCol,colorCol]]):
+        return "Valid column numbers must be given.  Column numbering starts with 1"
     if any([x>minNumCols for x in [nameCol,colorCol]]):
-        print "A specified column exceeds the number of columns present in the file"
-        exit(1)
+        return "A specified column exceeds the number of columns present in the file"
 
     
     
@@ -1208,7 +1212,7 @@ def juicebox(contacts,nameCol=-1,colorCol=-1):
             color="0,0,0"
         res.append("\t".join([chromA,startA,stopA,chromB,startB,stopB,name,color]))
             
-    output="\t".join(["chr1","x1","x2","chr2","y1","y2","color","comment"])
+    output="\t".join(["chr1","x1","x2","chr2","y1","y2","color","comment"])+"\n"
     output+="\n".join(res)
     
     return output
@@ -1216,14 +1220,14 @@ def juicebox(contacts,nameCol=-1,colorCol=-1):
 
 # In[ ]:
 
-def merge(contacts,cols="%$#",commands="%#$",d=0,noHeader=False):
+def merge(contacts,cols="%#$",commands="%#$",d=0,noHeader=False):
     """Merge entries from contacts that are distance d or closer on both anchors"""
-    header,contactsA=_processFile(contactsA)
+    header,contacts=_processFile(contacts)
 
-    if _checkSorted(contactsA)==1:
+    if _checkSorted(contacts)==1:
         return ("contactsA is not sorted.  Please use PyGLtools.sort(contactsA)")
 
-    elif _checkSorted(contactsA)==2:
+    elif _checkSorted(contacts)==2:
         return ("contactsA is not a pgl file.  Please use PyGLtools.formatbedpe(contactsA)")
 
     if cols!="%#$":
@@ -1235,13 +1239,12 @@ def merge(contacts,cols="%$#",commands="%#$",d=0,noHeader=False):
 
     if len(cols)>0:
         if max(cols)>6+len(A[0][-1]):
-            print ("A column argument surpassed the number of columns in the pgl file given")
-            exit()
+            return ("A column argument surpassed the number of columns in the pgl file given")
     
     cols=[x-1 for x in cols]
     
     lastLen=-1
-    while len(contacts)!=len(lastLen):
+    while len(contacts)!=lastLen:
         lastLen=len(contacts)
         i=0
         endPoint=len(contacts)
@@ -1397,7 +1400,7 @@ def merge(contacts,cols="%$#",commands="%#$",d=0,noHeader=False):
         
     useOld=False
     if len(header)>0:
-        if len(header[0].split())>6+len(A[0][-1]):
+        if len(header[0].split())>6+len(contacts[0][-1]):
             useOld=True
     if not noHeader:
         output=_createHeader(header.split(),cols,commands,useOld)
@@ -1570,7 +1573,9 @@ def samTopgl(samfile,delim="\t",insertSize=1000):
     contacts=["\t".join([str(y) for y in x]) for x in contacts]
 
     if len(header)!=0:
-        output=header
+        output=header+"\n"
+    else:
+        output=""
     output+="\n".join(contacts)
     
     return output
@@ -1591,9 +1596,9 @@ def subtract(contactsA,contactsB):
         
     _,contactsB=_processFile(contactsB)
 
-    if _checkSorted(B)==1:
+    if _checkSorted(contactsB)==1:
         return ("contactsB is not sorted.  Please use PyGLtools.sort(contactsB)")
-    elif _checkSorted(B)==2:
+    elif _checkSorted(contactsB)==2:
         return ("contactsB is not a pgl file.  Please use PyGLtools.formatbedpe(contactsB)")
     
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
@@ -1738,10 +1743,13 @@ def subtract(contactsA,contactsB):
                     else:
                         k+=1
     
+    
+    delim="\t"
+    
     newPeaks=[delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in newPeaks]
 
     if len(header)!=0:
-        output=header
+        output=header+"\n"
     else:
         output=""
     output+="\n".join(newPeaks)
@@ -1825,11 +1833,13 @@ def subtract1D(contactsA,bedB):
                         break
                     else:
                         newPeaks.extend(_processSubtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,2))
-                
+    
+    delim="\t"
+    
     newPeaks=[delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in newPeaks if len(x)!=0]
     
     if len(header)!=0:
-        output=header
+        output=header+"\n"
     else:
         output=""
     output+="\n".join(newPeaks)
@@ -1839,7 +1849,7 @@ def subtract1D(contactsA,bedB):
 
 # In[ ]:
 
-def window(contacts,window1="%$#",window2="%$#"):
+def window(contacts,window1="%#$",window2="%#$"):
     """filter contacts on window1 for anchors A and window2 for anchorsB"""
     
     header,contacts=_processFile(contacts)
@@ -1856,7 +1866,7 @@ def window(contacts,window1="%$#",window2="%$#"):
         window2=[window2]
     else:
         window2=[]
-    
+
     # filter contactsA on window1 and contactsB on window2.  If one is not supplied, only filter on the one that is present
     if len(window1)==3 and len(window2)==3:
         contacts=[x for x in contacts if window1[0]==x[0] and window1[1]<=x[1] and window1[2]>=x[2] and window2[0]==x[3] and window2[1]<=x[4] and window2[2]>=x[5]]
@@ -1871,14 +1881,18 @@ def window(contacts,window1="%$#",window2="%$#"):
     elif len(window1)==1 and len(window2)==1:
         contacts=[x for x in contacts if window1[0]==x[0] and window2[0]==x[3]]
     elif len(window1)==1:
+        
         contacts=[x for x in contacts if window1[0]==x[0]]
     elif len(window2)==1:
         contacts=[x for x in contacts if window2[0]==x[3]]
     
+    
+    delim="\t"
+    
     contacts=[delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in contacts]
 
     if len(header)!=0:
-        output=header
+        output=header+"\n"
     else:
         output=""
     output+="\n".join(contacts)
