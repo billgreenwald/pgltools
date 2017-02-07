@@ -224,7 +224,10 @@ options:
 -v:  Returns entries in A that do not overlap any entries in B
 -m:  Returns the union of loci instead of the intersection of loci
 -mc:  Returns only unions of loci where an overlap between files occurred
--u: Returns the original loci from A if an overlap occurs (ie report an overlap happened).  An entry will be generated per overlap.
+-wa: Returns the original loci from A if an overlap occurs.
+-wb: Returns the original loci from B if an overlap occurs.
+-wo: Returns the original loci from A and B if an overlap occurs, as well as the number of bases overlapping per anchor
+-u: Report an overlap happened.  An entry will be generated per overlap.
 -bA:  Keep the annotations from file B instead of file A
 ```
 Example, storing output to output.pgl:
