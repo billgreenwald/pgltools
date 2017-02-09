@@ -373,6 +373,7 @@ options:
 -bA:  Keep annotations from the bed file rather than the pgl file
 -allA:  Keep the annotation from both files.  Will output annotations from pgl followed by bed
 -aL:  Prints the original loci from A upon finding overlapping region rather than the intersection
+-v:  Print the entries in file A that do not overlap regions from file B
 -pA [INT]:  Adds [INT] to end of each loci and subtracts [INT] from start of loci in pgl
 -pB [INT]:  Adds [INT] to end of each region and subtracts [INT] from start of each region in bed
 ```
