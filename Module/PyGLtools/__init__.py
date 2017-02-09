@@ -950,7 +950,7 @@ def intersect(contactsA,contactsB,dashV=False,dashM=False,dashMC=False,dashU=Fal
 
 # In[ ]:
 
-def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=False,padA=0,padB=0):
+def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=False,padA=0,padB=0,dashV=False):
     """Find the entries in bedB that intersect one or both anchors from contactsA"""
     
     #we will hash the bed file for instant lookup
@@ -966,6 +966,8 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
     headerB,bedB=_processBedFile(bedB)
 
     
+    if dashV:
+        intersectedContactIndicies=set()
     newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
     for i in range(len(contactsA)): 
@@ -1004,73 +1006,85 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                             overlapB=True
 
                         if overlapA and overlapB:
-                            if not aLocations:
-                                chr1=str(chrA1)
-                                start1=str(max(startA1,startB))
-                                end1=str(min(endA1,endB))
-                                start2=str(max(startA2,startB))
-                                end2=str(min(endA2,endB))
-                                chr2=str(chrA2)
+                            if dashV:
+                                intersectedContactIndicies.add(i)
+                                break
                             else:
-                                chr1=chrA1
-                                start1=startA1
-                                end1=endA1
-                                chr2=chrA2
-                                start2=startA2
-                                end2=endA2
-                            if useBAnnots:
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
-                            elif useAllAnnots:
-                                for ann in Bannots:
-                                    if ann not in Aannots:
-                                        Aannots.append(ann)
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
-                            else:
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
+                                if not aLocations:
+                                    chr1=str(chrA1)
+                                    start1=str(max(startA1,startB))
+                                    end1=str(min(endA1,endB))
+                                    start2=str(max(startA2,startB))
+                                    end2=str(min(endA2,endB))
+                                    chr2=str(chrA2)
+                                else:
+                                    chr1=chrA1
+                                    start1=startA1
+                                    end1=endA1
+                                    chr2=chrA2
+                                    start2=startA2
+                                    end2=endA2
+                                if useBAnnots:
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
+                                elif useAllAnnots:
+                                    for ann in Bannots:
+                                        if ann not in Aannots:
+                                            Aannots.append(ann)
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
+                                else:
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
 
                         elif overlapA:
-                            if not aLocations:
-                                chr1=str(chrA1)
-                                start1=str(max(startA1,startB))
-                                end1=str(min(endA1,endB))
+                            if dashV:
+                                intersectedContactIndicies.add(i)
+                                break
+                            else:
+                                if not aLocations:
+                                    chr1=str(chrA1)
+                                    start1=str(max(startA1,startB))
+                                    end1=str(min(endA1,endB))
+                                else:
+                                    chr1=chrA1
+                                    start1=startA1
+                                    end1=endA1
+                                chr2=chrA2
+                                start2=startA2
+                                end2=endA2
+                                if useBAnnots:
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
+                                elif useAllAnnots:
+                                    for ann in Bannots:
+                                        if ann not in Aannots:
+                                            Aannots.append(ann)
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
+                                else:
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
+
+                        elif overlapB:
+                            if dashV:
+                                intersectedContactIndicies.add(i)
+                                break
                             else:
                                 chr1=chrA1
                                 start1=startA1
                                 end1=endA1
-                            chr2=chrA2
-                            start2=startA2
-                            end2=endA2
-                            if useBAnnots:
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
-                            elif useAllAnnots:
-                                for ann in Bannots:
-                                    if ann not in Aannots:
-                                        Aannots.append(ann)
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
-                            else:
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
-
-                        elif overlapB:
-                            chr1=chrA1
-                            start1=startA1
-                            end1=endA1
-                            if not aLocations:
-                                start2=str(max(startA2,startB))
-                                end2=str(min(endA2,endB))
-                                chr2=str(chrA2)
-                            else:
-                                chr2=chrA2
-                                start2=startA2
-                                end2=endA2
-                            if useBAnnots:
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
-                            elif useAllAnnots:
-                                for ann in Bannots:
-                                    if ann not in Aannots:
-                                        Aannots.append(ann)
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
-                            else:
-                                newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
+                                if not aLocations:
+                                    start2=str(max(startA2,startB))
+                                    end2=str(min(endA2,endB))
+                                    chr2=str(chrA2)
+                                else:
+                                    chr2=chrA2
+                                    start2=startA2
+                                    end2=endA2
+                                if useBAnnots:
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
+                                elif useAllAnnots:
+                                    for ann in Bannots:
+                                        if ann not in Aannots:
+                                            Aannots.append(ann)
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
+                                else:
+                                    newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
 
             else:
                 if chrA1 in bedB:
@@ -1087,6 +1101,9 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                         elif startB < startA1 and endB < startA1:
                             break
                         else:
+                            if dashV:
+                                intersectedContactIndicies.add(i)
+                                break
                             if not aLocations:
                                 chr1=str(chrA1)
                                 start1=str(max(startA1,startB))
@@ -1120,6 +1137,9 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                         elif startB < startA2 and endB < startA2:
                             break
                         else:
+                            if dashV:
+                                intersectedContactIndicies.add(i)
+                                break
                             chr1=chrA1
                             start1=startA1
                             end1=endA1
@@ -1140,6 +1160,9 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
                             else:
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
+    if dashV:            
+        newPeaks=[[contactsA[i][:5],contactsA[i][6]] for i in range(len(contactsA)) if i not in intersectedContactIndicies]
+    
     delim="\t"            
     newPeaks=[delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in newPeaks]
     
