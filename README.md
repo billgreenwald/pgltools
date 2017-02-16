@@ -360,7 +360,7 @@ pgltools expand -a myFile.pgl -d 200 -g myGenomeFile > output.pgl
 ## 1D Operations:
 
 ![pgltools intersect1D](/Images/Intersect1D.PNG?raw=true)
-Finds the intersection of loci from a pgl file and a standard bed file.  Following the standard 6 columns, the seventh column holds the locus (A, B, or AB) the bed region overlapped. Requires sorted inputs. Syntax:
+Finds the intersection of loci from a pgl file and a standard bed file.  Following the standard 6 columns, the seventh column holds the locus (A, B, or AB) the bed region overlapped. If a single PGL entry overlaps multiple BED entries, a resulting entry will be generated for each intersection event.  Requires a sorted pgl file. Syntax:
 ```
 pgltools intersect1D [options]
 ```
@@ -383,7 +383,7 @@ pgltools intersect1D -a myFile.pgl -b myOtherFile.bed > output.pgl
 ```
 
 ![pgltools subtract1D](/Images/Subtract1D.PNG?raw=true)
-Finds the parts of loci from file A that do not overlap regions from file B.  Requires sorted input.  Syntax:
+Finds the parts of loci from file A that do not overlap regions from file B.  Requires a sorted pgl file.  Syntax:
 ```
 pgltools subtract [options]
 ```
