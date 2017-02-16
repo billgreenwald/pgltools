@@ -191,7 +191,11 @@ pgltools sort myFile.pgl > output.pgl
 ## 2D Operations:
 
 ![pgltools merge](/Images/Merge.PNG?raw=true)
-Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns, except count.  If no annotations are present in the file, count can be used by passing -c 0.  If annotations are present, use any annotation column or -c 0.  A header will be automatically generated for the resulting file unless -noH is used.  Syntax:
+Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns.  If no annotations are present in the file, one can quickly add a dummy column to use for count via:
+```
+awk '{print $0 "\t."}' myFile.pgl > myNewFile.pgl
+```
+If annotations are present, use any annotation column (7 or higher).  A header will be automatically generated for the resulting file unless -noH is used.  Syntax:
 ```
 pgltools merge [options]
 ```
