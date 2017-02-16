@@ -191,7 +191,11 @@ pgltools sort myFile.pgl > output.pgl
 ## 2D Operations:
 
 ![pgltools merge](/Images/Merge.PNG?raw=true)
-Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns, except count.  If no annotations are present in the file, count can be used by passing -c 0.  If annotations are present, use any annotation column or -c 0.  A header will be automatically generated for the resulting file unless -noH is used.  Syntax:
+Merges adjacent loci within a pgl file.  Requires sorted input. All operations can only utilize the annotation columns.  If no annotations are present in the file, one can quickly add a dummy column to use for count via:
+```
+awk '{print $0 "\t."}' myFile.pgl > myNewFile.pgl
+```
+If annotations are present, use any annotation column (7 or higher).  A header will be automatically generated for the resulting file unless -noH is used.  Syntax:
 ```
 pgltools merge [options]
 ```
@@ -441,4 +445,13 @@ pgltools intersect1D -a myPGL.pgl -b annotations.BED -bA -aL | pgltools merge -s
 we could then filter this file to where column 7 contained "A,B" and where column 8 contained our annotations of interest.  
 
 ### Determining if an eQTL an its eGene are in a Hi-C Interaction.
-We can also quickly find if any eQTLs are in a chromatin interaction with their partnered eGene.  Assuming we have three files, eQTL.bed, eGene.bed, and interactions.pgl, we first make a PGL file consisting of each eQTL with its corresponding eGenes.  We can then perform an intersection on this PGL file with the interactions.pgl file to get the eQTLs that are interacting with their eGene.
+We can also quickly find if any eQTLs are in a chromatin interaction with their partnered eGene.  Assuming we have three files, eQTL.bed, eGene.bed, and interactions.pgl, we first make a PGL file consisting of each eQTL with its corresponding eGenes (either through paste or join).  We can then perform an intersection on this PGL file with the interactions.pgl file to get the eQTLs that are interacting with their eGene.  The full pipe would look as follows:
+```
+paste eQTL.bed eGene.bed > combinedQTL.bedpe
+pgltools formatbedpe combinedQTL.bedpe > combinedQTL.pgl
+pgltools intersect -a combinedQTL.pgl -b interactions.pgl > QTLeGeneInInteractions.pgl
+```
+or in a pipe:
+```
+past eQTL.bed eGene.bed | pgltools formatbedpe | pgltools intersect -stdInA -b interactions.pgl >   QTLeGeneInInteractions.pgl
+```
