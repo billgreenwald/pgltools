@@ -451,7 +451,7 @@ paste eQTL.bed eGene.bed > combinedQTL.bedpe
 pgltools formatbedpe combinedQTL.bedpe > combinedQTL.pgl
 pgltools intersect -a combinedQTL.pgl -b interactions.pgl > QTLeGeneInInteractions.pgl
 ```
-or as a pipe:
+or in a pipe:
 ```
 past eQTL.bed eGene.bed | pgltools formatbedpe | pgltools intersect -stdInA -b interactions.pgl >   QTLeGeneInInteractions.pgl
 ```
