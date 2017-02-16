@@ -54,12 +54,15 @@ def processFile(FILENAME):
     header=""
     processedFile=[]
     for line in open(FILENAME,"r"):
+        if line=="\n":
+            continue
         if line[0]=="#":
             header+=line.strip()+"\n"
         else:
             x=line.strip().split()
             if len(x)<6:
                 print("Missing one of the required 6 columns")
+                print line
                 exit()
             else:
                 processedFile.append([x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]])
@@ -73,6 +76,8 @@ def processStdin():
     header=""
     processedFile=[]
     for line in sys.stdin:
+        if line=="\n":
+            continue
         if line[0]=="#":
             header+=line.strip()+"\n"
         else:
@@ -92,6 +97,8 @@ def processBedFile(fileName):
     header=""
     with open(fileName,"r") as f:
         for line in f:
+            if line=="\n":
+                continue
             if line[0]=="#":
                 header+=line.strip()+"\n"
             else:
@@ -110,6 +117,8 @@ def processStdinBed():
     bed={}
     header=""
     for line in sys.stdin:
+        if line=="\n":
+            continue
         if line[0]=="#":
             header+=line.strip()+"\n"
         else:
