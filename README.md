@@ -416,3 +416,20 @@ Example, storing output to output.pgl:
 ```
 pgltools closest1D -a myFile.pgl -b myOtherFile.bed > output.pgl
 ```
+
+## Example Pipelines:
+
+### Determining Enhancer Promoter Interactions.
+It is easy to find all PGLs from a PGL file in which a promoter anchor is interacting with an enhancer anchor.  Assuming we have an annotation BED file with annotations in column 7, we could do the following:
+```
+pgltools intersect1D -a myPGL.pgl -b annotations.BED -bA -aL > annotatedPGLs.pgl
+pgltools merge -a annotatedPGLs.pgl -o collapse,distinct -c 7,8 > annotatedPGLs.merged.pgl
+```
+or in a pipe
+```
+pgltools intersect1D -a myPGL.pgl -b annotations.BED -bA -aL | pgltools merge -stdInA -o collapse,distinct -c 7,8 > annotatedPGLs.merged.pgl
+```
+we could then filter this file to where column 7 contained "A,B" and where column 8 contained our annotations of interest.  
+
+### Determining if an eQTL an its eGene are in a Hi-C Interaction.
+We can also quickly find if any eQTLs are in a chromatin interaction with their partnered eGene.  Assuming we have three files, eQTL.bed, eGene.bed, and interactions.pgl, we first make a PGL file consisting of each eQTL with its corresponding eGenes.  We can then perform an intersection on this PGL file with the interactions.pgl file to get the eQTLs that are interacting with their eGene.
