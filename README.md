@@ -295,7 +295,7 @@ pgltools closest -a myFile.pgl -b myOtherFile.pgl > output.pgl
 ```
 
 ![pgltools coverage](/Images/Coverage.PNG?raw=true)
-Finds the coverage of file B on file A.  Any overlap of loci are counted in coverage calculation.  Syntax:
+Finds the coverage of file B on file A.  Loci from file B must be fully contained to be counted in coverage calculation.  Syntax:
 ```
 pgltools coverage [options]
 ```
