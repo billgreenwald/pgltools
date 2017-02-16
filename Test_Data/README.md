@@ -2,8 +2,12 @@
 
 ## Provided files:
 
+* file.A.bed
 * file.A.pgl
+* file.A.sorted.pgl
+* file.B.bed
 * file.B.pgl
+* file.B.sorted.pgl
 * test_sam.sam
 
 ## Sorting
@@ -48,7 +52,7 @@ pgltools samTopgl -a test_sam.sam > reads.pgl
 
 ## Using a regular bed file
 
-We can treat pgl files as bed files with the fourth through sixth columns acting as annotations.  To intersect the first anchor points, we can do:
+We can intersect a pgl file with a bed file via pgltools:
 ```
 pgltools intersect1D -a file.A.sorted.pgl -b file.B.sorted.pgl
 ```
