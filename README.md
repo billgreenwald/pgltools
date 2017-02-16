@@ -2,6 +2,15 @@
 
 pgltools is a software suite designed for working with pgl files.  pgl files are designed for working with paired-loci data, such as contacts from a Hi-C experiment. Pgltools is available both as a tool suite for the UNIX command line,  and as a python module.
 
+## Table of Contents
+1. [Software Dependencies](#software-dependencies)
+2. [Installation](#installation)
+3. [The PGL File Format](#the-pgl-file-format)
+4. [Formatting Operations](#file-formatting-and-converting-operations)
+5. [2D Operations](#2d-operations)
+6. [1D Operations](#1d-operations)
+7. [Example Pipelines](#example-pipelines)
+
 ## Software Dependencies
 
 pgltools is written in Python 2.7, and does not require any external packages.  As such, all operations, except for coverage, have been tested in pypy.  Pypy is an alternative python compiler, and is recommended for use with this tool suite.  Pypy is available on most linux distributions, and can be installed via "apt-get" or "yum".  <b>By utilizing pypy, pgltools sees a 5-7x speed up on all operations, and about a 25% decrease in the amount of RAM utilized</b>.
