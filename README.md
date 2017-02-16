@@ -444,7 +444,7 @@ pgltools intersect1D -a myPGL.pgl -b annotations.BED -bA -aL | pgltools merge -s
 ```
 we could then filter this file to where column 7 contained "A,B" and where column 8 contained our annotations of interest.  
 
-### Determining if an eQTL an its eGene are in a Hi-C Interaction.
+### Determining if an eQTL and its eGene are in a Hi-C Interaction.
 We can also quickly find if any eQTLs are in a chromatin interaction with their partnered eGene.  Assuming we have three files, eQTL.bed, eGene.bed, and interactions.pgl, we first make a PGL file consisting of each eQTL with its corresponding eGenes (either through paste or join).  We can then perform an intersection on this PGL file with the interactions.pgl file to get the eQTLs that are interacting with their eGene.  The full pipe would look as follows:
 ```
 paste eQTL.bed eGene.bed > combinedQTL.bedpe
