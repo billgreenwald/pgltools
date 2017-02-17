@@ -1,6 +1,6 @@
 ![pgltools logo](/Images/logo.png?raw=true)
 
-pgltools is a software suite designed for working with pgl files.  pgl files are designed for working with paired-loci data, such as contacts from a Hi-C experiment. Pgltools is available both as a tool suite for the UNIX command line,  and as a python module.
+Pgltools is a software suite designed for working with PGL files.  PGL files are designed for working with paired-loci data, such as contacts from a Hi-C or ChIA-PET experiment. Pgltools is available both as a tool suite for the UNIX command line,  and as a python module.
 
 ## Table of Contents
 1. [Software Dependencies](#software-dependencies)
