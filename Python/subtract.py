@@ -52,6 +52,7 @@ def overlap2D(contactsA,contactsB):
     i=0
     k=0
     restartK=-1
+    maximalRestart=0
     newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
     while i<len(contactsA) and k<len(contactsB):
@@ -72,9 +73,10 @@ def overlap2D(contactsA,contactsB):
         chrB2=contactsB[k][3]
         startB2=contactsB[k][4]
         endB2=contactsB[k][5]
-#         if len(contactsB[i])>6:
-#             Bannotations=contactsB[i][6:]
+
         
+        if endB1 > maximalRestart:
+            maximalRestart=endB1
         
         #check chromosome on first bin
         if chrA1<chrB1:
@@ -93,8 +95,10 @@ def overlap2D(contactsA,contactsB):
                 k=restartK
                 continue
             elif startB1 < startA1 and endB1 < startA1:
-                restartK=k
+                if maximalRestart<=startA1: #should always ==, < is present for my sanity
+                    restartK=k
                 k+=1
+                maximalRestart=0
                 continue
 
             else:

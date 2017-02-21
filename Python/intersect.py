@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[29]:
+# In[8]:
 
 import argparse
 import sys
@@ -60,12 +60,13 @@ def formatContactsV(contacts,delim):
     return [delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in contacts]
 
 
-# In[39]:
+# In[61]:
 
 def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots,dashWO,dashWA,dashWB):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     i=0
     k=0
+    maximalRestart=0
     if dashM or dashMC or dashU:
         addedIs=set()
         addedKs=set()
@@ -81,7 +82,6 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
         startA2=contactsA[i][4]
         endA2=contactsA[i][5]
         Aannotations=contactsA[i][6]
-        
         if k==-1:
             k=0
         chrB1=contactsB[k][0]
@@ -92,13 +92,17 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
         endB2=contactsB[k][5]
         BAnnotations=contactsB[k][6]
         
+        if endB1 > maximalRestart:
+            maximalRestart=endB1
+        
         #check chromosome on first bin
         if chrA1<chrB1:
             i+=1
             k=restartK
         elif chrA1>chrB1:
-            k+=1
             restartK=k
+            maximalRestart=0
+            k+=1
             continue
         else:
             #on the same chromosome
@@ -109,14 +113,13 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
                 k=restartK
                 continue
             elif startB1 < startA1 and endB1 < startA1:
-                restartK=k
+                if maximalRestart<=startA1: #should always ==, < is present for my sanity
+                    restartK=k
                 k+=1
                 continue
 
             else:
             #the bins overlap in some way.  Now we advance to bin2
-                if restartK==-1:
-                    restartK=k
                 if chrA2!=chrB2:
                     k+=1
                     continue
@@ -231,7 +234,7 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
         return newPeaks
 
 
-# In[40]:
+# In[62]:
 
 if args['stdInA']:
     header,A=processStdin()

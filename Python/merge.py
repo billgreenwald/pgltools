@@ -209,7 +209,7 @@ def merge(contacts,cols,commands,d):
                 #the first bins overlap
                 if startA2 < startB2-d and endA2 < startB2-d:
                     advanceI=False
-                elif startB2 < startA2-d and endB2 < startA2-d:
+                elif startB2 < startA2-d and endB2 < startA2-d:  #shouldnt happen due to sorting
                     advanceI=False
                 else:
                     #the second bins overlap

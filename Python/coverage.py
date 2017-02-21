@@ -53,6 +53,7 @@ def overlap2D(contactsA,contactsB):
     i=0
     k=0
     restartK=-1
+    maximalRestart=0
     newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
     while i<len(contactsA) and k<len(contactsB):
@@ -73,12 +74,9 @@ def overlap2D(contactsA,contactsB):
         chrB2=contactsB[k][3]
         startB2=contactsB[k][4]
         endB2=contactsB[k][5]
-#         if len(contactsB[i])>6:
-#             Bannotations=contactsB[i][6:]
         
-#         Tracer()()
-#         if startA1==1048000 and endA1==1050000 and startA2==1164000:
-#             Tracer()()
+        if endB1 > maximalRestart:
+            maximalRestart=endB1
         
         #check chromosome on first bin
         if chrA1<chrB1:
@@ -87,6 +85,7 @@ def overlap2D(contactsA,contactsB):
         elif chrA1>chrB1:
             k+=1
             restartK=k
+            maximalRestart=0
             continue
         else:
             #on the same chromosome
@@ -97,14 +96,13 @@ def overlap2D(contactsA,contactsB):
                 k=restartK
                 continue
             elif startB1 < startA1 and endB1 < startA1:
-                restartK=k
+                if maximalRestart<=startA1: #should always ==, < is present for my sanity
+                    restartK=k
                 k+=1
                 continue
 
             else:
             #the bins overlap in some way.  Now we advance to bin2
-                if restartK==-1:
-                    restartK=k
                 if chrA2!=chrB2:
                     k+=1
                     continue
@@ -114,12 +112,18 @@ def overlap2D(contactsA,contactsB):
             #we have a two options: second bins overlap or they dont.
 
                 if startA2 < startB2 and endA2 < startB2:
-                    k+=1
-                    continue
+                    if k==len(contactsB)-1:
+                        i+=1
+                        k=restartK
+                    else:
+                        k+=1
 
                 elif startB2 < startA2 and endB2 < startA2:
-                    k+=1
-                    continue 
+                    if k==len(contactsB)-1:
+                        i+=1
+                        k=restartK
+                    else:
+                        k+=1 
 
             #bins overlap
                 else:
