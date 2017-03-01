@@ -58,8 +58,11 @@ if ! type "pypy" > /dev/null 2>&1; then
                 shift
                 python $script_path/../Python/findLoops.py -a $1
 	elif [ $1 = "condense" ]; then
-                shift
-                awk '{if (NR>1) if (NF > 6) print $1 "\t" $2 "\t" $3 "\tA\t" substr($0,index($0,$7)) "\n" $4 "\t" $5 "\t" $6 "\tB\t" substr($0,index($0,$7)) ; else print $1 "\t" $2 "\t" $3 "\tA\n" $4 "\t" $5 "\t" $6 "\tB"}' $1
+		if [ $# -eq 1 ]; then
+                        python $script_path/../Python/condense.py -stdInA
+                else
+                        python $script_path/../Python/condense.py -a $2
+                fi
 	elif [ $1 = "sort" ]; then
 		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
 	elif [ $1 = "formatbedpe" ]; then
@@ -176,8 +179,11 @@ else
                 shift
                 pypy $script_path/../Python/findLoops.py -a $1
 	elif [ $1 = "condense" ]; then
-                shift
-		awk '{if (NR>1) if (NF > 6) print $1 "\t" $2 "\t" $3 "\tA\t" substr($0,index($0,$7)) "\n" $4 "\t" $5 "\t" $6 "\tB\t" substr($0,index($0,$7)) ; else print $1 "\t" $2 "\t" $3 "\tA\n" $4 "\t" $5 "\t" $6 "\tB"}' $1
+		if [ $# -eq 1 ]; then
+                        pypy $script_path/../Python/condense.py -stdInA
+                else
+                        pypy $script_path/../Python/condense.py -a $2 
+                fi
 	elif [ $1 = "window" ]; then
 		if [ $# -eq 1 ]; then
 			pypy $script_path/../Python/window.py
