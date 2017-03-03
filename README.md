@@ -250,6 +250,7 @@ options:
 -wo: Returns the original loci from A and B if an overlap occurs, as well as the number of bases overlapping per anchor
 -u: Report an overlap happened.  An entry will be generated per overlap.
 -bA:  Keep the annotations from file B instead of file A
+-allA:  Keep the annotations from both files.  Annotations from A will come first.
 ```
 Example, storing output to output.pgl:
 ```
