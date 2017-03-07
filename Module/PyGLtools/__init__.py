@@ -356,7 +356,7 @@ def closest1D(contactsA,bedB,dashBA=False):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrA1][k][0]
+                    startB=bedB[chrA1][k][0]+1
                     endB=bedB[chrA1][k][1]
                     if startA1 < startB and endA1 < startB:
                         bin1Dist=startB-endA1
@@ -391,7 +391,7 @@ def closest1D(contactsA,bedB,dashBA=False):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrA1][k][0]
+                    startB=bedB[chrA1][k][0]+1
                     endB=bedB[chrA1][k][1]
                     if startA1 < startB and endA1 < startB:
                         bin1Dist=startB-endA1
@@ -411,7 +411,7 @@ def closest1D(contactsA,bedB,dashBA=False):
             if chrA2 in bedB:
                 for k in range(len(bedB[chrA2])):
                         chrB=chrA2
-                        startB=bedB[chrA1][k][0]
+                        startB=bedB[chrA1][k][0]+1
                         endB=bedB[chrA1][k][1]
                         if startA2 < startB and endA2 < startB:
                             bin2Dist=startB-endA2
@@ -995,7 +995,7 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                         Aannots=contactsA[i][6][:]
 
                         chrB=chrA1
-                        startB=max(bedB[chrB][k][0]-padB,0)
+                        startB=max(bedB[chrB][k][0]-padB,0)+1
                         endB=bedB[chrB][k][1]+padB
                         Bannots=bedB[chrB][k][2]
 
@@ -1101,7 +1101,7 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                     for k in range(len(bedB[chrA1])):
 
                         chrB=chrA1
-                        startB=max(bedB[chrB][k][0]-padB,0)
+                        startB=max(bedB[chrB][k][0]-padB,0)+1
                         endB=bedB[chrB][k][1]+padB
                         Bannots=bedB[chrB][k][2]
 
@@ -1138,7 +1138,7 @@ def intersect1D(contactsA,bedB,useBAnnots=False,useAllAnnots=False,aLocations=Fa
                     for k in range(len(bedB[chrA2])):
 
                         chrB=chrA2
-                        startB=max(bedB[chrB][k][0]-padB,0)
+                        startB=max(bedB[chrB][k][0]-padB,0)+1
                         endB=bedB[chrB][k][1]+padB
                         Bannots=bedB[chrB][k][2]
 
@@ -1826,7 +1826,7 @@ def subtract1D(contactsA,bedB):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrB][k][0]
+                    startB=bedB[chrB][k][0]+1
                     endB=bedB[chrB][k][1]
 
                     if startA1 < startB and endA1 < startB:
@@ -1848,7 +1848,7 @@ def subtract1D(contactsA,bedB):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrB][k][0]
+                    startB=bedB[chrB][k][0]+1
                     endB=bedB[chrB][k][1]
 
                     if startA1 < startB and endA1 < startB:
@@ -1861,7 +1861,7 @@ def subtract1D(contactsA,bedB):
             if chrA2 in bedB:
                 for k in range(len(bedB[chrA2])):
                     chrB=chrA2
-                    startB=bedB[chrB][k][0]
+                    startB=bedB[chrB][k][0]+1
                     endB=bedB[chrB][k][1]
 
                     if startA2 < startB and endA2 < startB:

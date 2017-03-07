@@ -74,7 +74,7 @@ def closest1D(contactsA,bedB,dashBA):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrA1][k][0]
+                    startB=bedB[chrA1][k][0]+1
                     endB=bedB[chrA1][k][1]
                     if startA1 < startB and endA1 < startB:
                         bin1Dist=startB-endA1
@@ -109,7 +109,7 @@ def closest1D(contactsA,bedB,dashBA):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrA1][k][0]
+                    startB=bedB[chrA1][k][0]+1
                     endB=bedB[chrA1][k][1]
                     if startA1 < startB and endA1 < startB:
                         bin1Dist=startB-endA1
@@ -129,7 +129,7 @@ def closest1D(contactsA,bedB,dashBA):
             if chrA2 in bedB:
                 for k in range(len(bedB[chrA2])):
                         chrB=chrA2
-                        startB=bedB[chrA1][k][0]
+                        startB=bedB[chrA1][k][0]+1
                         endB=bedB[chrA1][k][1]
                         if startA2 < startB and endA2 < startB:
                             bin2Dist=startB-endA2
