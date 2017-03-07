@@ -49,7 +49,7 @@ print merged
 
 ## The pgl file format:
 
-The pgl file format consists of 6 columns, plus any additional annotations.  The six required columns are locus A chromosome, locus A start, locus A end, locus B chromosome, locus B start, locus B end.  After these six columns, any additional columns may be included as annotations.  These columns will be perserved by pgltools, and can be manipulated with pgltools merge.  As annotations are arbitrary, header lines may be indcluded in pgl files by starting a line with "#" and will be carried over from the "A" file when using pgltools methods.  **In addition to the six required columns, pgl files are formatted such that each locus A comes before its partner locus B.**  The included **formatpgl** operation will fix any loci violating this rule in addition to sorting the file.  Example pgl files are provided below:
+The pgl file format is a 1-based file consisting of 6 columns, plus any additional annotations.  The six required columns are locus A chromosome, locus A start, locus A end, locus B chromosome, locus B start, locus B end.  After these six columns, any additional columns may be included as annotations.  These columns will be perserved by pgltools, and can be manipulated with pgltools merge.  As annotations are arbitrary, header lines may be indcluded in pgl files by starting a line with "#" and will be carried over from the "A" file when using pgltools methods.  **In addition to the six required columns, pgl files are formatted such that each locus A comes before its partner locus B.**  The included **formatbedpe** operation will fix any loci violating this rule in addition to sorting the file.  Example pgl files are provided below:
 
 <b>Proper Formatting</b>:
 ```
@@ -372,6 +372,8 @@ pgltools expand -a myFile.pgl -d 200 -g myGenomeFile > output.pgl
 ```
 
 ## 1D Operations:
+
+All 1D operations will internally convert bed entries to 1-based entries so that they can be compared properly to PGL files.
 
 ![pgltools intersect1D](/Images/Intersect1D.PNG?raw=true)
 Finds the intersection of loci from a pgl file and a standard bed file.  Following the standard 6 columns, the seventh column holds the locus (A, B, or AB) the bed region overlapped. If a single PGL entry overlaps multiple BED entries, a resulting entry will be generated for each intersection event.  Requires a sorted pgl file. Syntax:
