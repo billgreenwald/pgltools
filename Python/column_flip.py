@@ -42,7 +42,7 @@ def processFile(FILENAME,useStdIn):
                 header+=line.strip()+"\n"
             else:
                 lines.append(line.strip().split())
-    return header, [[x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]] for x in lines]
+    return header[:-2], [[x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]] for x in lines]
 
 
 # In[ ]:
