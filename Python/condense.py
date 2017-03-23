@@ -26,28 +26,25 @@ if len(sys.argv)==1:
 # In[ ]:
 
 if not args['stdInA']:
-    header=""
     for line in open(args['a'],"r"):
         if line[0]=="#":
-            print (line.strip())
+            header="#chr\tstart\tstop\tAnchor_A_or_B\t"
+            header+="\t".join(line.split()[6:])
+            print header
         else:
             line=line.split()
             print ("\t".join(line[:3])+"\tA\t"+"\t".join(line[6:]))
             print ("\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:]))
 else:
-    header=""
     lines=[]
     for line in sys.stdin:
         if line[0]=="#":
-            print line.strip()
+            header="#chr\tstart\tstop\tAnchor_A_or_B\t"
+            header+="\t".join(line.split()[6:])
+            print header
         else:
             line=line.split()
             print "\t".join(line[:3])+"\tA\t"+"\t".join(line[6:])
             print "\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:])
-
-
-# In[ ]:
-
-# processFile(args['a'],args['stdInA'])
 
 
