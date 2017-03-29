@@ -10,6 +10,7 @@ Pgltools is a genomic arithmetic software suite designed for working with paired
 5. [2D Operations](#2d-operations)
 6. [1D Operations](#1d-operations)
 7. [Example Pipelines](#example-pipelines)
+8. [Useful Parameter Combinations](#useful-parameter-combinations)
 
 ## Software Dependencies
 
@@ -458,4 +459,20 @@ pgltools intersect -a combinedQTL.pgl -b interactions.pgl > QTLeGeneInInteractio
 or in a pipe:
 ```
 past eQTL.bed eGene.bed | pgltools formatbedpe | pgltools intersect -stdInA -b interactions.pgl >   QTLeGeneInInteractions.pgl
+```
+
+## Useful Parameter Combinations
+It is possible to intersect 2 PGL files, keep the annotations from file B, and the original entries from file A, via:
+```
+pgltools intersect -a fileA.pgl -b fileB.pgl -wa -bA > output.pgl
+```
+
+Similarly, it is possible to intersect 2 PGL files, keep all the annotations when an intersection occurs, report the original entry from A when an intersection occurs, and report all PGL entries from both files via:
+```
+pgltools intersect -a fileA.pgl -b fileB.pgl -wa -m -allA > output.pgl
+```
+
+To report the original entries from file B instead, simply change -wa to -wb, yeliding:
+```
+pgltools intersect -a fileA.pgl -b fileB.pgl -wb -m -allA > output.pgl
 ```
