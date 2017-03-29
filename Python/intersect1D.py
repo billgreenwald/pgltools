@@ -18,7 +18,8 @@ parser.add_argument('-b',help="File Path for file b.  Required for merge and int
 parser.add_argument('-stdInB',help="Will use stdin for file b.",action='store_true')
 parser.add_argument('-bA',help="Keep the annotations from the bed file instead of the pgl file.",action='store_true')
 parser.add_argument('-allA',help="Keep the annotations from the bed file as well as the pgl file.",action='store_true')
-parser.add_argument('-aL',help="Output original PGL rather than intersection when a region is found.",action='store_true')
+parser.add_argument('-wa',help="Output original PGL rather than intersection when a region is found.",action='store_true')
+parser.add_argument('-wb',help="Output the original bed entry after each PGL entry it overlaps.",action='store_true')
 parser.add_argument('-v',help="Output PGLs that do not overlap any regions in the bed file.",action='store_true')
 parser.add_argument('-pA',help="Add specified padding for PGLs.",required=False,default=0,type=int)
 parser.add_argument('-pB',help="Add specified padding for bed.",required=False,default=0,type=int)
@@ -56,7 +57,7 @@ def formatContacts(contacts,delim):
 
 # In[27]:
 
-def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV):
+def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,reportBasAnnot):
     #we will hash the bed file for instant lookup
     if dashV:
         intersectedContactIndicies=set()
@@ -117,13 +118,21 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV)
                                     start2=startA2
                                     end2=endA2
                                 if useBAnnots:
+                                    if reportBasAnnot:
+                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        if t not in Bannots:
+                                             Bannots.append(t)
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
                                         if ann not in Aannots:
                                             Aannots.append(ann)
+                                    if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
                                 else:
+                                    if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
 
                         elif overlapA:
@@ -143,13 +152,21 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV)
                                 start2=startA2
                                 end2=endA2
                                 if useBAnnots:
+                                    if reportBasAnnot:
+                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        if t not in Bannots:
+                                             Bannots.append(t)
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
                                         if ann not in Aannots:
                                             Aannots.append(ann)
+                                    if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
                                 else:
+                                    if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
 
                         elif overlapB:
@@ -169,13 +186,21 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV)
                                     start2=startA2
                                     end2=endA2
                                 if useBAnnots:
+                                    if reportBasAnnot:
+                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        if t not in Bannots:
+                                             Bannots.append(t)
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
                                         if ann not in Aannots:
                                             Aannots.append(ann)
+                                    if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
                                 else:
+                                    if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
 
             else:
@@ -208,13 +233,21 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV)
                             start2=startA2
                             end2=endA2
                             if useBAnnots:
+                                if reportBasAnnot:
+                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        if t not in Bannots:
+                                             Bannots.append(t)
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
                             elif useAllAnnots:
                                 for ann in Bannots:
                                     if ann not in Aannots:
                                         Aannots.append(ann)
+                                if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
                             else:
+                                if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
                 if chrA2 in bedB:    
                     for k in range(len(bedB[chrA2])):
@@ -244,13 +277,21 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV)
                                 start2=startA2
                                 end2=endA2
                             if useBAnnots:
+                                if reportBasAnnot:
+                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        if t not in Bannots:
+                                             Bannots.append(t)
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
                             elif useAllAnnots:
                                 for ann in Bannots:
                                     if ann not in Aannots:
                                         Aannots.append(ann)
+                                if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
                             else:
+                                if reportBasAnnot:
+                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
     if not dashV:            
         return newPeaks
@@ -264,7 +305,7 @@ if args['stdInA']:
     header,A=processStdin()
 else:
     header,A=processFile(args['a'])
-    
+
 if checkSorted(A)==1:
     print ("File A is not sorted.  Please use pgltools sort [FILE]")
     exit()
@@ -272,13 +313,12 @@ elif checkSorted(A)==2:
     print ("File A is not a pgl file.  Please use pgltools formatbedpe [FILE]")
     exit()
 
-
 if args["b"]!="%#$":
     headerB,B=processBedFile(args['b'])
 if args['stdInB']:
     headerB,B=processStdinBed()
 
-res=overlap1D(A,B,args['bA'],args['allA'],args['aL'],args['pA'],args['pB'],args['v'])
+res=overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['pA'],args['pB'],args['v'],args['wb'])
 res=formatContacts(res,"\t")
 
 if args['bA']:

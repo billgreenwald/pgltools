@@ -66,7 +66,7 @@ def processFile(FILENAME):
                 exit()
             else:
                 processedFile.append([x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]])
-    return header[:-2],processedFile
+    return header[:-1],processedFile
 
 
 # In[ ]:
@@ -87,7 +87,7 @@ def processStdin():
                 exit()
             else:
                 processedFile.append([x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]])
-    return header[:-2],processedFile
+    return header[:-1],processedFile
 
 
 # In[ ]:
@@ -107,7 +107,7 @@ def processBedFile(fileName):
                     bed[line[0]].append([int(line[1]),int(line[2]),line[3:]])
                 else:
                     bed[line[0]]=[[int(line[1]),int(line[2]),line[3:]]]
-    return header,bed
+    return header[:-1],bed
 
 
 # In[ ]:
@@ -127,6 +127,6 @@ def processStdinBed():
                 bed[line[0]].append([int(line[1]),int(line[2]),line[3:]])
             else:
                 bed[line[0]]=[[int(line[1]),int(line[2]),line[3:]]]
-    return header,bed
+    return header[:-1],bed
 
 
