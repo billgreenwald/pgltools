@@ -46,6 +46,12 @@ elif args['stdInA']==False and args['a']=="%#$":
 elif args['stdInB']==False and args['b']=="%#$":
     print "either -stdInB or -b must be used"
     exit(1)
+if len([x for x in [args['v'],args['mc'],args['wa'],args['wb'],args['wo']] if x])!=1:
+    print "-v, -mc, -wa, -wb, and -wo cannot be used simulatneously."
+    exit(1)
+if args['m'] and args['mc']:
+    print "-m and -mc cannot be used simulatneously."
+    exit(1)
 
 
 # In[2]:
@@ -216,15 +222,21 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
                         k+=1
                     
     if dashM:
+        AannotLen=len(contactsA[0][6])
+        BannotLen=len(contactsB[0][6])
         for i in range(len(contactsA)):
             if i not in addedIs:
                 tempAnnots=["A"]
-                tempAnnots.extend(contactsA[6])
+                tempAnnots.extend(contactsA[i][6])
+                for j in range(BannotLen):
+                    tempAnnots.append(".")
                 newPeaks.append([contactsA[i][:6],tempAnnots])
         for k in range(len(contactsB)):
             if k not in addedKs:
                 tempAnnots=["B"]
-                tempAnnots.extend(contactsB[6])
+                for j in range(AannotLen):
+                    tempAnnots.append(".")
+                tempAnnots.extend(contactsB[i][6])
                 newPeaks.append([contactsB[i][:6],tempAnnots])
     if dashV:
         return [contactsA[i] for i in range(len(contactsA)) if i not in newPeaks]
