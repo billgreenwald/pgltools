@@ -46,7 +46,7 @@ elif args['stdInA']==False and args['a']=="%#$":
 elif args['stdInB']==False and args['b']=="%#$":
     print "either -stdInB or -b must be used"
     exit(1)
-if len([x for x in [args['v'],args['mc'],args['wa'],args['wb'],args['wo']] if x])!=1:
+if len([x for x in [args['v'],args['mc'],args['wa'],args['wb'],args['wo']] if x])>1:
     print "-v, -mc, -wa, -wb, and -wo cannot be used simulatneously."
     exit(1)
 if args['m'] and args['mc']:

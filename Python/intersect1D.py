@@ -332,7 +332,7 @@ if args['bA']:
         wholeHeaderB[-1]="\t".join(headerB)
         print ("\n".join(wholeHeaderB))
 elif args['allA']:
-    if len(headerB)!=0 or len(header)!=0:
+    if len(headerB)!=0 and len(header)!=0:
         headerB=headerB.split("\n")
         header=header.split("\n")
         i=0
@@ -340,10 +340,14 @@ elif args['allA']:
             if i < len(header) and i < len(headerB):
                 print(header[i]+"\n"+headerB[i])
             elif i < len(header):
-                print(header[i]+"\n")
+                print(header[i])
             else:
-                print(headerB[i]+"\n")
+                print(headerB[i])
             i+=1
+    elif len(headerB)!=0:
+        print headerB
+    else:
+        print header
 else:
     if len(header)!=0:
         print(header)
