@@ -4,7 +4,11 @@ Pgltools is a genomic arithmetic software suite designed for working with paired
 
 ## Citation
 
-Please cite the following paper when citing pgltools:
+Please cite the following paper when citing pgltools:  
+
+<b>Pgltools: a genomic arithmetic tool suite for
+manipulation of Hi-C peak and other chromatin interaction data</b>
+
 https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1621-0
 
 ## Table of Contents
