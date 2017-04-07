@@ -2,6 +2,11 @@
 
 Pgltools is a genomic arithmetic software suite designed for working with paired-loci genomic data, such as contacts from a Hi-C or ChIA-PET experiment, and utilizes the PGL file format. Pgltools is available both as a tool suite for the UNIX command line, and as a python module.
 
+## Citation
+
+<b>Pgltools: a genomic arithmetic tool suite for manipulation of Hi-C peak and other chromatin interaction data.</b>
+William W. Greenwald, He Li, Erin N. Smith, Paola Benaglio, Naoki Nariai, Kelly A. Frazer. In Press, BMC Bioinformatics. DOI: 10.1186/s12859-017-1621-0
+
 ## Table of Contents
 1. [Software Dependencies](#software-dependencies)
 2. [Installation](#installation)
