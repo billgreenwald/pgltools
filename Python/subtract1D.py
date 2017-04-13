@@ -162,8 +162,9 @@ if args['stdInB']:
 res=overlap1D(A,B)
 res=formatContacts(res,"\t")
 
-if len(header)!=0:
-    print(header)
-print("\n".join(res))
+if len(res)!=0:
+    if len(header)!=0:
+        print(header)
+    print("\n".join(res))
 
 

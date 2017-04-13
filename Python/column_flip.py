@@ -75,8 +75,10 @@ header,A=processFile(args['a'],args['stdInA'])
     
 res=flipContacts(A)
 res=formatContacts(res,"\t")
-if len(header)!=0:
-    print(header)
-print("\n".join(res))
+
+if len(res)!=0:
+    if len(header)!=0:
+        print(header)
+    print("\n".join(res))
 
 

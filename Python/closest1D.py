@@ -189,15 +189,15 @@ res=closest1D(A,B,args['ba'])
     
 res=formatDoubleContacts(res,"\t") 
 
-# if len(header)!=0:
-#     print(header)
 
-if not args['ba']:
-    print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])
-else:
-    print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
-                     "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])
+if len(res)!=0:
 
-print("\n".join(res))
+    if not args['ba']:
+        print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])
+    else:
+        print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
+                         "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])
+
+    print("\n".join(res))
 
 

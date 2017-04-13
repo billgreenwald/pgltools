@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[8]:
+# In[17]:
 
 import argparse
 import sys
@@ -35,7 +35,7 @@ if len(sys.argv)==1:
     sys.exit(1)
 
 
-# In[3]:
+# In[6]:
 
 if args['stdInB'] and args['stdInA']:
     print "stdin can only be used for either a or b"
@@ -54,19 +54,19 @@ if args['m'] and args['mc']:
     exit(1)
 
 
-# In[2]:
+# In[7]:
 
 def formatContacts(contacts,delim):
     return [delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in contacts]
 
 
-# In[3]:
+# In[8]:
 
 def formatContactsV(contacts,delim):
     return [delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in contacts]
 
 
-# In[61]:
+# In[15]:
 
 def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots,dashWO,dashWA,dashWB):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
@@ -236,8 +236,8 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
                 tempAnnots=["B"]
                 for j in range(AannotLen):
                     tempAnnots.append(".")
-                tempAnnots.extend(contactsB[i][6])
-                newPeaks.append([contactsB[i][:6],tempAnnots])
+                tempAnnots.extend(contactsB[k][6])
+                newPeaks.append([contactsB[k][:6],tempAnnots])
     if dashV:
         return [contactsA[i] for i in range(len(contactsA)) if i not in newPeaks]
     elif dashU:
@@ -246,7 +246,7 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
         return newPeaks
 
 
-# In[62]:
+# In[16]:
 
 if args['stdInA']:
     header,A=processStdin()
@@ -279,8 +279,9 @@ if not args['v'] and not args['u']:
 else:
     res=formatContactsV(res,"\t")
 
-if len(header)!=0:
-    print(header)
-print("\n".join(res))
+if len(res)!=0:
+    if len(header)!=0:
+        print(header)
+    print("\n".join(res))
 
 
