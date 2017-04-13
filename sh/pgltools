@@ -12,7 +12,7 @@ if [ $# -eq 0 ]; then
  echo "window:  filter a pgl file on a specified window for either or both contact(s)"
  echo "subtract:  find the parts of contacts of a pgl file that do not overlap another"
  echo "closest: find the closest contacts between two pgl files"
- echo "coverage:  find the coverage of a pgl files contacts on another be2d file"
+ echo "coverage:  find the coverage of a pgl files contacts on another pgl file"
  echo "expand:  expand both loci for each paired-loci by a given distance"
  echo "browser: format a pgl file for viewing with the UCSC Genome Browser"
  echo "conveRt: format a pgl file for use with the GenomicInteractions R package"
