@@ -133,6 +133,9 @@ def overlap2D(contactsA,contactsB):
                         k=restartK
                     else:
                         k+=1
+                        
+    for cont in contactsA:
+        newPeaks.append([cont[:6]])
                     
     return newPeaks
 
@@ -177,8 +180,9 @@ if args['z']:
 else:
     res=[x+"\t"+str(Counts[x]-1) for x in list(set(res)) if Counts[x]-1>=1]
 
-if len(header)!=0:
-    print(header)
-print("\n".join(res))
+if len(res)!=0:
+    if len(header)!=0:
+        print(header)
+    print("\n".join(res))
 
 
