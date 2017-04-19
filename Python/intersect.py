@@ -16,6 +16,7 @@ parser.add_argument('-a',help="File Path for file a.  Required unless -stdInA is
 parser.add_argument('-stdInA',help="Will use stdin for file a.  ", required=False,action='store_true')
 parser.add_argument('-b',help="File Path for file b.  Required for merge and intersect unless -stdInB is used", required=False,default="%#$")
 parser.add_argument('-stdInB',help="Will use stdin for file b.",action='store_true')
+parser.add_argument('-d',help="Specify  distance when searching for intersection.  Default 0",required=False,default=0,type=int)
 parser.add_argument('-v',help="Returns entries in A that do not overlap any entries in B.",action='store_true')
 parser.add_argument('-bA',help="Keep the annotations from file B instead of file A.",action='store_true')
 parser.add_argument('-allA',help="Keep the annotations from both files.  Annotations from A will come first.",action='store_true')
@@ -68,7 +69,7 @@ def formatContactsV(contacts,delim):
 
 # In[15]:
 
-def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots,dashWO,dashWA,dashWB):
+def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots,dashWO,dashWA,dashWB,dist):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     i=0
     k=0
@@ -114,11 +115,11 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
             #on the same chromosome
             #we have a two options: first bins overlap or they dont.
 
-            if startA1 < startB1 and endA1 < startB1:
+            if startA1 < startB1-dist and endA1 < startB1-dist:
                 i+=1
                 k=restartK
                 continue
-            elif startB1 < startA1 and endB1 < startA1:
+            elif startB1 < startA1-dist and endB1< startA1-dist:
                 if maximalRestart<=startA1: #should always ==, < is present for my sanity
                     restartK=k
                 k+=1
@@ -134,14 +135,14 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
             #on the same chromosome
             #we have a two options: second bins overlap or they dont.
 
-                if startA2 < startB2 and endA2 < startB2:
+                if startA2 < startB2-dist and endA2 < startB2-dist:
                     if k==len(contactsB)-1:
                         i+=1
                         k=restartK
                     else:
                         k+=1
 
-                elif startB2 < startA2 and endB2 < startA2:
+                elif startB2 < startA2-dist and endB2 < startA2-dist:
                     if k==len(contactsB)-1:
                         i+=1
                         k=restartK
@@ -272,7 +273,7 @@ elif checkSorted(B)==2:
     print ("File B is not a pgl file.  Please use pgltools formatbedpe [FILE]")
     exit()
 
-res=overlap2D(A,B,args['v'],args['m'],args['mc'],args['u'],args['bA'],args['allA'],args['wo'],args['wa'],args['wb'])
+res=overlap2D(A,B,args['v'],args['m'],args['mc'],args['u'],args['bA'],args['allA'],args['wo'],args['wa'],args['wb'],args['d'])
 
 if not args['v'] and not args['u']:
     res=formatContacts(res,"\t")
