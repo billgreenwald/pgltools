@@ -252,6 +252,7 @@ options:
 -stdInA:  use stdin as input file.
 -b [FILE]:  use [FILE] as input.  
 -stdInB:  use stdin as input file.
+-d:  Distance to allow for intersections.  Default 0
 -v:  Returns entries in A that do not overlap any entries in B
 -m:  Returns the union of loci instead of the intersection of loci
 -mc:  Returns only unions of loci where an overlap between files occurred
