@@ -78,8 +78,10 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                         Aannots=contactsA[i][6][:]
 
                         chrB=chrA1
-                        startB=max(bedB[chrB][k][0]-padB,0)+1
+                        startB=max(bedB[chrB][k][0]-padB,0)
                         endB=bedB[chrB][k][1]+padB
+                        if startB!=endB:
+                            startB+=1
                         Bannots=bedB[chrB][k][2]
 
                         overlapA=False
@@ -208,8 +210,10 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                     for k in range(len(bedB[chrA1])):
 
                         chrB=chrA1
-                        startB=max(bedB[chrB][k][0]-padB,0)+1
+                        startB=max(bedB[chrB][k][0]-padB,0)
                         endB=bedB[chrB][k][1]+padB
+                        if startB!=endB:
+                            startB+=1
                         Bannots=bedB[chrB][k][2]
 
                         difChrom=True
@@ -253,8 +257,10 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                     for k in range(len(bedB[chrA2])):
 
                         chrB=chrA2
-                        startB=max(bedB[chrB][k][0]-padB,0)+1
+                        startB=max(bedB[chrB][k][0]-padB,0)
                         endB=bedB[chrB][k][1]+padB
+                        if startB!=endB:
+                            startB+=1
                         Bannots=bedB[chrB][k][2]
 
                         if startA2 < startB and endA2 < startB:

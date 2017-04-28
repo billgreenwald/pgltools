@@ -91,8 +91,10 @@ def overlap1D(contactsA,bedB):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrB][k][0]+1
+                    startB=bedB[chrB][k][0]
                     endB=bedB[chrB][k][1]
+                    if startB!=endB:
+                        startB+=1
 
                     if startA1 < startB and endA1 < startB:
                         pass
@@ -113,8 +115,10 @@ def overlap1D(contactsA,bedB):
             if chrA1 in bedB:
                 for k in range(len(bedB[chrA1])):
                     chrB=chrA1
-                    startB=bedB[chrB][k][0]+1
+                    startB=bedB[chrB][k][0]
                     endB=bedB[chrB][k][1]
+                    if startB!=endB:
+                        startB+=1
 
                     if startA1 < startB and endA1 < startB:
                         continue
@@ -126,8 +130,10 @@ def overlap1D(contactsA,bedB):
             if chrA2 in bedB:
                 for k in range(len(bedB[chrA2])):
                     chrB=chrA2
-                    startB=bedB[chrB][k][0]+1
+                    startB=bedB[chrB][k][0]
                     endB=bedB[chrB][k][1]
+                    if startB!=endB:
+                        startB+=1
 
                     if startA2 < startB and endA2 < startB:
                         continue
