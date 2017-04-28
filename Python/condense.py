@@ -33,8 +33,12 @@ if not args['stdInA']:
             print header
         else:
             line=line.split()
-            print ("\t".join(line[:3])+"\tA\t"+"\t".join(line[6:]))
-            print ("\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:]))
+            try:
+                print "\t".join(line[:3])+"\tA\t"+"\t".join(line[6:])
+                print "\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:])
+            except IOError as e:
+                if e.errno==32:
+                    exit()
 else:
     lines=[]
     for line in sys.stdin:
@@ -44,7 +48,12 @@ else:
             print header
         else:
             line=line.split()
-            print "\t".join(line[:3])+"\tA\t"+"\t".join(line[6:])
-            print "\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:])
+            try:
+                print "\t".join(line[:3])+"\tA\t"+"\t".join(line[6:])
+                print "\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:])
+            except IOError as e:
+                if e.errno==32:
+                    exit()
+            
 
 

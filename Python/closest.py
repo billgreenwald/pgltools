@@ -113,12 +113,15 @@ if args['stdInB']:
 
 res=closest2D(B,A)
 res=formatDoubleContacts(res,"\t")
-# if len(header)!=0:
-#     print(header)
 
-print "\t".join(["#fileA_chrA","fileA_startA","fileA_stopA","fileA_chrB","fileA_startB","fileA_stopB",
-                 "fileB_chrA","fileB_startA","fileB_stopA","fileB_chrB","fileB_startB","fileB_stopB","Distance"])
-
-print("\n".join(res))
+#print a new header
+if len(res)!=0:
+    try:
+        print "\t".join(["#fileA_chrA","fileA_startA","fileA_stopA","fileA_chrB","fileA_startB","fileA_stopB",
+                         "fileB_chrA","fileB_startA","fileB_stopA","fileB_chrB","fileB_startB","fileB_stopB","Distance"])
+        print("\n".join(res))
+    except IOError as e:
+        if e.errno==32:
+            exit()
 
 

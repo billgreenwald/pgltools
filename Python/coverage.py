@@ -183,6 +183,10 @@ else:
 if len(res)!=0:
     if len(header)!=0:
         print(header)
-    print("\n".join(res))
+    try:
+        print("\n".join(res))
+    except IOError as e:
+        if e.errno==32:
+            exit()
 
 

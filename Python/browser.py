@@ -54,7 +54,7 @@ def formatContacts(contacts,nameCol,scoreCol,pCol,qCol):
         if nameCol!=-1:
             name=contact[6][nameCol-6]
         else:
-            name="chr:"+str(contact[1])+".."+str(contact[2])+"-chr:"+str(contact[4])+".."+str(contact[5])
+            name=chrom+":"+str(contact[1])+".."+str(contact[2])+"-"+chrom+":"+str(contact[4])+".."+str(contact[5])
         if scoreCol!=-1:
             score=contact[6][scoreCol-6]
         else:
@@ -99,7 +99,11 @@ if any([x>minNumCols for x in [args["N"],args["S"],args["P"],args["Q"]]]):
 
 res=formatContacts(A,args["N"]-1,args["S"]-1,args["P"]-1,args["Q"]-1)
 
-print("track name="+args['tN']+" type=gappedPeak")
-print("\n".join(res))
+try:
+    print("track name="+args['tN']+" type=gappedPeak")
+    print("\n".join(res))
+except IOError as e:
+    if e.errno==32:
+        exit()
 
 

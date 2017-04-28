@@ -22,6 +22,10 @@ annotationMap={line.split()[3]:"\t".join(line.split()[:3]) for line in open(args
 
 for line in open(args['ts']):
     line=line.split()
-    print (annotationMap[line[0]]+"\t"+annotationMap[line[1]]+"\t"+line[2])
+    try:
+        print (annotationMap[line[0]]+"\t"+annotationMap[line[1]]+"\t"+line[2])
+    except IOError as e:
+        if e.errno==32:
+            exit()
 
 

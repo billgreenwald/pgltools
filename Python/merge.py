@@ -93,7 +93,7 @@ if args['c']!="%#$":
         elif operation=="collapse":
             return delim.join([str(x) for x in operatedOnList])
         elif operation=="distinct":
-            return delim.join([str(x) for x in set(operatedOnList)])
+            return delim.join([str(x) for x in sorted(list(set(operatedOnList)))])
         elif operation=="count":
             return max(1,len(operatedOnList))
         elif operation=="count_distinct":
@@ -322,11 +322,16 @@ res=processCommands(res,[x-1 for x in cols],commands,args['delim'])
 res=formatContacts(res,"\t")
 
 useOld=False
-if len(header)>0:
-    if len(header[0].split())>6+len(A[0][-1]):
-        useOld=True
-if not args['noH']:
-    print createHeader(header.split(),cols,commands,useOld)
-print("\n".join(res))
+try:
+    if len(res)!=0:
+        if len(header)>0:
+            if len(header[0].split())>6+len(A[0][-1]):
+                useOld=True
+        if not args['noH']:
+            print createHeader(header.split(),cols,commands,useOld)
+        print("\n".join(res))
+except IOError as e:
+    if e.errno==32:
+        exit()
 
 

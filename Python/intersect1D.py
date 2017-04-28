@@ -327,37 +327,41 @@ if args['stdInB']:
 res=overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['pA'],args['pB'],args['v'],args['wb'])
 res=formatContacts(res,"\t")
 
-if len(res)!=0:
-    if args['bA']:
-        if len(headerB)!=0:
-            wholeHeaderB=headerB.split("\n")
-            headerB=wholeHeaderB[-1].split("\t")
-            part2=headerB[6:]
-            headerB=headerB[:6]
-            headerB.append("Intersected_Anchor")
-            headerB.extend(part2)
-            wholeHeaderB[-1]="\t".join(headerB)
-            print ("\n".join(wholeHeaderB))
-    elif args['allA']:
-        if len(headerB)!=0 and len(header)!=0:
-            headerB=headerB.split("\n")
-            header=header.split("\n")
-            i=0
-            while i < len(headerB) or i < len(header):
-                if i < len(header) and i < len(headerB):
-                    print(header[i]+"\n"+headerB[i])
-                elif i < len(header):
-                    print(header[i])
-                else:
-                    print(headerB[i])
-                i+=1
-        elif len(headerB)!=0:
-            print headerB
+try:
+    if len(res)!=0:
+        if args['bA']:
+            if len(headerB)!=0:
+                wholeHeaderB=headerB.split("\n")
+                headerB=wholeHeaderB[-1].split("\t")
+                part2=headerB[6:]
+                headerB=headerB[:6]
+                headerB.append("Intersected_Anchor")
+                headerB.extend(part2)
+                wholeHeaderB[-1]="\t".join(headerB)
+                print ("\n".join(wholeHeaderB))
+        elif args['allA']:
+            if len(headerB)!=0 and len(header)!=0:
+                headerB=headerB.split("\n")
+                header=header.split("\n")
+                i=0
+                while i < len(headerB) or i < len(header):
+                    if i < len(header) and i < len(headerB):
+                        print(header[i]+"\n"+headerB[i])
+                    elif i < len(header):
+                        print(header[i])
+                    else:
+                        print(headerB[i])
+                    i+=1
+            elif len(headerB)!=0:
+                print headerB
+            else:
+                print header
         else:
-            print header
-    else:
-        if len(header)!=0:
-            print(header)
-    print("\n".join(res))
+            if len(header)!=0:
+                print(header)
+        print("\n".join(res))
+except IOError as e:
+    if e.errno==32:
+        exit()
 
 

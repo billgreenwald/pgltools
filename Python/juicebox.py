@@ -80,7 +80,11 @@ if any([x>minNumCols for x in [args["N"],args["C"]]]):
 
 res=formatContacts(A,args["N"]-1,args["C"]-1)
 
-print("\t".join(["chr1","x1","x2","chr2","y1","y2","color","comment"]))
-print("\n".join(res))
+try:
+    print("\t".join(["chr1","x1","x2","chr2","y1","y2","color","comment"]))
+    print("\n".join(res))
+except IOError as e:
+    if e.errno==32:
+        exit()
 
 

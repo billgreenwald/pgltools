@@ -197,13 +197,16 @@ res=formatDoubleContacts(res,"\t")
 
 
 if len(res)!=0:
+    try:
+        if not args['ba']:
+            print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])
+        else:
+            print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
+                             "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])
 
-    if not args['ba']:
-        print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])
-    else:
-        print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
-                         "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])
-
-    print("\n".join(res))
+        print("\n".join(res))
+    except IOError as e:
+        if e.errno==32:
+            exit()
 
 

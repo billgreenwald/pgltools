@@ -247,7 +247,7 @@ def overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnno
         return newPeaks
 
 
-# In[16]:
+# In[ ]:
 
 if args['stdInA']:
     header,A=processStdin()
@@ -280,9 +280,13 @@ if not args['v'] and not args['u']:
 else:
     res=formatContactsV(res,"\t")
 
-if len(res)!=0:
-    if len(header)!=0:
-        print(header)
-    print("\n".join(res))
+try:
+    if len(res)!=0:
+        if len(header)!=0:
+            print(header)
+        print("\n".join(res))
+except IOError as e:
+    if e.errno==32:
+        exit()
 
 
