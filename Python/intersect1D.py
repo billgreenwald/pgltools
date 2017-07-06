@@ -21,6 +21,7 @@ parser.add_argument('-allA',help="Keep the annotations from the bed file as well
 parser.add_argument('-wa',help="Output original PGL rather than intersection when a region is found.",action='store_true')
 parser.add_argument('-wb',help="Output the original bed entry after each PGL entry it overlaps.",action='store_true')
 parser.add_argument('-v',help="Output PGLs that do not overlap any regions in the bed file.",action='store_true')
+parser.add_argument('-u',help="Output a PGL once if it overlaps any regions in the bed file.",action='store_true')
 parser.add_argument('-pA',help="Add specified padding for PGLs.",required=False,default=0,type=int)
 parser.add_argument('-pB',help="Add specified padding for bed.",required=False,default=0,type=int)
 args = vars(parser.parse_args())
@@ -47,6 +48,9 @@ if args['stdInB']==False and args['b']=="%#$":
 if args['bA']==True and args['allA']==True:
     print "-bA and -allA cannot be used at the same time"
     exit(1)
+if args['v']==True and args['u']==True:
+    print "-v and -u cannot be used at the same time"
+    exit(1)
 
 
 # In[ ]:
@@ -57,9 +61,9 @@ def formatContacts(contacts,delim):
 
 # In[27]:
 
-def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,reportBasAnnot):
+def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,reportBasAnnot,dashU):
     #we will hash the bed file for instant lookup
-    if dashV:
+    if dashV or dashU:
         intersectedContactIndicies=set()
     newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
@@ -101,7 +105,7 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                             overlapB=True
 
                         if overlapA and overlapB:
-                            if dashV:
+                            if dashV or dashU:
                                 intersectedContactIndicies.add(i)
                                 break
                             else:
@@ -127,8 +131,8 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
-                                        if ann not in Aannots:
-                                            Aannots.append(ann)
+#                                         if ann not in Aannots:
+                                        Aannots.append(ann)
                                     if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
@@ -138,7 +142,7 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
 
                         elif overlapA:
-                            if dashV:
+                            if dashV or dashU:
                                 intersectedContactIndicies.add(i)
                                 break
                             else:
@@ -161,8 +165,8 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
-                                        if ann not in Aannots:
-                                            Aannots.append(ann)
+#                                         if ann not in Aannots:
+                                        Aannots.append(ann)
                                     if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
@@ -172,7 +176,7 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
 
                         elif overlapB:
-                            if dashV:
+                            if dashV or dashU:
                                 intersectedContactIndicies.add(i)
                                 break
                             else:
@@ -195,8 +199,8 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
-                                        if ann not in Aannots:
-                                            Aannots.append(ann)
+#                                         if ann not in Aannots:
+                                        Aannots.append(ann)
                                     if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
@@ -222,7 +226,7 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                         elif startB < startA1 and endB < startA1:
                             break
                         else:
-                            if dashV:
+                            if dashV or dashU:
                                 intersectedContactIndicies.add(i)
                                 break
                             if not aLocations:
@@ -244,8 +248,8 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
                             elif useAllAnnots:
                                 for ann in Bannots:
-                                    if ann not in Aannots:
-                                        Aannots.append(ann)
+#                                     if ann not in Aannots:
+                                    Aannots.append(ann)
                                 if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
@@ -268,7 +272,7 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                         elif startB < startA2 and endB < startA2:
                             break
                         else:
-                            if dashV:
+                            if dashV or dashU:
                                 intersectedContactIndicies.add(i)
                                 break
                             chr1=chrA1
@@ -290,8 +294,8 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
                             elif useAllAnnots:
                                 for ann in Bannots:
-                                    if ann not in Aannots:
-                                        Aannots.append(ann)
+#                                     if ann not in Aannots:
+                                    Aannots.append(ann)
                                 if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
@@ -299,13 +303,16 @@ def overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,
                                 if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
-    if not dashV:            
+    if not dashV and not dashU:            
         return newPeaks
     else:
-        return [[contactsA[i][:6],contactsA[i][6]] for i in range(len(contactsA)) if i not in intersectedContactIndicies]
+        if dashV:
+            return [[contactsA[i][:6],contactsA[i][6]] for i in range(len(contactsA)) if i not in intersectedContactIndicies]
+        elif dashU:
+            return [[contactsA[i][:6],contactsA[i][6]] for i in range(len(contactsA)) if i in intersectedContactIndicies]
 
 
-# In[ ]:
+# In[2]:
 
 if args['stdInA']:
     header,A=processStdin()
@@ -324,7 +331,7 @@ if args["b"]!="%#$":
 if args['stdInB']:
     headerB,B=processStdinBed()
 
-res=overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['pA'],args['pB'],args['v'],args['wb'])
+res=overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['pA'],args['pB'],args['v'],args['wb'],args['u'])
 res=formatContacts(res,"\t")
 
 try:
@@ -343,10 +350,25 @@ try:
             if len(headerB)!=0 and len(header)!=0:
                 headerB=headerB.split("\n")
                 header=header.split("\n")
+                
+                ht=header[0].split("\t")
+                ht2=ht[6:]
+                ht=ht[:6]
+                ht.append("Intersected_Anchor")
+                ht.extend(ht2)
+                header[0]='\t'.join(ht)
+                
+                headerB[0]=headerB[0][3:]
+                
+                ht=headerB[0].split("\t")[3:]
+                if args['wb']:
+                    ht.extend(['chr','start','end'])
+                headerB[0]='\t'.join(ht)
+                
                 i=0
                 while i < len(headerB) or i < len(header):
                     if i < len(header) and i < len(headerB):
-                        print(header[i]+"\n"+headerB[i])
+                        print(header[i]+"\t"+headerB[i])
                     elif i < len(header):
                         print(header[i])
                     else:
@@ -354,7 +376,7 @@ try:
                     i+=1
             elif len(headerB)!=0:
                 print headerB
-            else:
+            elif len(header)!=0:
                 print header
         else:
             if len(header)!=0:
