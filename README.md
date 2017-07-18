@@ -15,11 +15,12 @@ https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1621-0
 1. [Software Dependencies](#software-dependencies)
 2. [Installation](#installation)
 3. [The PGL File Format](#the-pgl-file-format)
-4. [Formatting Operations](#file-formatting-and-converting-operations)
-5. [2D Operations](#2d-operations)
-6. [1D Operations](#1d-operations)
-7. [Example Pipelines](#example-pipelines)
-8. [Useful Parameter Combinations](#useful-parameter-combinations)
+4. [The PyGLtools Module](#the-pygltools-module)
+5. [Formatting Operations](#file-formatting-and-converting-operations)
+6. [2D Operations](#2d-operations)
+7. [1D Operations](#1d-operations)
+8. [Example Pipelines](#example-pipelines)
+9. [Useful Parameter Combinations](#useful-parameter-combinations)
 
 ## Software Dependencies
 
@@ -29,7 +30,7 @@ The UNIX version of pgltools will automatically detect if pypy is installed, and
 
 ## Installation:
 
-### UNIX
+### UNIX:
 To install pgltools, clone the directory to the desired location, and add the /sh folder to your system PATH variable.  Methods can then be called with pgltools [command].  To view the avaiable commands, or the available arguments for a command, call pgltools with no command, or call pgltools [command] with no arguments.
 
 ### Python Module:
@@ -47,19 +48,9 @@ cd into the "Module" subdirectory and run:
 python setup.py install
 ```
 
-All method names in PyGLtools are the same as the UNIX tool suite.  Command line arguments are instead function arguments, and can be viewed as one would view the docstring of a particular function (usually through tab completion).
+## The PGL file format:
 
-All input and output for the python module are effectively the same as that of the UNIX tool suite.  Input data for functions should be the raw text from the file, and output will be raw text that, when printed or written out to a file, will be a PGL file.  For example, if we want to read in a file, run merge, and print the resulting file, all within python, we would do the following:
-```
-import PyGLtools
-myFile="\n".join[line.strip() for line in open(FILE_LOCATION)]
-merged=PyGLtools.merge(myFile)
-print merged
-```
-
-## The pgl file format:
-
-The pgl file format is a 1-based file consisting of 6 columns, plus any additional annotations.  The six required columns are locus A chromosome, locus A start, locus A end, locus B chromosome, locus B start, locus B end.  After these six columns, any additional columns may be included as annotations.  These columns will be perserved by pgltools, and can be manipulated with pgltools merge.  As annotations are arbitrary, header lines may be indcluded in pgl files by starting a line with "#" and will be carried over from the "A" file when using pgltools methods.  **In addition to the six required columns, pgl files are formatted such that each locus A comes before its partner locus B.**  The included **formatbedpe** operation will fix any loci violating this rule in addition to sorting the file.  Example pgl files are provided below:
+The PGL file format is a 1-based file consisting of 6 columns, plus any additional annotations.  The six required columns are locus A chromosome, locus A start, locus A end, locus B chromosome, locus B start, locus B end.  After these six columns, any additional columns may be included as annotations.  These columns will be perserved by pgltools, and can be manipulated with pgltools merge.  As annotations are arbitrary, header lines may be indcluded in pgl files by starting a line with "#" and will be carried over from the "A" file when using pgltools methods.  **In addition to the six required columns, pgl files are formatted such that each locus A comes before its partner locus B.**  The included **formatbedpe** operation will fix any loci violating this rule in addition to sorting the file.  Example pgl files are provided below:
 
 <b>Proper Formatting</b>:
 ```
@@ -75,6 +66,35 @@ chr11 100  1000  chr11 2000 2200  Annotation1 Annotation2
 ```
 chr10 1000 10000 chr10 1 100 Annotation1 Annotation2
 ...
+```
+
+## The PyGLtools Module:
+Most method names in PyGLtools are the same as the UNIX tool suite (2D methods that have a 1D analog are explicitly named in the python module).  Command line arguments are instead function arguments, and can be viewed as one would view the docstring of a particular function (usually through tab completion), and inputs and outputs can be viewed in the docstring.  All arguments, their format, and what they do, is discussed below in the Methods section of this readme.  All functions take at least one PyGL object as an input.
+
+### The PyGL and PyGL-bed objects:
+
+The PyGLtools module utilizes two dimensional lists to house PGL information, and a dict of lists to house Bed information.  These types are the underlying structure to the pgltools .py files utilized by the command line interface.  These objects will work with any PyGLtools function that requires their input, and are loaded via the read_PGL and read_BED functions.  The explicit format of the objects are:
+
+PyGL
+```
+[[chrA,startA,stopA,chrB,startB,stopB,[list of annotations]],[...]]
+```
+PyGL-bed
+```
+{chr:[start,stop,[list of annotations],[...]]
+ ...
+}
+```
+
+### Recommended Usage
+
+The PyGLtools package utilizes helper functions that are hidden to its namespace; it is therefore recommended to import the module and define its namespace.  As an example, to import the module, read two files, intersect them, and save their output into a new PyGL object, one would use the following:
+
+```
+import PyGLtools as pygl
+pglA=pygl.read_PGL(someFilePath)
+pglB=pygl.read_PGL(someOtherFilePath)
+intersected=pygl.intersect2D(pglA,pglB)
 ```
 
 ## Methods:
