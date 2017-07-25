@@ -212,9 +212,9 @@ def _processCommands(contacts,cols,commands,dashDelim):
             newAnnot=[]
             for ind in range(len(cols)):
                 if type(contacts[i][6][0])!=list and cols[ind]!=0:
-                    newAnnot.append(operation([contacts[i][6][cols[ind]-6]],commands[ind],dashDelim))
+                    newAnnot.append(_operation([contacts[i][6][cols[ind]-6]],commands[ind],dashDelim))
                 else:
-                    newAnnot.append(operation(contacts[i][6][ind],commands[ind],dashDelim))
+                    newAnnot.append(_operation(contacts[i][6][ind],commands[ind],dashDelim))
 
             contacts[i][6]=newAnnot
     else:
