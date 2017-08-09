@@ -16,7 +16,7 @@ def _formatContacts(contacts,delim):
 
 # In[27]:
 
-def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV,reportBasAnnot,dashU):
+def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,reportBasAnnot,dashU):
     #we will hash the bed file for instant lookup
     if dashV or dashU:
         intersectedContactIndicies=set()
@@ -24,11 +24,11 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
     #compare file 2 to file 1, meaning advance file 2 first
     for i in range(len(contactsA)): 
             chrA1=contactsA[i][0]
-            startA1=max(contactsA[i][1]-padA,0)
-            endA1=contactsA[i][2]+padA
+            startA1=max(contactsA[i][1],0)
+            endA1=contactsA[i][2]
             chrA2=contactsA[i][3]
-            startA2=max(contactsA[i][4]-padA,0)
-            endA2=contactsA[i][5]+padA
+            startA2=max(contactsA[i][4],0)
+            endA2=contactsA[i][5]
             difChrom=False
             
             if chrA1==chrA2:
@@ -37,24 +37,24 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                         Aannots=contactsA[i][6][:]
 
                         chrB=chrA1
-                        startB=max(bedB[chrB][k][0]-padB,0)
-                        endB=bedB[chrB][k][1]+padB
+                        startB=bedB[chrB][k][0]
+                        endB=bedB[chrB][k][1]
                         if startB!=endB:
                             startB+=1
                         Bannots=bedB[chrB][k][2]
 
                         overlapA=False
                         overlapB=False
-                        if startA1 < startB and endA1 < startB:
+                        if startA1 < startB-dist and endA1 < startB-dist:
                             pass
-                        elif startB < startA1 and endB < startA1:
+                        elif startB-dist < startA1 and endB+dist < startA1:
                             pass
                         else:
                             overlapA=True
 
-                        if startA2 < startB and endA2 < startB:
+                        if startA2 < startB-dist and endA2 < startB-dist:
                             pass
-                        elif startB < startA2 and endB < startA2:
+                        elif startB-dist < startA2 and endB-dist < startA2:
                             pass
                         else:
                             overlapB=True
@@ -86,7 +86,6 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
-#                                         if ann not in Aannots:
                                         Aannots.append(ann)
                                     if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
@@ -120,7 +119,6 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
-#                                         if ann not in Aannots:
                                         Aannots.append(ann)
                                     if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
@@ -154,7 +152,6 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
                                 elif useAllAnnots:
                                     for ann in Bannots:
-#                                         if ann not in Aannots:
                                         Aannots.append(ann)
                                     if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
@@ -169,16 +166,16 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                     for k in range(len(bedB[chrA1])):
 
                         chrB=chrA1
-                        startB=max(bedB[chrB][k][0]-padB,0)
-                        endB=bedB[chrB][k][1]+padB
+                        startB=max(bedB[chrB][k][0],0)
+                        endB=bedB[chrB][k][1]
                         if startB!=endB:
                             startB+=1
                         Bannots=bedB[chrB][k][2]
 
                         difChrom=True
-                        if startA1 < startB and endA1 < startB:
+                        if startA1 < startB-dist and endA1 < startB-dist:
                             continue
-                        elif startB < startA1 and endB < startA1:
+                        elif startB-dist < startA1 and endB+dist < startA1:
                             break
                         else:
                             if dashV or dashU:
@@ -203,7 +200,6 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
                             elif useAllAnnots:
                                 for ann in Bannots:
-#                                     if ann not in Aannots:
                                     Aannots.append(ann)
                                 if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
@@ -216,15 +212,15 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                     for k in range(len(bedB[chrA2])):
 
                         chrB=chrA2
-                        startB=max(bedB[chrB][k][0]-padB,0)
-                        endB=bedB[chrB][k][1]+padB
+                        startB=max(bedB[chrB][k][0],0)
+                        endB=bedB[chrB][k][1]
                         if startB!=endB:
                             startB+=1
                         Bannots=bedB[chrB][k][2]
 
-                        if startA2 < startB and endA2 < startB:
+                        if startA2 < startB-dist and endA2 < startB-dist:
                             continue
-                        elif startB < startA2 and endB < startA2:
+                        elif startB-dist < startA2 and endB+dist < startA2:
                             break
                         else:
                             if dashV or dashU:
@@ -249,7 +245,6 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
                             elif useAllAnnots:
                                 for ann in Bannots:
-#                                     if ann not in Aannots:
                                     Aannots.append(ann)
                                 if reportBasAnnot:
                                         Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
@@ -270,7 +265,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,padA,padB,dashV
 # In[ ]:
 
 def intersect1D(A,B,args,header,headerB):
-    res=_overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['pA'],args['pB'],args['v'],args['wb'],args['u'])
+    res=_overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['d'],args['v'],args['wb'],args['u'])
     res=_formatContacts(res,"\t")
 
     if __name__=="__main__":
@@ -349,8 +344,7 @@ if __name__=="__main__":
     parser.add_argument('-wb',help="Output the original bed entry after each PGL entry it overlaps.",action='store_true')
     parser.add_argument('-v',help="Output PGLs that do not overlap any regions in the bed file.",action='store_true')
     parser.add_argument('-u',help="Output a PGL once if it overlaps any regions in the bed file.",action='store_true')
-    parser.add_argument('-pA',help="Add specified padding for PGLs.",required=False,default=0,type=int)
-    parser.add_argument('-pB',help="Add specified padding for bed.",required=False,default=0,type=int)
+    parser.add_argument('-d',help="Distance for finding overlaps.  Default is 0",required=False,default=0,type=int)
     args = vars(parser.parse_args())
 
     #show help with no args

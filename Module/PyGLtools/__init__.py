@@ -136,12 +136,12 @@ def intersect2D(A,B,d=0,v=False,bA=False,allA=False,m=False,mc=False,u=False,wa=
 
 # In[11]:
 
-def intersect1D(PGL,BED,bA=False,allA=False,wa=False,wb=False,v=False,u=False,pA=0,pB=0):
+def intersect1D(PGL,BED,bA=False,allA=False,wa=False,wb=False,v=False,u=False,d=0):
     """Takes a PyGL object and a PyGL-bed object and returns a PyGL object resulting from the intersect1D operation"""
     if _cs(PGL)!=0:
         print "The PyGL supplied is not sorted.  Please use a pyglSort."
         return
-    args={'bA':ba,'allA':allA,'wa':wa,'wb':wb,'v':v,'u':u,'pA':pA,'pB':pB}
+    args={'bA':ba,'allA':allA,'wa':wa,'wb':wb,'v':v,'u':u,'d':d,}
     return _inter1d.intersect1D(PGL,BED,args,"","")
 
 
