@@ -422,8 +422,7 @@ options:
 -wa:  Prints the original loci from A upon finding overlapping region rather than the intersection
 -wb:  Prints the 1-based bed entry as an annotation in the final pgl output file.
 -v:  Print the entries in file A that do not overlap regions from file B
--pA [INT]:  Adds [INT] to end of each loci and subtracts [INT] from start of loci in pgl
--pB [INT]:  Adds [INT] to end of each region and subtracts [INT] from start of each region in bed
+-d [INT]:  Adds [INT] to end of each loci and subtracts [INT] from start of loci when performing intersection checks.
 ```
 Example, storing output to output.pgl:
 ```
