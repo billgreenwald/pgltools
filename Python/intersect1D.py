@@ -54,7 +54,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
 
                         if startA2 < startB-dist and endA2 < startB-dist:
                             pass
-                        elif startB-dist < startA2 and endB-dist < startA2:
+                        elif startB-dist < startA2 and endB+dist < startA2:
                             pass
                         else:
                             overlapB=True
