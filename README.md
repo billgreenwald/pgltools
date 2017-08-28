@@ -73,7 +73,7 @@ Most method names in PyGLtools are the same as the UNIX tool suite (2D methods t
 
 ### The PyGL and PyGL-bed objects:
 
-The PyGLtools module utilizes two dimensional lists to house PGL information, and a dict of lists to house Bed information.  These types are the underlying structure to the pgltools .py files utilized by the command line interface.  These objects will work with any PyGLtools function that requires their input, and are loaded via the read_PGL and read_BED functions.  The explicit format of the objects are:
+The PyGLtools module utilizes two dimensional lists to house PGL information, and a dict of lists to house Bed information.  These types are the underlying structure to the pgltools .py files utilized by the command line interface.  These objects will work with any PyGLtools function that requires their input, and are loaded via the read_PGL and read_BED functions.  These functions return two arguments, first the header of the file, and second the PyGL or PyGL_BED object.  The explicit format of the objects are:
 
 PyGL
 ```
@@ -92,8 +92,8 @@ The PyGLtools package utilizes helper functions that are hidden to its namespace
 
 ```
 import PyGLtools as pygl
-pglA=pygl.read_PGL(someFilePath)
-pglB=pygl.read_PGL(someOtherFilePath)
+headerA,pglA=pygl.read_PGL(someFilePath)
+headerB,pglB=pygl.read_PGL(someOtherFilePath)
 intersected=pygl.intersect2D(pglA,pglB)
 ```
 
