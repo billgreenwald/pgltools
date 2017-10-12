@@ -26,7 +26,7 @@ def _formatContacts(contacts,nameCol,colorCol):
         else:
             name="Contact_"+str(i)
         if colorCol!=-1:
-            color=contact[6][scoreCol-6]
+            color=contact[6][colorCol-6]
         else:
             color="0,0,0"
         res.append("\t".join([chromA,startA,stopA,chromB,startB,stopB,name,color]))
