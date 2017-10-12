@@ -73,7 +73,7 @@ Most method names in PyGLtools are the same as the UNIX tool suite (2D methods t
 
 ### The PyGL and PyGL-bed objects:
 
-The PyGLtools module utilizes two dimensional lists to house PGL information, and a dict of lists to house Bed information.  These types are the underlying structure to the pgltools .py files utilized by the command line interface.  These objects will work with any PyGLtools function that requires their input, and are loaded via the read_PGL and read_BED functions.  The explicit format of the objects are:
+The PyGLtools module utilizes two dimensional lists to house PGL information, and a dict of lists to house Bed information.  These types are the underlying structure to the pgltools .py files utilized by the command line interface.  These objects will work with any PyGLtools function that requires their input, and are loaded via the read_PGL and read_BED functions.  These functions return two arguments, first the header of the file, and second the PyGL or PyGL_BED object.  The explicit format of the objects are:
 
 PyGL
 ```
@@ -92,8 +92,8 @@ The PyGLtools package utilizes helper functions that are hidden to its namespace
 
 ```
 import PyGLtools as pygl
-pglA=pygl.read_PGL(someFilePath)
-pglB=pygl.read_PGL(someOtherFilePath)
+headerA,pglA=pygl.read_PGL(someFilePath)
+headerB,pglB=pygl.read_PGL(someOtherFilePath)
 intersected=pygl.intersect2D(pglA,pglB)
 ```
 
@@ -407,7 +407,7 @@ pgltools expand -a myFile.pgl -d 200 -g myGenomeFile > output.pgl
 All 1D operations will internally convert bed entries to 1-based start and stop entries so that they can be compared properly to PGL files.  As bed files have redundancy in single base pair long entries (chr1  10  10   is equivalent to   chr1  9   10), these entries types of entries will both be converted to the same entry in pgltools (in this case, chr1  10  10). 
 
 ![pgltools intersect1D](/Images/Intersect1D.PNG?raw=true)
-Finds the intersection of loci from a pgl file and a standard bed file.  Following the standard 6 columns, the seventh column holds the locus (A, B, or AB) the bed region overlapped. If a single PGL entry overlaps multiple BED entries, a resulting entry will be generated for each intersection event.  Requires a sorted pgl file. Syntax:
+Finds the intersection of loci from a pgl file and a standard bed file.  Following the standard 6 columns, the seventh column holds the locus (A, B, or AB) the bed region overlapped. If a single PGL entry overlaps multiple BED entries, a resulting entry will be generated for each intersection event.  Requires a sorted pgl file. Note that when using -d, it is possible to have the resulting entry have the end position before the start position if the two entries do not overlap; it is recommended to use -d in conjunction with -wa and/or -wb. Syntax:
 ```
 pgltools intersect1D [options]
 ```
