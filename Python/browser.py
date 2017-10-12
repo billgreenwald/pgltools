@@ -10,7 +10,7 @@ from pgltools_library import *
 
 # In[ ]:
 
-def formatForBrowser(contacts,nameCol,scoreCol,pCol,qCol):
+def formatForBrowser(contacts,nameCol,scoreCol,pCol,qCol,colorCol):
     res=[]
     i=-1
     for contact in contacts:
@@ -31,7 +31,11 @@ def formatForBrowser(contacts,nameCol,scoreCol,pCol,qCol):
         strand="."
         thickStart="0"
         thickEnd="0"
-        rgb="0"
+        if colorCol!=-1:
+#             rgb=contact[6][colorCol-6]
+            rgs="0"
+        else:
+            rgb="0"
         blockCount="2"
         blockSizes=str(contact[2]-contact[1])+","+str(contact[5]-contact[4])
         blockStarts="0,"+str(contact[4]-contact[1])
@@ -52,24 +56,24 @@ def formatForBrowser(contacts,nameCol,scoreCol,pCol,qCol):
 
 # In[ ]:
 
-def browser(A,N=0,S=0,P=0,Q=0,tN='pgl_track'):
+def browser(A,N=0,S=0,P=0,Q=0,tN='pgl_track',C=0):
     """Takes a PyGL formatted list A and returns a UCSC genome browser formatted bed12 file."""
     minNumCols=min([6+len(y[-1]) for y in A])
 
-    if any([x<6 and x!=0 for x in [N,S,P,Q]]):
+    if any([x<6 and x!=0 for x in [N,S,P,Q,C]]):
         print "Valid column numbers must be given.  Column numbering starts with 1.  The 6 required PGL columns cannot be used."
         if __name__!="__main__":
             exit(1)
         else:
             return
-    if any([x>minNumCols for x in [N,S,P,Q]]):
+    if any([x>minNumCols for x in [N,S,P,Q,C]]):
         print "A specified column exceeds the number of columns present in the file"
         if __name__!="__main__":
             exit(1)
         else:
             return
 
-    res=formatForBrowser(A,N-1,S-1,P-1,Q-1)
+    res=formatForBrowser(A,N-1,S-1,P-1,Q-1,C-1)
     if __name__=="__main__":
         try:
             print("track name="+tN+" type=gappedPeak")
@@ -103,6 +107,7 @@ if __name__=="__main__":
     parser.add_argument('-stdInA',help="Use stdin for A", action='store_true')
     parser.add_argument('-N',help="Specify column for naming entry.  If not given, entries are named Contact_#", required=False,default=0,type=int)
     parser.add_argument('-S',help="Specify column for scoring entry.  If not given, entries are scored uniformly", required=False,default=0,type=int)
+    parser.add_argument('-C',help="Specify column for coloring entry.  If not given, entries are colored black", required=False,default=0,type=int)
     parser.add_argument('-P',help="Specify column for pValue of entry.  If not given, pValue is ignored", required=False,default=0,type=int)
     parser.add_argument('-Q',help="Specify column for qValue of entry.  If not given, qValue is ignored", required=False,default=0,type=int)
     parser.add_argument('-tN',help="Track name. If not given, track is named \"pgl_track\"", required=False,default="pgl_track")
@@ -126,6 +131,6 @@ if __name__=="__main__":
     else:
         _,A=processFile(args['a'])
 
-    browser(A,N=args['N'],S=args['S'],P=args['P'],Q=args['Q'],tN=args['tN'])
+    browser(A,N=args['N'],S=args['S'],P=args['P'],Q=args['Q'],tN=args['tN'],C=args['C'])
 
 
