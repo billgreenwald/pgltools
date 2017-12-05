@@ -30,7 +30,7 @@ The UNIX version of pgltools will automatically detect if pypy is installed, and
 
 ## Installation:
 
-The pgltools tool suite is designed to be used through the bash interface.  A few commands (mainly sorting commands) are not written in python, but are rather written in bash.  <b>To ensure pgltools runs with the proper functionality, please utilize the pgltools/sh folder, rather than the direct python scripts in the pgltools/python folder</b>.  
+The pgltools tool suite is designed to be used through the bash interface.  A few commands (mainly sorting commands) are not written in python, but are rather written in bash.  <b>To ensure pgltools runs with the proper functionality, please utilize the pgltools/sh folder, rather than the direct python scripts in the pgltools/python folder</b>.  Following the Unix installation directions immediately below will ensure that the /sh folder is used.
 
 ### UNIX:
 To install pgltools, clone the directory to the desired location, and add the /sh folder to your system PATH variable.  Methods can then be called with pgltools [command].  To view the avaiable commands, or the available arguments for a command, call pgltools with no command, or call pgltools [command] with no arguments.
