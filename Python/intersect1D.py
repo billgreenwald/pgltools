@@ -3,6 +3,7 @@
 
 # In[1]:
 
+
 import argparse
 import sys
 from pgltools_library import *
@@ -10,11 +11,13 @@ from pgltools_library import *
 
 # In[ ]:
 
+
 def _formatContacts(contacts,delim):
     return [delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in contacts]
 
 
 # In[27]:
+
 
 def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,reportBasAnnot,dashU):
     #we will hash the bed file for instant lookup
@@ -262,7 +265,8 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
             return [[contactsA[i][:6],contactsA[i][6]] for i in range(len(contactsA)) if i in intersectedContactIndicies]
 
 
-# In[ ]:
+# In[1]:
+
 
 def intersect1D(A,B,args,header,headerB):
     res=_overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['d'],args['v'],args['wb'],args['u'])
@@ -277,7 +281,7 @@ def intersect1D(A,B,args,header,headerB):
                         headerB=wholeHeaderB[-1].split("\t")
                         part2=headerB[6:]
                         headerB=headerB[:6]
-                        headerB.append("Intersected_Anchor")
+                        headerB.append(args['anchA'])
                         headerB.extend(part2)
                         wholeHeaderB[-1]="\t".join(headerB)
                         print ("\n".join(wholeHeaderB))
@@ -289,11 +293,11 @@ def intersect1D(A,B,args,header,headerB):
                         ht=header[0].split("\t")
                         ht2=ht[6:]
                         ht=ht[:6]
-                        ht.append("Intersected_Anchor")
+                        ht.append(args['anchA'])
                         ht.extend(ht2)
                         header[0]='\t'.join(ht)
 
-                        headerB[0]=headerB[0][3:]
+                        headerB[0]=headerB[0][1:]
 
                         ht=headerB[0].split("\t")[3:]
                         if args['wb']:
@@ -312,10 +316,18 @@ def intersect1D(A,B,args,header,headerB):
                     elif len(headerB)!=0:
                         print headerB
                     elif len(header)!=0:
-                        print header
+                        header=header.strip().split()
+                        t=header[:6]
+                        t.append(args['anchA'])
+                        t.extend(header[6:])
+                        print("\t".join(t))
                 else:
                     if len(header)!=0:
-                        print(header)
+                        header=header.strip().split()
+                        t=header[:6]
+                        t.append(args['anchA'])
+                        t.extend(header[6:])
+                        print("\t".join(t))
                 print("\n".join(res))
         except IOError as e:
             if e.errno==32:
@@ -329,6 +341,7 @@ def intersect1D(A,B,args,header,headerB):
 
 
 # In[2]:
+
 
 if __name__=="__main__":
     #parse arguments
@@ -345,6 +358,7 @@ if __name__=="__main__":
     parser.add_argument('-v',help="Output PGLs that do not overlap any regions in the bed file.",action='store_true')
     parser.add_argument('-u',help="Output a PGL once if it overlaps any regions in the bed file.",action='store_true')
     parser.add_argument('-d',help="Distance for finding overlaps.  Default is 0",required=False,default=0,type=int)
+    parser.add_argument('-anchA',help="Anchor intersection annotation for header.  Default is \"Intersected_Anchor\"",required=False,default='Intersected_Anchor',type=str)
     args = vars(parser.parse_args())
 
     #show help with no args

@@ -3,11 +3,13 @@
 
 # In[ ]:
 
+
 import argparse
 import sys
 
 
 # In[ ]:
+
 
 def _processFile(FILENAME,useStdIn):
     if not useStdIn:
@@ -31,11 +33,13 @@ def _processFile(FILENAME,useStdIn):
 
 # In[ ]:
 
+
 def _formatContacts(contacts,delim):
-    return [delim.join([str(y) for y in x[:-1]])+delim+delim.join(x[-1]) for x in contacts]
+    return [delim.join([str(y) for y in x[:-1]])+delim+delim.join(x[-1]) if len(x[-1])!=0 else delim.join([str(y) for y in x[:-1]]) for x in contacts]
 
 
 # In[ ]:
+
 
 def _flipContacts(contacts):
     i=0
@@ -55,6 +59,7 @@ def _flipContacts(contacts):
 
 # In[ ]:
 
+
 def formatbedpe(A):
     res=_flipContacts(A)
     res=_formatContacts(res,"\t")
@@ -70,6 +75,7 @@ def formatbedpe(A):
 
 
 # In[ ]:
+
 
 if __name__=="__main__":
     #parse arguments
