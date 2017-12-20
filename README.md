@@ -211,7 +211,7 @@ pgltools condense myFile.pgl > output.bed
 ```
 
 ### sort:
-Sorts a pgl file.  A sorted pgl file is sorted by columns 1-6 in order with columns 1 and 4 treated as strings.  The sort2D file will not flip paired-loci that have locus B occuring before locus A as a pgl file is required to follow this format.  If a file does not follow this formatting, use the "formatbedpe" operation.  Most commands below require sorted files.  Syntax:
+Sorts a pgl file.  A sorted pgl file is sorted by columns 1-6 in order with columns 1 and 4 treated as strings.  The sort2D file will not flip paired-loci that have locus B occuring before locus A as a pgl file is required to follow this format.  If a file does not follow this formatting, use the "formatbedpe" operation.  Most commands below require sorted files.  <b> Note that the PyGLtools command for sort is named pyglSort to avoid collisions when importing * </b>.  Syntax:
 ```
 pgltools sort [FILE]
 ```
