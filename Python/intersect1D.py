@@ -3,7 +3,6 @@
 
 # In[1]:
 
-
 import argparse
 import sys
 from pgltools_library import *
@@ -11,13 +10,11 @@ from pgltools_library import *
 
 # In[ ]:
 
-
 def _formatContacts(contacts,delim):
     return [delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in contacts]
 
 
 # In[27]:
-
 
 def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,reportBasAnnot,dashU):
     #we will hash the bed file for instant lookup
@@ -83,7 +80,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                     end2=endA2
                                 if useBAnnots:
                                     if reportBasAnnot:
-                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        t="\t".join([str(chrB),str(startB-1),str(endB)])
                                         if t not in Bannots:
                                              Bannots.append(t)
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Bannots])
@@ -91,11 +88,11 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                     for ann in Bannots:
                                         Aannots.append(ann)
                                     if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
                                 else:
                                     if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A,B"],Aannots])
 
                         elif overlapA:
@@ -116,7 +113,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                 end2=endA2
                                 if useBAnnots:
                                     if reportBasAnnot:
-                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        t="\t".join([str(chrB),str(startB-1),str(endB)])
                                         if t not in Bannots:
                                              Bannots.append(t)
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
@@ -124,11 +121,11 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                     for ann in Bannots:
                                         Aannots.append(ann)
                                     if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
                                 else:
                                     if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
 
                         elif overlapB:
@@ -149,7 +146,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                     end2=endA2
                                 if useBAnnots:
                                     if reportBasAnnot:
-                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        t="\t".join([str(chrB),str(startB-1),str(endB)])
                                         if t not in Bannots:
                                              Bannots.append(t)
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
@@ -157,11 +154,11 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                     for ann in Bannots:
                                         Aannots.append(ann)
                                     if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
                                 else:
                                     if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                     newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
 
             else:
@@ -197,7 +194,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                             end2=endA2
                             if useBAnnots:
                                 if reportBasAnnot:
-                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        t="\t".join([str(chrB),str(startB-1),str(endB)])
                                         if t not in Bannots:
                                              Bannots.append(t)
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Bannots])
@@ -205,11 +202,11 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                 for ann in Bannots:
                                     Aannots.append(ann)
                                 if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
                             else:
                                 if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
                 if chrA2 in bedB:    
                     for k in range(len(bedB[chrA2])):
@@ -242,7 +239,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                 end2=endA2
                             if useBAnnots:
                                 if reportBasAnnot:
-                                        t="\t".join([str(chrB),str(startB),str(endB)])
+                                        t="\t".join([str(chrB),str(startB-1),str(endB)])
                                         if t not in Bannots:
                                              Bannots.append(t)
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Bannots])
@@ -250,11 +247,11 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                 for ann in Bannots:
                                     Aannots.append(ann)
                                 if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
                             else:
                                 if reportBasAnnot:
-                                        Aannots.append("\t".join([str(chrB),str(startB),str(endB)]))
+                                        Aannots.append("\t".join([str(chrB),str(startB-1),str(endB)]))
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"B"],Aannots])
     if not dashV and not dashU:            
         return newPeaks
@@ -266,7 +263,6 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
 
 
 # In[1]:
-
 
 def intersect1D(A,B,args,header,headerB):
     res=_overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['d'],args['v'],args['wb'],args['u'])
@@ -341,7 +337,6 @@ def intersect1D(A,B,args,header,headerB):
 
 
 # In[2]:
-
 
 if __name__=="__main__":
     #parse arguments
