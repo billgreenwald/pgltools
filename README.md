@@ -291,7 +291,7 @@ pgltools intersect -a myFile.pgl -b myOtherFile.pgl > output.pgl
 ```
 
 ![pgltools windowpgl](/Images/Window.PNG?raw=true)
-Finds the loci with locus A overlapping window1 and locus B overlapping window2.  Alternatively, only 1 window can be provided.  Syntax:
+Finds the loci with locus A fully contained in window1 and locus B fully contained window2.  Alternatively, only 1 window can be provided.  Syntax:
 ```
 pgltools intersect [options]
 ```
