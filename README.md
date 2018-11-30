@@ -489,7 +489,7 @@ pgltools intersect -a combinedQTL.pgl -b interactions.pgl > QTLeGeneInInteractio
 ```
 or in a pipe:
 ```
-past eQTL.bed eGene.bed | pgltools formatbedpe | pgltools intersect -stdInA -b interactions.pgl >   QTLeGeneInInteractions.pgl
+paste eQTL.bed eGene.bed | pgltools formatbedpe | pgltools intersect -stdInA -b interactions.pgl >   QTLeGeneInInteractions.pgl
 ```
 
 ## Useful Parameter Combinations
