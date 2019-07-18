@@ -3,12 +3,14 @@
 
 # In[ ]:
 
+
 import argparse
 import sys
 from pgltools_library import *
 
 
 # In[ ]:
+
 
 def _formatContacts(contacts,delim):
     if len(contacts[0])==6:
@@ -18,6 +20,7 @@ def _formatContacts(contacts,delim):
 
 
 # In[ ]:
+
 
 def _operation(operatedOnList,operation,delim):
     if operation=="sum":
@@ -57,6 +60,7 @@ def _operation(operatedOnList,operation,delim):
 
 
 # In[ ]:
+
 
 def _merge(contacts,cols,commands,d):
     i=0
@@ -99,18 +103,18 @@ def _merge(contacts,cols,commands,d):
                 continue
             else:
                 #on same chrom
-                if startA1 < startB1-d and endA1 < startB1-d:
+                if startA1 < startB1-d and endA1 <= startB1-d:
                     j+=1
                     continue
-                elif startB1 < startA1-d and endB1 < startA1-d:
+                elif startB1 < startA1-d and endB1 <= startA1-d:
                     j+=1
                     continue
                 else:
                     #the first bins overlap
-                    if startA2 < startB2-d and endA2 < startB2-d:
+                    if startA2 < startB2-d and endA2 <= startB2-d:
                         j+=1
                         continue
-                    elif startB2 < startA2-d and endB2 < startA2-d:
+                    elif startB2 < startA2-d and endB2 <= startA2-d:
                         j+=1
                         continue
                     else:
@@ -157,15 +161,15 @@ def _merge(contacts,cols,commands,d):
             advanceI=True
         else:
             #on same chrom
-            if startA1 < startB1-d and endA1 < startB1-d:
+            if startA1 < startB1-d and endA1 <= startB1-d:
                 advanceI=True
-            elif startB1 < startA1-d and endB1 < startA1-d:
+            elif startB1 < startA1-d and endB1 <= startA1-d:
                 advanceI=True
             else:
                 #the first bins overlap
-                if startA2 < startB2-d and endA2 < startB2-d:
+                if startA2 < startB2-d and endA2 <= startB2-d:
                     advanceI=False
-                elif startB2 < startA2-d and endB2 < startA2-d:  #shouldnt happen due to sorting
+                elif startB2 < startA2-d and endB2 <= startA2-d:  #shouldnt happen due to sorting
                     advanceI=False
                 else:
                     #the second bins overlap
@@ -206,6 +210,7 @@ def _merge(contacts,cols,commands,d):
 
 # In[ ]:
 
+
 def _processCommands(contacts,cols,commands,dashDelim):
     if len(cols)>0:
         for i in range(len(contacts)):
@@ -224,6 +229,7 @@ def _processCommands(contacts,cols,commands,dashDelim):
 
 # In[ ]:
 
+
 def _createHeader(originalHeader,cols,commands,oldHeaderIsUsable):
     header="#chrA\tstartA\tendA\tchrB\tstartB\tendB\t"
     for i in range(len(cols)):
@@ -241,6 +247,7 @@ def _createHeader(originalHeader,cols,commands,oldHeaderIsUsable):
 
 
 # In[ ]:
+
 
 def merge(A,args,header):
     if args['c']!="%#$":
@@ -288,6 +295,7 @@ def merge(A,args,header):
 
 
 # In[ ]:
+
 
 if __name__=="__main__":
     #parse args
