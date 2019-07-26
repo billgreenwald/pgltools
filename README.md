@@ -2,6 +2,9 @@
 
 Pgltools is a genomic arithmetic software suite designed for working with paired-loci genomic data, such as contacts from a Hi-C or ChIA-PET experiment, and utilizes the PGL file format. Pgltools is available both as a tool suite for the UNIX command line, and as a python module.
 
+## Newest Version:
+The newest version is 2.2.0, uploaded on July 26, 2019.  It is recommended to update to this version as it fixes an edge case.  Previously, the start and end of a loci were determined to overlap if they were the same number; however, as bedfiles are 0 indexed, a range of 0,1 does not overlap 1,2.  This is now fixed.
+
 ## Citation
 
 Please cite the following paper when citing pgltools:  
