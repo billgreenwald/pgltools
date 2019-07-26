@@ -52,7 +52,11 @@ def _operation(operatedOnList,operation,delim):
     elif operation=="collapse":
         return delim.join([str(x) for x in operatedOnList])
     elif operation=="distinct":
-        return delim.join([str(x) for x in sorted(list(set(operatedOnList)))])
+        originalOrder={}
+        for i,x in enumerate(operatedOnList):
+            if x not in originalOrder:
+                originalOrder[x]=i
+        return delim.join([str(x) for x in sorted(list(set(operatedOnList)),key=lambda x:originalOrder[x])])
     elif operation=="count":
         return max(1,len(operatedOnList))
     elif operation=="count_distinct":

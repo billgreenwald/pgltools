@@ -3,6 +3,7 @@
 
 # In[ ]:
 
+
 import argparse
 import sys
 from pgltools_library import *
@@ -10,11 +11,13 @@ from pgltools_library import *
 
 # In[ ]:
 
+
 def _formatContacts(contacts,delim):
     return [delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in contacts if len(x)!=0]
 
 
 # In[ ]:
+
 
 def _subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,whichBin):
     if whichBin==1:
@@ -43,6 +46,7 @@ def _subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots
 
 # In[ ]:
 
+
 def _overlap1D(contactsA,bedB):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     newPeaks=[]
@@ -65,9 +69,9 @@ def _overlap1D(contactsA,bedB):
                     if startB!=endB:
                         startB+=1
 
-                    if startA1 < startB and endA1 < startB:
+                    if startA1 < startB and endA1 <= startB:
                         pass
-                    elif startB < startA1 and endB < startA1:
+                    elif startB < startA1 and endB <= startA1:
                         pass
                     else:
                         newPeaks.extend(_subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,1))
@@ -89,9 +93,9 @@ def _overlap1D(contactsA,bedB):
                     if startB!=endB:
                         startB+=1
 
-                    if startA1 < startB and endA1 < startB:
+                    if startA1 < startB and endA1 <= startB:
                         continue
-                    elif startB < startA1 and endB < startA1:
+                    elif startB < startA1 and endB <= startA1:
                         break
                     else:
                         newPeaks.extend(_subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,1))
@@ -104,9 +108,9 @@ def _overlap1D(contactsA,bedB):
                     if startB!=endB:
                         startB+=1
 
-                    if startA2 < startB and endA2 < startB:
+                    if startA2 < startB and endA2 <= startB:
                         continue
-                    elif startB < startA2 and endB < startA2:
+                    elif startB < startA2 and endB <= startA2:
                         break
                     else:
                         newPeaks.extend(_subtract1D(chrA1,startA1,endA1,chrA2,startA2,endA2,chrB,startB,endB,Aannots,2))
@@ -115,6 +119,7 @@ def _overlap1D(contactsA,bedB):
 
 
 # In[ ]:
+
 
 def subtract1D(A,B,args,header):
     res=_overlap1D(A,B)
@@ -137,6 +142,7 @@ def subtract1D(A,B,args,header):
 
 
 # In[ ]:
+
 
 if __name__=="__main__":
     #parse args

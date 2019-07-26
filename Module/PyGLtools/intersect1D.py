@@ -3,6 +3,7 @@
 
 # In[1]:
 
+
 import argparse
 import sys
 from pgltools_library import *
@@ -10,11 +11,13 @@ from pgltools_library import *
 
 # In[ ]:
 
+
 def _formatContacts(contacts,delim):
     return [delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in contacts]
 
 
 # In[27]:
+
 
 def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,reportBasAnnot,dashU):
     #we will hash the bed file for instant lookup
@@ -45,16 +48,16 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
 
                         overlapA=False
                         overlapB=False
-                        if startA1 < startB-dist and endA1 < startB-dist:
+                        if startA1 < startB-dist and endA1 <= startB-dist:
                             pass
-                        elif startB-dist < startA1 and endB+dist < startA1:
+                        elif startB-dist < startA1 and endB+dist <= startA1:
                             pass
                         else:
                             overlapA=True
 
-                        if startA2 < startB-dist and endA2 < startB-dist:
+                        if startA2 < startB-dist and endA2 <= startB-dist:
                             pass
-                        elif startB-dist < startA2 and endB+dist < startA2:
+                        elif startB-dist < startA2 and endB+dist <= startA2:
                             pass
                         else:
                             overlapB=True
@@ -173,9 +176,9 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                         Bannots=bedB[chrB][k][2]
 
                         difChrom=True
-                        if startA1 < startB-dist and endA1 < startB-dist:
+                        if startA1 < startB-dist and endA1 <= startB-dist:
                             continue
-                        elif startB-dist < startA1 and endB+dist < startA1:
+                        elif startB-dist < startA1 and endB+dist <= startA1:
                             break
                         else:
                             if dashV or dashU:
@@ -218,9 +221,9 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                             startB+=1
                         Bannots=bedB[chrB][k][2]
 
-                        if startA2 < startB-dist and endA2 < startB-dist:
+                        if startA2 < startB-dist and endA2 <= startB-dist:
                             continue
-                        elif startB-dist < startA2 and endB+dist < startA2:
+                        elif startB-dist < startA2 and endB+dist <= startA2:
                             break
                         else:
                             if dashV or dashU:
@@ -263,6 +266,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
 
 
 # In[1]:
+
 
 def intersect1D(A,B,args,header,headerB):
     res=_overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['d'],args['v'],args['wb'],args['u'])
@@ -337,6 +341,7 @@ def intersect1D(A,B,args,header,headerB):
 
 
 # In[2]:
+
 
 if __name__=="__main__":
     #parse arguments

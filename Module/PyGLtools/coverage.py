@@ -3,6 +3,7 @@
 
 # In[ ]:
 
+
 import argparse
 import sys
 from pgltools_library import *
@@ -10,11 +11,13 @@ from pgltools_library import *
 
 # In[ ]:
 
+
 def _formatCoverage(contacts,delim):
     return [delim.join([str(y) for y in x[0]])for x in contacts]
 
 
 # In[ ]:
+
 
 def _coverage(contactsA,contactsB):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
@@ -59,11 +62,11 @@ def _coverage(contactsA,contactsB):
             #on the same chromosome
             #we have a two options: first bins overlap or they dont.
 
-            if startA1 < startB1 and endA1 < startB1:
+            if startA1 < startB1 and endA1 <= startB1:
                 i+=1
                 k=restartK
                 continue
-            elif startB1 < startA1 and endB1 < startA1:
+            elif startB1 < startA1 and endB1 <= startA1:
                 if maximalRestart<=startA1: #should always ==, < is present for my sanity
                     restartK=k
                 k+=1
@@ -79,14 +82,14 @@ def _coverage(contactsA,contactsB):
             #on the same chromosome
             #we have a two options: second bins overlap or they dont.
 
-                if startA2 < startB2 and endA2 < startB2:
+                if startA2 < startB2 and endA2 <= startB2:
                     if k==len(contactsB)-1:
                         i+=1
                         k=restartK
                     else:
                         k+=1
 
-                elif startB2 < startA2 and endB2 < startA2:
+                elif startB2 < startA2 and endB2 <= startA2:
                     if k==len(contactsB)-1:
                         i+=1
                         k=restartK
@@ -109,6 +112,7 @@ def _coverage(contactsA,contactsB):
 
 
 # In[ ]:
+
 
 def coverage(A,B,header,args):
     res=_coverage(A,B)
@@ -143,6 +147,7 @@ def coverage(A,B,header,args):
 
 
 # In[ ]:
+
 
 if __name__=="__main__":
 

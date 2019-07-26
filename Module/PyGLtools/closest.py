@@ -1,22 +1,25 @@
 
 # coding: utf-8
 
-# In[ ]:
+# In[5]:
+
 
 import argparse
 import sys
 from pgltools_library import *
 
 
-# In[ ]:
+# In[16]:
+
 
 def _formatClosest2DOutput(contacts,delim):
-    return [delim.join([delim.join([str(y) for y in x[0]]),delim.join([str(y) for y in x[1]]),str(x[2])]) for x in contacts]
+    return [delim.join([delim.join([str(y) for y in x[0]]),delim.join([str(y) for y in x[1]]),str(x[2]),delim.join(x[3])]) for x in contacts]
 
 
-# In[ ]:
+# In[1]:
 
-def _closest2D(contactsA,contactsB):
+
+def _closest2D(contactsA,contactsB,reportAAnnots,reportBAnnots):
      #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
     newPeaks=[]
     #compare file 2 to file 1, meaning advance file 2 first
@@ -31,6 +34,7 @@ def _closest2D(contactsA,contactsB):
             chrA2=contactsA[i][3]
             startA2=contactsA[i][4]
             endA2=contactsA[i][5]
+            annotA=contactsA[i][6]
 
             chrB1=contactsB[k][0]
             startB1=contactsB[k][1]
@@ -38,6 +42,7 @@ def _closest2D(contactsA,contactsB):
             chrB2=contactsB[k][3]
             startB2=contactsB[k][4]
             endB2=contactsB[k][5]
+            annotB=contactsB[k][6]
 
             if chrA1!=chrB1 or chrA2!=chrB2:
                 continue
@@ -61,26 +66,44 @@ def _closest2D(contactsA,contactsB):
                 elif bin1Dist+bin2Dist == distance:
                     closestFeature.append(i)
 
+                    
+        if reportAAnnots:
+            if reportBAnnots:
+                annots=annotA[:]
+                annots.extend(annotB)
+            else:
+                annots=annotA[:]
+        else:
+            if reportBAnnots:
+                annots=annotB[:]
+            else:
+                annots=[]
         if len(closestFeature)>0:
             for cf in closestFeature:
-                newPeaks.append([contactsB[k][:6],contactsA[cf][:6],distance])
+                newPeaks.append([contactsB[k][:6],contactsA[cf][:6],distance,annots])
         else:
-            newPeaks.append([contactsB[k][:6],[".",".",".",".",".","."],"."])
+            newPeaks.append([contactsB[k][:6],[".",".",".",".",".","."],".",annots])
                 
     return newPeaks
 
 
-# In[ ]:
+# In[10]:
 
-def closest2D(A,B):
-    res=_closest2D(B,A)
+
+def closest2D(A,B,headerA,headerB,aA,bA):
+    res=_closest2D(B,A,bA,aA) #keep flipping consistent
     res=_formatClosest2DOutput(res,"\t")
     #print a new header
     if __name__=="__main__":
         if len(res)!=0:
             try:
-                print "\t".join(["#fileA_chrA","fileA_startA","fileA_stopA","fileA_chrB","fileA_startB","fileA_stopB",
-                                 "fileB_chrA","fileB_startA","fileB_stopA","fileB_chrB","fileB_startB","fileB_stopB","Distance"])
+                newHeader=["#fileA_chrA","fileA_startA","fileA_stopA","fileA_chrB","fileA_startB","fileA_stopB",
+                                 "fileB_chrA","fileB_startA","fileB_stopA","fileB_chrB","fileB_startB","fileB_stopB","Distance"]
+                if aA:
+                    newHeader.extend(headerA.split()[6:])
+                if bA:
+                    newHeader.extend(headerB.split()[6:])
+                print "\t".join(newHeader)
                 print("\n".join(res))
             except IOError as e:
                 if e.errno==32:
@@ -95,6 +118,7 @@ def closest2D(A,B):
 
 # In[ ]:
 
+
 if __name__ == "__main__":
     # parse arguments
     parser=argparse.ArgumentParser()
@@ -103,6 +127,8 @@ if __name__ == "__main__":
     parser.add_argument('-stdInA',help="Will use stdin for file a.  ", required=False,action='store_true')
     parser.add_argument('-b',help="File Path for file b.  Required for merge and intersect unless -stdInB is used", required=False,default="%#$")
     parser.add_argument('-stdInB',help="Will use stdin for file b.",action='store_true')
+    parser.add_argument('-aA',help="Report annotations for anchor A.",action='store_true')
+    parser.add_argument('-bA',help="Report annotations for anchor B.  If used with aA, A annots will come first.",action='store_true')
     args = vars(parser.parse_args())
 
     # print help with no arguments passed
@@ -124,16 +150,16 @@ if __name__ == "__main__":
     #process the input files
 
     if args['stdInA']:
-        header,A=processStdin()
+        headerA,A=processStdin()
     else:
-        header,A=processFile(args['a'])
+        headerA,A=processFile(args['a'])
 
     if args["b"]!="%#$":
-        _,B=processFile(args['b'])
+        headerB,B=processFile(args['b'])
     if args['stdInB']:
-        _,B=processStdin()
+        headerB,B=processStdin()
 
 
-    closest2D(A,B)
+    closest2D(A,B,headerA,headerB,args['aA'],args['bA'])
 
 

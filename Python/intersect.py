@@ -3,6 +3,7 @@
 
 # In[17]:
 
+
 import argparse
 import sys
 from pgltools_library import *
@@ -10,17 +11,20 @@ from pgltools_library import *
 
 # In[7]:
 
+
 def _formatContacts(contacts,delim):
     return [delim.join([str(y) for y in x[0]])+delim+delim.join([str(y) for y in x[1]]) for x in contacts]
 
 
 # In[8]:
 
+
 def _formatContactsV(contacts,delim):
     return [delim.join([str(y) for y in x[:-1]])+delim+delim.join([str(y) for y in x[-1]]) for x in contacts]
 
 
 # In[15]:
+
 
 def _overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnnots,dashWO,dashWA,dashWB,dist):
     #our files are going to be given with [chr1 binStart1 binEnd1 chr2 binStart2 binEnd2]
@@ -68,11 +72,11 @@ def _overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnn
             #on the same chromosome
             #we have a two options: first bins overlap or they dont.
 
-            if startA1 < startB1-dist and endA1 < startB1-dist:
+            if startA1 < startB1-dist and endA1 <= startB1-dist:
                 i+=1
                 k=restartK
                 continue
-            elif startB1 < startA1-dist and endB1< startA1-dist:
+            elif startB1 < startA1-dist and endB1<= startA1-dist:
                 if maximalRestart<=startA1: #should always ==, < is present for my sanity
                     restartK=k
                 k+=1
@@ -88,14 +92,14 @@ def _overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnn
             #on the same chromosome
             #we have a two options: second bins overlap or they dont.
 
-                if startA2 < startB2-dist and endA2 < startB2-dist:
+                if startA2 < startB2-dist and endA2 <= startB2-dist:
                     if k==len(contactsB)-1:
                         i+=1
                         k=restartK
                     else:
                         k+=1
 
-                elif startB2 < startA2-dist and endB2 < startA2-dist:
+                elif startB2 < startA2-dist and endB2 <= startA2-dist:
                     if k==len(contactsB)-1:
                         i+=1
                         k=restartK
@@ -202,6 +206,7 @@ def _overlap2D(contactsA,contactsB,dashV,dashM,dashMC,dashU,useBAnnots,useAllAnn
 
 # In[ ]:
 
+
 def intersect2D(A,B,args,header):
     res=_overlap2D(A,B,args['v'],args['m'],args['mc'],args['u'],args['bA'],args['allA'],args['wo'],args['wa'],args['wb'],args['d'])
 
@@ -228,6 +233,7 @@ def intersect2D(A,B,args,header):
 
 
 # In[ ]:
+
 
 if __name__=="__main__":
     #parse args
