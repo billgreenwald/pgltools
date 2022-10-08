@@ -89,7 +89,6 @@ def _closest2D(contactsA,contactsB,reportAAnnots,reportBAnnots):
 
 # In[10]:
 
-
 def closest2D(A,B,headerA,headerB,aA,bA):
     res=_closest2D(B,A,bA,aA) #keep flipping consistent
     res=_formatClosest2DOutput(res,"\t")

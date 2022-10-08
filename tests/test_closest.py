@@ -10,17 +10,22 @@ ASSET_DIR=Path(__file__).parent
 
 ##can parameterize this in a sec
 
-# @Parametrization.autodetect_parameters()
-# @Parametrization.case(name="testA", op='plus', value=3)
-def test_closest_2d():
+@Parametrization.autodetect_parameters()
+@Parametrization.case(name="no_annots", aAnnots=False, bAnnots=False,expected_results_file = str(ASSET_DIR/"fixtures/closest/closest_expected_results.pgl"))
+@Parametrization.case(name="aAnnots", aAnnots=True, bAnnots=False,expected_results_file = str(ASSET_DIR/"fixtures/closest/closest_expected_results.aA.pgl"))
+@Parametrization.case(name="bAnnots", aAnnots=False, bAnnots=True,expected_results_file = str(ASSET_DIR/"fixtures/closest/closest_expected_results.bA.pgl"))
+@Parametrization.case(name="bothAnnots", aAnnots=True, bAnnots=True,expected_results_file = str(ASSET_DIR/"fixtures/closest/closest_expected_results.aA.bA.pgl"))
+def test_closest_2d(aAnnots,bAnnots,expected_results_file):
 
     #get files
-    headerA,A=processFile(str(ASSET_DIR/"fixtures/file.A.sorted.pgl"))
+    headerA,A=processFile(str(ASSET_DIR/"fixtures/file.A.sorted.annotated.pgl"))
 
-    headerB,B=processFile(str(ASSET_DIR/"fixtures/file.B.sorted.pgl"))
+    headerB,B=processFile(str(ASSET_DIR/"fixtures/file.B.sorted.annotated.pgl"))
 
-    results = closest2D(A,B,headerA,headerB,False,False)
+    results = closest2D(A,B,headerA,headerB,aAnnots,bAnnots)
 
-    new_header,expected_results = processFile(str(ASSET_DIR/"fixtures/closest/closest_expected_results.pgl"))
+    new_header,expected_results = processFile(expected_results_file)
 
-    assert compare_test_outputs(results,expected_results)
+    test_results = compare_test_outputs(results,expected_results)
+
+    assert test_results

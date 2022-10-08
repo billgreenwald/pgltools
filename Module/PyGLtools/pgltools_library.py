@@ -129,23 +129,28 @@ def processStdinBed():
                 bed[line[0]]=[[int(line[1]),int(line[2]),line[3:]]]
     return header[:-1],bed
 
-def compare_test_outputs(results,expected_results):
-    for entry1,entry2 in zip(results,expected_results):
-        #split annotations from location info
-        location_information1=entry1[:-1]
-        annotations1=entry1[-1]
-
-        location_information2 = entry2[:-1]
-        annotations2 = entry2[-1]
-
-        #check location info
-        if all([x==y for x,y in zip(location_information1,location_information2)]):
-            continue
+def flatten_list(my_list):
+    flat=[]
+    for entry in my_list:
+        if type(entry)==list:
+            flat.extend(flatten_list(entry))
         else:
-            return False
+            flat.append(entry)
 
-        #check annotations
-        if all([x==y for x,y in zip(annotations1,annotations2)]):
+    return flat
+
+def compare_test_outputs(results,expected_results):
+    from itertools import izip_longest
+
+    for entry1,entry2 in izip_longest(results,expected_results):
+        entry1=flatten_list(entry1)
+        entry2=flatten_list(entry2)
+
+        if len(entry1)==len(entry2)+1:
+            if entry1[-1]=="":
+                entry1=entry1[:-1]
+
+        if all([x==y for x,y in izip_longest(entry1,entry2)]):
             continue
         else:
             return False
