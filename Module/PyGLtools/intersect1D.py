@@ -167,7 +167,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
             else:
                 if chrA1 in bedB:
                     for k in range(len(bedB[chrA1])):
-
+                        Aannots=contactsA[i][6][:]
                         chrB=chrA1
                         startB=max(bedB[chrB][k][0],0)
                         endB=bedB[chrB][k][1]
@@ -213,7 +213,7 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
                                 newPeaks.append([[chr1,start1,end1,chr2,start2,end2,"A"],Aannots])
                 if chrA2 in bedB:    
                     for k in range(len(bedB[chrA2])):
-
+                        Aannots=contactsA[i][6][:]
                         chrB=chrA2
                         startB=max(bedB[chrB][k][0],0)
                         endB=bedB[chrB][k][1]

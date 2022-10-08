@@ -7,7 +7,7 @@
 from setuptools import setup
 
 setup(name='PyGLtools',
-      version='2.1.6',
+      version='2.1.7',
       description='A python module of the pgltools tool suite',
       url='http://github.com/billgreenwald/pgltools',
       author='Bill Young Greenwald',
