@@ -56,7 +56,7 @@ if ! type "pypy" > /dev/null 2>&1; then
                 python $script_path/../Python/juicebox.py "$@"
 	elif [ $1 = "findLoops" ]; then
                 shift
-                python $script_path/../Python/findLoops.py -a $1
+                python $script_path/../Python/findLoops.py "$@"
 	elif [ $1 = "condense" ]; then
 		if [ $# -eq 1 ]; then
                         python $script_path/../Python/condense.py -stdInA
@@ -175,9 +175,9 @@ else
 	elif [ $1 = "juicebox" ]; then
                 shift
                 pypy $script_path/../Python/juicebox.py "$@"
-        elif [ $1 = "findLoops" ]; then
-                shift
-                pypy $script_path/../Python/findLoops.py -a $1
+  elif [ $1 = "findLoops" ]; then
+          shift
+          pypy $script_path/../Python/findLoops.py "$@"
 	elif [ $1 = "condense" ]; then
 		if [ $# -eq 1 ]; then
                         pypy $script_path/../Python/condense.py -stdInA
