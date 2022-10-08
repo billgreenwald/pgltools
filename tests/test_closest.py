@@ -23,6 +23,7 @@ def test_closest_2d(aAnnots,bAnnots,expected_results_file):
     headerB,B=processFile(str(ASSET_DIR/"fixtures/file.B.sorted.annotated.pgl"))
 
     results = closest2D(A,B,headerA,headerB,aAnnots,bAnnots)
+    results = sorted(results)
 
     new_header,expected_results = processFile(expected_results_file)
 

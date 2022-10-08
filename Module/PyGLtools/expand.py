@@ -101,7 +101,7 @@ if __name__=="__main__":
 
     #validate args
     if args['a']=="%#$" and args['stdInA']==False:
-        print "Either a or stdInA must be used"
+        print("Either a or stdInA must be used")
         exit(1)
 
     if args['stdInA']:
