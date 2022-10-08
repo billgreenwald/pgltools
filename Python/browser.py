@@ -32,8 +32,7 @@ def formatForBrowser(contacts,nameCol,scoreCol,pCol,qCol,colorCol):
         thickStart="0"
         thickEnd="0"
         if colorCol!=-1:
-#             rgb=contact[6][colorCol-6]
-            rgs="0"
+            rgb=contact[6][colorCol-6]
         else:
             rgb="0"
         blockCount="2"

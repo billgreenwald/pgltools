@@ -32,8 +32,7 @@ def formatForBrowser(contacts,nameCol,scoreCol,pCol,qCol,colorCol):
         thickStart="0"
         thickEnd="0"
         if colorCol!=-1:
-#             rgb=contact[6][colorCol-6]
-            rgs="0"
+            rgb=contact[6][colorCol-6]
         else:
             rgb="0"
         blockCount="2"
@@ -83,7 +82,7 @@ def browser(A,N=0,S=0,P=0,Q=0,tN='pgl_track',C=0):
                 exit()
     else:
         funcOut=""
-        funcOut+="track name="+tN+" type=gappedPeak"
+        funcOut+="track name="+tN+" type=gappedPeak\n"
         funcOut+="\n".join(res)
         return funcOut
                 
