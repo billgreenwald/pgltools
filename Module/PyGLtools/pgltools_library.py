@@ -129,4 +129,25 @@ def processStdinBed():
                 bed[line[0]]=[[int(line[1]),int(line[2]),line[3:]]]
     return header[:-1],bed
 
+def compare_test_outputs(results,expected_results):
+    for entry1,entry2 in zip(results,expected_results):
+        #split annotations from location info
+        location_information1=entry1[:-1]
+        annotations1=entry1[-1]
 
+        location_information2 = entry2[:-1]
+        annotations2 = entry2[-1]
+
+        #check location info
+        if all([x==y for x,y in zip(location_information1,location_information2)]):
+            continue
+        else:
+            return False
+
+        #check annotations
+        if all([x==y for x,y in zip(annotations1,annotations2)]):
+            continue
+        else:
+            return False
+
+    return True
