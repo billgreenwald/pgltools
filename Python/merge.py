@@ -32,19 +32,21 @@ def _operation(operatedOnList,operation,delim):
     elif operation=="absmin":
         absmin=-1
         for x in operatedOnList:
+            x=float(x)
             if abs(x) < absmin or absmin==-1:
                 absmin=x
         return absmin
     elif operation=="absmax":
         absmax=-1
         for x in operatedOnList:
+            x = float(x)
             if abs(x) > absmax or absmax==-1:
                 absmax=x
         return absmax
     elif operation=="mean":
         return sum([float(x) for x in operatedOnList])/len(operatedOnList)
     elif operation=="median":
-        operatedOnList==sorted([float(x) for x in operatedOnList])
+        operatedOnList=sorted([float(x) for x in operatedOnList])
         if len(operatedOnList)%2==0:
             return (operatedOnList[(len(operatedOnList))/2]+operatedOnList[((len(operatedOnList))/2)-1])/2
         else:
