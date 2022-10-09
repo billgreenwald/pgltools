@@ -3,22 +3,22 @@
 
 # In[2]:
 
-import browser as _brow
-import closest as _clos2d
-import closest1D as _clos1d
-import condense as _cond
-import conveRt as _conv
-import coverage as _cov
-import expand as _expa
-import findLoops as _fl
-import intersect as _inter2d
-import intersect1D as _inter1d
-import juicebox as _jb
-import merge as _mer
-import subtract as _subtr2d
-import subtract1D as _subtr1d
-import window as _wind
-import pgltools_library as _pgltl
+from . import browser as _brow
+from . import closest as _clos2d
+from . import closest1D as _clos1d
+from . import condense as _cond
+from . import conveRt as _conv
+from . import coverage as _cov
+from . import expand as _expa
+from . import findLoops as _fl
+from . import intersect as _inter2d
+from . import intersect1D as _inter1d
+from . import juicebox as _jb
+from . import merge as _mer
+from . import subtract as _subtr2d
+from . import subtract1D as _subtr1d
+from . import window as _wind
+from . import pgltools_library as _pgltl
 del pgltools_library
 
 
@@ -96,10 +96,10 @@ def conveRt(PGL,C=0,P=0,Q=0):
 def coverage(A,B,z=False):
     """Takes two PyGL objects and returns a PyGL object resulting from the coverage operation"""
     if _cs(A)!=0:
-        print "A is not sorted.  Please use a pyglSort."
+        print("A is not sorted.  Please use a pyglSort.")
         return
     if _cs(B)!=0:
-        print "B is not sorted.  Please use a pyglSort."
+        print("B is not sorted.  Please use a pyglSort.")
         return
     args={'z':z}
     return _cov.coverage(A,B,"",args)
@@ -125,10 +125,10 @@ def findLoops(PGL):
 def intersect2D(A,B,d=0,v=False,bA=False,allA=False,m=False,mc=False,u=False,wa=False,wb=False,wo=False):
     """Takes two PyGL objects and returns a PyGL object resulting from the intersect operation"""
     if _cs(A)!=0:
-        print "A is not sorted.  Please use a pyglSort."
+        print("A is not sorted.  Please use a pyglSort.")
         return
     if _cs(B)!=0:
-        print "B is not sorted.  Please use a pyglSort."
+        print("B is not sorted.  Please use a pyglSort.")
         return
     args={'d':d,'v':v,'bA':bA,'allA':allA,'m':m,'mc':mc,'u':u,'wa':wa,'wb':wb,'wo':wo}
     return _inter2d.intersect2D(A,B,args,"")
@@ -139,7 +139,7 @@ def intersect2D(A,B,d=0,v=False,bA=False,allA=False,m=False,mc=False,u=False,wa=
 def intersect1D(PGL,BED,bA=False,allA=False,wa=False,wb=False,v=False,u=False,d=0):
     """Takes a PyGL object and a PyGL-bed object and returns a PyGL object resulting from the intersect1D operation"""
     if _cs(PGL)!=0:
-        print "The PyGL supplied is not sorted.  Please use a pyglSort."
+        print("The PyGL supplied is not sorted.  Please use a pyglSort.")
         return
     args={'bA':bA,'allA':allA,'wa':wa,'wb':wb,'v':v,'u':u,'d':d,}
     return _inter1d.intersect1D(PGL,BED,args,"","")
@@ -158,7 +158,7 @@ def juicebox(PGL,N=0,C=0):
 def merge(PGL,c="%#$",o="%#$",delim=',',d=0):
     """Takes a PyGL object and returns a PyGL object resulting from the merge operation"""
     if _cs(PGL)!=0:
-        print "The PyGL supplied is not sorted.  Please use a pyglSort."
+        print("The PyGL supplied is not sorted.  Please use a pyglSort.")
         return
     args={'c':c,'o':o,'delim':delim,'d':d,'noH':True}
     return _mer.merge(PGL,args,"")
@@ -169,10 +169,10 @@ def merge(PGL,c="%#$",o="%#$",delim=',',d=0):
 def subtract2D(A,B):
     """Takes two PyGL objects and returns a PyGL object resulting from the subtract operation"""
     if _cs(A)!=0:
-        print "A is not sorted.  Please use a pyglSort."
+        print("A is not sorted.  Please use a pyglSort.")
         return
     if _cs(B)!=0:
-        print "B is not sorted.  Please use a pyglSort."
+        print("B is not sorted.  Please use a pyglSort.")
         return
     return _subtr2d.subtract2D(A,B,{},"")
 
@@ -182,7 +182,7 @@ def subtract2D(A,B):
 def subtract1D(PGL,BED):
     """Takes a PyGL object and a PyGL-bed object and returns a PyGL object resulting from the subtract1D operation"""
     if _cs(PGL)!=0:
-        print "The PyGL supplied is not sorted.  Please use a pyglSort."
+        print("The PyGL supplied is not sorted.  Please use a pyglSort.")
         return
     return _subtr1d.subtract1D(PGL,BED,{},"")
 

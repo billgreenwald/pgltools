@@ -38,10 +38,10 @@ def conveRt(A,args):
     minNumCols=min([6+len(y[-1]) for y in A])
 
     if any([x<6 and x!=0 for x in [args["C"],args["P"],args["Q"]]]):
-        print "Valid column numbers must be given.  Column numbering starts with 1.  Cannot use required PGL column."
+        print("Valid column numbers must be given.  Column numbering starts with 1.  Cannot use required PGL column.")
         exit(1)
     if any([x>minNumCols for x in [args["C"],args["P"],args["Q"]]]):
-        print "A specified column exceeds the number of columns present in the file"
+        print("A specified column exceeds the number of columns present in the file")
         exit(1)
 
     res=_formatForConvert(A,args["C"]-1,args["P"]-1,args["Q"]-1)
@@ -50,7 +50,7 @@ def conveRt(A,args):
         if len(res)!=0:
             try:
                 print("chromA\tstartA\tstopA\tchromB\tstartB\tstopB\tcount\tpValue\tqValue")
-                print("\n".join(res))
+                print(("\n".join(res)))
             except IOError as e:
                 if e.errno==32:
                     exit()
@@ -81,10 +81,10 @@ if __name__=="__main__":
 
     #validate args
     if args['stdInA'] and args['a']!="%#$":
-        print "-stdInA and -a cannot be used simultaneously"
+        print("-stdInA and -a cannot be used simultaneously")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
 
     if args['stdInA']:

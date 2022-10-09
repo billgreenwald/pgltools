@@ -15,12 +15,12 @@ def _condense(args):
             if line[0]=="#":
                 header="#chr\tstart\tstop\tAnchor_A_or_B\t"
                 header+="\t".join(line.split()[6:])
-                print header
+                print(header)
             else:
                 line=line.split()
                 try:
-                    print "\t".join(line[:3])+"\tA\t"+"\t".join(line[6:])
-                    print "\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:])
+                    print("\t".join(line[:3])+"\tA\t"+"\t".join(line[6:]))
+                    print("\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:]))
                 except IOError as e:
                     if e.errno==32:
                         exit()
@@ -30,12 +30,12 @@ def _condense(args):
             if line[0]=="#":
                 header="#chr\tstart\tstop\tAnchor_A_or_B\t"
                 header+="\t".join(line.split()[6:])
-                print header
+                print(header)
             else:
                 line=line.split()
                 try:
-                    print "\t".join(line[:3])+"\tA\t"+"\t".join(line[6:])
-                    print "\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:])
+                    print("\t".join(line[:3])+"\tA\t"+"\t".join(line[6:]))
+                    print("\t".join(line[3:6])+"\tB\t"+"\t".join(line[6:]))
                 except IOError as e:
                     if e.errno==32:
                         exit()

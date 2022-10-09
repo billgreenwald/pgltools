@@ -20,7 +20,7 @@ def test_condense(capfd):
     out, err = capfd.readouterr()
 
     # get the results from std out
-    results =  [[x.encode() for x in (line.strip().split())] for line in out.split("\n")][:-1]
+    results =  [[x for x in (line.strip().split())] for line in out.split("\n")][:-1]
 
     #compare to real results
     expected_results = [line.strip().split() for line in open(expected_results_file)]

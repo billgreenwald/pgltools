@@ -115,6 +115,7 @@ def _coverage(contactsA,contactsB):
 
 
 def coverage(A,B,header,args):
+
     res=_coverage(A,B)
     res=_formatCoverage(res,"\t")
     Counts={}
@@ -168,13 +169,13 @@ if __name__=="__main__":
 
     #validate args
     if args['stdInB'] and args['stdInA']:
-        print "stdin can only be used for either a or b"
+        print ("stdin can only be used for either a or b")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print ("either -stdInA or -a must be used")
         exit(1)
     elif args['stdInB']==False and args['b']=="%#$":
-        print "either -stdInB or -b must be used"
+        print ("either -stdInB or -b must be used")
         exit(1)
 
     if args['stdInA']:

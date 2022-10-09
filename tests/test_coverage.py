@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../Module/PyGLtools/')
-from coverage import coverage
+from ..Module.PyGLtools.coverage import coverage as pgltools_coverage
 from pgltools_library import  processFile, compare_test_outputs
 import pytest
 from pathlib import Path
@@ -21,7 +21,7 @@ def test_coverage(keep_zero,expected_results_file):
 
     headerB,B=processFile(str(ASSET_DIR/"fixtures/file.B.sorted.annotated.pgl"))
 
-    results = coverage(A,B,headerA,{"z":keep_zero})
+    results = pgltools_coverage(A,B,headerA,{"z":keep_zero})
     results = sorted(results)
 
     new_header,expected_results = processFile(expected_results_file)

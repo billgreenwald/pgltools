@@ -283,7 +283,7 @@ def intersect1D(A,B,args,header,headerB):
                         headerB.append(args['anchA'])
                         headerB.extend(part2)
                         wholeHeaderB[-1]="\t".join(headerB)
-                        print ("\n".join(wholeHeaderB))
+                        print(("\n".join(wholeHeaderB)))
                 elif args['allA']:
                     if len(headerB)!=0 and len(header)!=0:
                         headerB=headerB.split("\n")
@@ -306,28 +306,28 @@ def intersect1D(A,B,args,header,headerB):
                         i=0
                         while i < len(headerB) or i < len(header):
                             if i < len(header) and i < len(headerB):
-                                print(header[i]+"\t"+headerB[i])
+                                print((header[i]+"\t"+headerB[i]))
                             elif i < len(header):
-                                print(header[i])
+                                print((header[i]))
                             else:
-                                print(headerB[i])
+                                print((headerB[i]))
                             i+=1
                     elif len(headerB)!=0:
-                        print headerB
+                        print(headerB)
                     elif len(header)!=0:
                         header=header.strip().split()
                         t=header[:6]
                         t.append(args['anchA'])
                         t.extend(header[6:])
-                        print("\t".join(t))
+                        print(("\t".join(t)))
                 else:
                     if len(header)!=0:
                         header=header.strip().split()
                         t=header[:6]
                         t.append(args['anchA'])
                         t.extend(header[6:])
-                        print("\t".join(t))
-                print("\n".join(res))
+                        print(("\t".join(t)))
+                print(("\n".join(res)))
         except IOError as e:
             if e.errno==32:
                 exit()
@@ -367,19 +367,19 @@ if __name__=="__main__":
 
     #validate args
     if args['stdInB'] and args['stdInA']:
-        print "stdin can only be used for either a or b"
+        print("stdin can only be used for either a or b")
         exit(1)
     if args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
     if args['stdInB']==False and args['b']=="%#$":
-        print "either -stdInB or -b must be used"
+        print("either -stdInB or -b must be used")
         exit(1)
     if args['bA']==True and args['allA']==True:
-        print "-bA and -allA cannot be used at the same time"
+        print("-bA and -allA cannot be used at the same time")
         exit(1)
     if args['v']==True and args['u']==True:
-        print "-v and -u cannot be used at the same time"
+        print("-v and -u cannot be used at the same time")
         exit(1)
 
     if args['stdInA']:

@@ -40,11 +40,11 @@ def juicebox(A,args):
     minNumCols=min([6+len(y[-1]) for y in A])
 
     if any([x<6 and x!=0 for x in [args["N"],args["C"]]]):
-        print "Valid column numbers must be given.  Column numbering starts with 1.  Cannot use one of the required PGL columns."
+        print("Valid column numbers must be given.  Column numbering starts with 1.  Cannot use one of the required PGL columns.")
         if __name__=="__main__":
             exit(1)
     if any([x>minNumCols for x in [args["N"],args["C"]]]):
-        print "A specified column exceeds the number of columns present in the file"
+        print("A specified column exceeds the number of columns present in the file")
         if __name__=="__main__":
             exit(1)
 
@@ -52,8 +52,8 @@ def juicebox(A,args):
 
     if __name__=="__main__":
         try:
-            print("\t".join(["chr1","x1","x2","chr2","y1","y2","color","comment"]))
-            print("\n".join(res))
+            print(("\t".join(["chr1","x1","x2","chr2","y1","y2","color","comment"])))
+            print(("\n".join(res)))
         except IOError as e:
             if e.errno==32:
                 exit()
@@ -83,10 +83,10 @@ if __name__=="__main__":
 
     #validate args
     if args['stdInA'] and args['a']!="%#$":
-        print "-stdInA and -a cannot be used simultaneously"
+        print("-stdInA and -a cannot be used simultaneously")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
 
     if args['stdInA']:

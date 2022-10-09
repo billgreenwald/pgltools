@@ -30,7 +30,7 @@ if __name__=="__main__":
     # In[ ]:
 
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
 
 
@@ -111,9 +111,9 @@ def samTopglStdIn(delim,insertSize):
                         groupedReads[read[1]].append(read)
                     else:
                         groupedReads[read[1]]=[read]
-                if len(groupedReads.keys()) > 2:
+                if len(list(groupedReads.keys())) > 2:
                     pass
-                elif len(groupedReads.keys()) == 1:
+                elif len(list(groupedReads.keys())) == 1:
                     group1=[]
                     group2=[]
                     reads=sorted(reads,key=lambda x: x[2])
@@ -175,7 +175,7 @@ def samTopglStdIn(delim,insertSize):
                 contacts.append([reads[1][1],reads[1][2],reads[1][3],reads[0][1],reads[0][2],reads[0][3],reads[1][0]+","+reads[0][0]])
     else:           
         groupedReads={read[0]:read for read in reads}             
-        if len(groupedReads.keys()) > 2:
+        if len(list(groupedReads.keys())) > 2:
             pass
         else:
             outsideInsertSize=False
@@ -244,9 +244,9 @@ def samTopgl(samfile,delim,insertSize):
                         groupedReads[read[1]].append(read)
                     else:
                         groupedReads[read[1]]=[read]
-                if len(groupedReads.keys()) > 2:
+                if len(list(groupedReads.keys())) > 2:
                     pass
-                elif len(groupedReads.keys()) == 1:
+                elif len(list(groupedReads.keys())) == 1:
                     group1=[]
                     group2=[]
                     reads=sorted(reads,key=lambda x: x[2])
@@ -308,9 +308,9 @@ def samTopgl(samfile,delim,insertSize):
                 contacts.append([reads[1][1],reads[1][2],reads[1][3],reads[0][1],reads[0][2],reads[0][3],reads[1][0]+","+reads[0][0]])
     else:           
         groupedReads={read[0]:read for read in reads}             
-        if len(groupedReads.keys()) > 2:
+        if len(list(groupedReads.keys())) > 2:
             pass
-        elif len(groupedReads.keys()) == 1:
+        elif len(list(groupedReads.keys())) == 1:
                     group1=[]
                     group2=[]
                     reads=sorted(reads,key=lambda x: x[2])
@@ -371,7 +371,7 @@ if __name__=="__main__":
     try:
         if len(header)!=0:
             print(header)
-        print("\n".join(res))
+        print(("\n".join(res)))
     except IOError as e:
         if e.errno==32:
             exit()

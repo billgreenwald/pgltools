@@ -37,7 +37,7 @@ def findLoops(A):
     res=_findLoops(A)
     if __name__=="__main__":
         try:
-            print("\n".join(res))
+            print(("\n".join(res)))
         except IOError as e:
             if e.errno==32:
                 exit()
@@ -69,10 +69,10 @@ if __name__=="__main__":
 
     #validate args
     if args['stdInA'] and args['a']!="%#$":
-        print "-stdInA and -a cannot be used simultaneously"
+        print("-stdInA and -a cannot be used simultaneously")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
 
     if args['stdInA']:

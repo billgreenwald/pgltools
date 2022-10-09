@@ -60,13 +60,13 @@ def browser(A,N=0,S=0,P=0,Q=0,tN='pgl_track',C=0):
     minNumCols=min([6+len(y[-1]) for y in A])
 
     if any([x<6 and x!=0 for x in [N,S,P,Q,C]]):
-        print "Valid column numbers must be given.  Column numbering starts with 1.  The 6 required PGL columns cannot be used."
+        print("Valid column numbers must be given.  Column numbering starts with 1.  The 6 required PGL columns cannot be used.")
         if __name__!="__main__":
             exit(1)
         else:
             return
     if any([x>minNumCols for x in [N,S,P,Q,C]]):
-        print "A specified column exceeds the number of columns present in the file"
+        print("A specified column exceeds the number of columns present in the file")
         if __name__!="__main__":
             exit(1)
         else:
@@ -75,8 +75,8 @@ def browser(A,N=0,S=0,P=0,Q=0,tN='pgl_track',C=0):
     res=formatForBrowser(A,N-1,S-1,P-1,Q-1,C-1)
     if __name__=="__main__":
         try:
-            print("track name="+tN+" type=gappedPeak")
-            print("\n".join(res))
+            print(("track name="+tN+" type=gappedPeak"))
+            print(("\n".join(res)))
         except IOError as e:
             if e.errno==32:
                 exit()
@@ -119,10 +119,10 @@ if __name__=="__main__":
 
     #validate arguments
     if args['stdInA'] and args['a']!="%#$":
-        print "-stdInA and -a cannot be used simultaneously"
+        print("-stdInA and -a cannot be used simultaneously")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
         
     if args['stdInA']:

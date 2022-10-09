@@ -102,8 +102,8 @@ def closest2D(A,B,headerA,headerB,aA,bA):
                     newHeader.extend(headerA.split()[6:])
                 if bA:
                     newHeader.extend(headerB.split()[6:])
-                print "\t".join(newHeader)
-                print("\n".join(res))
+                print("\t".join(newHeader))
+                print(("\n".join(res)))
             except IOError as e:
                 if e.errno==32:
                     exit()
@@ -137,13 +137,13 @@ if __name__ == "__main__":
 
     #check validity of arguments used
     if args['stdInB'] and args['stdInA']:
-        print "stdin can only be used for either a or b"
+        print("stdin can only be used for either a or b")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
     elif args['stdInB']==False and args['b']=="%#$":
-        print "either -stdInB or -b must be used"
+        print("either -stdInB or -b must be used")
         exit(1)
         
     #process the input files

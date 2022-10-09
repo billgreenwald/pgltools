@@ -19,7 +19,7 @@ def _formatForExpand(contacts,delim):
 def _processGenome(genomeFile):
     lines=[line.strip().split() for line in open(genomeFile,"r")]
     if len([x for x in lines if len(x)!=2 and len(x) !=0])!=0:
-        print "Genome file has more than 2 columns"
+        print("Genome file has more than 2 columns")
         exit()
     return {x[0]:int(x[1]) for x in lines if len(x)==2}
 
@@ -69,7 +69,7 @@ def expand(A,args,genome):
             if len(header)!=0:
                 print(header)
             try:
-                print("\n".join(res))
+                print(("\n".join(res)))
             except IOError as e:
                 if e.errno==32:
                     exit()

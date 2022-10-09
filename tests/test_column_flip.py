@@ -19,7 +19,7 @@ def test_column_flip(capfd):
     out, err = capfd.readouterr()
 
     # get the results from std out
-    results =  [[x.encode() for x in (line.strip().split())] for line in out.split("\n")][:-1]
+    results =  [[x  for x in (line.strip().split())] for line in out.split("\n")][:-1]
 
     #sort the data since in reaily we use unix sort for speed
     #this means split off the header, sort the rest, put it back

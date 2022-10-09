@@ -48,9 +48,9 @@ def _operation(operatedOnList,operation,delim):
     elif operation=="median":
         operatedOnList=sorted([float(x) for x in operatedOnList])
         if len(operatedOnList)%2==0:
-            return (operatedOnList[(len(operatedOnList))/2]+operatedOnList[((len(operatedOnList))/2)-1])/2
+            return (operatedOnList[int((len(operatedOnList))/2)]+operatedOnList[int((len(operatedOnList))/2)-1])/2
         else:
-            return operatedOnList[(len(operatedOnList)-1)/2]
+            return operatedOnList[int((len(operatedOnList)-1)/2)]
     elif operation=="collapse":
         return delim.join([str(x) for x in operatedOnList])
     elif operation=="distinct":
@@ -287,8 +287,8 @@ def merge(A,args,header):
                     if len(header[0].split())>6+len(A[0][-1]):
                         useOld=True
                 if not args['noH']:
-                    print _createHeader(header.split(),cols,commands,useOld)
-                print("\n".join(res))
+                    print(_createHeader(header.split(),cols,commands,useOld))
+                print(("\n".join(res)))
         except IOError as e:
             if e.errno==32:
                 exit()
@@ -323,22 +323,22 @@ if __name__=="__main__":
 
     #validate args
     if args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
     if args['o']=="%#$" and args['c']!="%#$":
-        print "-c and -o must be used together"
+        print("-c and -o must be used together")
         exit(1)
     if args['o']!="%#$" and args['c']=="%#$":
-        print "-c and -o must be used together"
+        print("-c and -o must be used together")
         exit(1)
     if len(args['c'].split(",")) != len(args['o'].split(",")):
-        print "-c and -o must have the same number of arguments"
+        print("-c and -o must have the same number of arguments")
         exit(1)
     if not all([x in ["sum","min","max","absmin","absmax","mean","median","collapse","distinct","count","count_distinct", "%#$"] for x in args['o'].split(",")]):
-        print "invalid operation given.  Valid operations are: sum, min, max, absmin, absmax, mean, median, collapse, distinct, count, count_distinct"
+        print("invalid operation given.  Valid operations are: sum, min, max, absmin, absmax, mean, median, collapse, distinct, count, count_distinct")
         exit(1)
     if args['d']<0:
-        print "d must be positive"
+        print("d must be positive")
         exit(1)
 
 

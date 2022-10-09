@@ -62,7 +62,7 @@ def processFile(FILENAME):
             x=line.strip().split()
             if len(x)<6:
                 print("Missing one of the required 6 columns")
-                print line
+                print(line)
                 exit()
             else:
                 processedFile.append([x[0],int(x[1]),int(x[2]),x[3],int(x[4]),int(x[5]), x[6:]])
@@ -140,9 +140,9 @@ def flatten_list(my_list):
     return flat
 
 def compare_test_outputs(results,expected_results):
-    from itertools import izip_longest
+    from itertools import zip_longest as zip_longest
 
-    for entry1,entry2 in izip_longest(results,expected_results):
+    for entry1,entry2 in zip_longest(results,expected_results):
         entry1=flatten_list(entry1)
         entry2=flatten_list(entry2)
 
@@ -150,7 +150,7 @@ def compare_test_outputs(results,expected_results):
             if entry1[-1]=="":
                 entry1=entry1[:-1]
 
-        if all([x==y for x,y in izip_longest(entry1,entry2)]):
+        if all([x==y for x,y in zip_longest(entry1,entry2)]):
             continue
         else:
             return False

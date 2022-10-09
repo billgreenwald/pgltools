@@ -61,7 +61,7 @@ def window(A,args):
             if len(res)!=0:
                 if len(header)!=0:
                     print(header)
-                print("\n".join(res))
+                print(("\n".join(res)))
         except IOError as e:
             if e.errno==32:
                 exit()
@@ -92,10 +92,10 @@ if __name__=="__main__":
 
     #validate args
     if args['window1']=="" and args['window2']=="":
-        print "Either window1, window2, or window1 and window2 must be provided"
+        print("Either window1, window2, or window1 and window2 must be provided")
         exit(1)
     if args['a']=="%#$" and args['stdInA']==False:
-        print "Either a or stdInA must be used"
+        print("Either a or stdInA must be used")
         exit(1)
 
     if args['stdInA']:

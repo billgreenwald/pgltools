@@ -220,7 +220,7 @@ def intersect2D(A,B,args,header):
             if len(res)!=0:
                 if len(header)!=0:
                     print(header)
-                print("\n".join(res))
+                print(("\n".join(res)))
         except IOError as e:
             if e.errno==32:
                 exit()
@@ -262,19 +262,19 @@ if __name__=="__main__":
 
     #validate args
     if args['stdInB'] and args['stdInA']:
-        print "stdin can only be used for either a or b"
+        print("stdin can only be used for either a or b")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
     elif args['stdInB']==False and args['b']=="%#$":
-        print "either -stdInB or -b must be used"
+        print("either -stdInB or -b must be used")
         exit(1)
     if len([x for x in [args['v'],args['mc'],args['wa'],args['wb'],args['wo']] if x])>1:
-        print "-v, -mc, -wa, -wb, and -wo cannot be used simulatneously."
+        print("-v, -mc, -wa, -wb, and -wo cannot be used simulatneously.")
         exit(1)
     if args['m'] and args['mc']:
-        print "-m and -mc cannot be used simulatneously."
+        print("-m and -mc cannot be used simulatneously.")
         exit(1)
 
     if args['stdInA']:

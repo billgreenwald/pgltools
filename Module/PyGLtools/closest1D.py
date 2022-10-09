@@ -158,12 +158,12 @@ def closest1D(A,B,args):
         if len(res)!=0:
             try:
                 if not args['ba']:
-                    print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"])
+                    print("\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestChr","closestStart","closestStop","distance"]))
                 else:
-                    print "\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
-                                     "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"])
+                    print("\t".join(["#chrA","startA","stopA","chrB","startB","stopB","closestAChr","closestAStart","closestAStop",
+                                     "distanceToA","closestBChr","closestBStart","closestBStop","distanceToB"]))
 
-                print("\n".join(res))
+                print(("\n".join(res)))
             except IOError as e:
                 if e.errno==32:
                     exit()
@@ -195,13 +195,13 @@ if __name__=="__main__":
 
     #validate arguments
     if args['stdInB'] and args['stdInA']:
-        print "stdin can only be used for either a or b"
+        print("stdin can only be used for either a or b")
         exit(1)
     elif args['stdInA']==False and args['a']=="%#$":
-        print "either -stdInA or -a must be used"
+        print("either -stdInA or -a must be used")
         exit(1)
     elif args['stdInB']==False and args['b']=="%#$":
-        print "either -stdInB or -b must be used"
+        print("either -stdInB or -b must be used")
         exit(1)
 
 
