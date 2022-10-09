@@ -56,7 +56,7 @@ def conveRt(A,args):
                     exit()
     else:
         funcOut=""
-        funcOut+="chromA\tstartA\tstopA\tchromB\tstartB\tstopB\tcount\tpValue\tqValue"
+        funcOut+="chromA\tstartA\tstopA\tchromB\tstartB\tstopB\tcount\tpValue\tqValue\n"
         funcOut+="\n".join(res)
         return funcOut
 

@@ -60,7 +60,7 @@ def _flipContacts(contacts):
 # In[ ]:
 
 
-def formatbedpe(A):
+def formatbedpe(A,header):
     res=_flipContacts(A)
     res=_formatContacts(res,"\t")
 
