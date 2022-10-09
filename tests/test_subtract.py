@@ -17,7 +17,7 @@ ASSET_DIR=Path(__file__).parent
 @Parametrization.case(name="subtract_a_from_b", a_pgl_file=str(ASSET_DIR/"fixtures/file.B.sorted.annotated.pgl"),
                       b_pgl_file=str(ASSET_DIR/"fixtures/file.A.sorted.annotated.pgl"),
                       expected_results_file = str(ASSET_DIR/"fixtures/subtract/subtract_expected_results.sub_a_from_b.pgl"))
-def test_intersect_2d(a_pgl_file,b_pgl_file,expected_results_file):
+def test_subtract_2d(a_pgl_file,b_pgl_file,expected_results_file):
 
     #get files
     headerA,A=processFile(a_pgl_file)

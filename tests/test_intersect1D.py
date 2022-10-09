@@ -31,7 +31,7 @@ ASSET_DIR=Path(__file__).parent
                       d=500000, anchA="Intersected_Anchor", expected_results_file = str(ASSET_DIR/"fixtures/intersect1D/intersect1D_expected_results.d500000.pgl"))
 @Parametrization.case(name="anchorIntersectColumnName", allA=False, bA=False, wa=False, wb=False, v=False, u=False,
                       d=0, anchA="some_arbitrary_name", expected_results_file = str(ASSET_DIR/"fixtures/intersect1D/intersect1D_expected_results.anchA.pgl"))
-def test_closest_2d(allA,bA,wa,wb,v,u,d,anchA,expected_results_file):
+def test_intersect_1d(allA,bA,wa,wb,v,u,d,anchA,expected_results_file):
 
     #get files
     headerA,A=processFile(str(ASSET_DIR/"fixtures/file.A.sorted.annotated.pgl"))

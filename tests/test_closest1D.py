@@ -13,7 +13,7 @@ ASSET_DIR=Path(__file__).parent
 @Parametrization.autodetect_parameters()
 @Parametrization.case(name="baseline", dashB=False, expected_results_file = str(ASSET_DIR/"fixtures/closest1D/closest1D_expected_results.pgl"))
 @Parametrization.case(name="dashB", dashB=True, expected_results_file = str(ASSET_DIR/"fixtures/closest1D/closest1D_expected_results.ba.pgl"))
-def test_closest_2d(dashB,expected_results_file):
+def test_closest_1d(dashB,expected_results_file):
 
     #get files
     headerA,A=processFile(str(ASSET_DIR/"fixtures/file.A.sorted.annotated.pgl"))

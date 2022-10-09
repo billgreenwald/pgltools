@@ -12,7 +12,7 @@ ASSET_DIR=Path(__file__).parent
 
 @Parametrization.autodetect_parameters()
 @Parametrization.case(name="baseline", expected_results_file = str(ASSET_DIR/"fixtures/findLoops/findLoops_expected_results.bed"))
-def test_closest_2d(expected_results_file):
+def test_findLoops(expected_results_file):
 
     #get files
     headerA,A=processFile(str(ASSET_DIR/"fixtures/file.A.sorted.annotated.pgl"))

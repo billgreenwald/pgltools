@@ -14,7 +14,7 @@ ASSET_DIR=Path(__file__).parent
 @Parametrization.case(name="baseline", keep_zero=False, expected_results_file = str(ASSET_DIR/"fixtures/coverage/coverage_expected_results.pgl"))
 @Parametrization.case(name="keep_zero", keep_zero=True, expected_results_file = str(ASSET_DIR/"fixtures/coverage/coverage_expected_results.z.pgl"))
 
-def test_closest_2d(keep_zero,expected_results_file):
+def test_coverage(keep_zero,expected_results_file):
 
     #get files
     headerA,A=processFile(str(ASSET_DIR/"fixtures/file.A.sorted.annotated.pgl"))

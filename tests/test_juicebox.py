@@ -14,7 +14,7 @@ ASSET_DIR=Path(__file__).parent
 @Parametrization.case(name="baseline", N=0,C=0,expected_results_file = str(ASSET_DIR/"fixtures/juicebox/juicebox_expected_results.txt"))
 @Parametrization.case(name="baseline", N=7,C=0,expected_results_file = str(ASSET_DIR/"fixtures/juicebox/juicebox_expected_results.N7.txt"))
 @Parametrization.case(name="baseline", N=0,C=7,expected_results_file = str(ASSET_DIR/"fixtures/juicebox/juicebox_expected_results.C7.txt"))
-def test_browser(N,C,expected_results_file):
+def test_juicebox(N,C,expected_results_file):
 
     #get files
     headerA,A=processFile(str(ASSET_DIR/"fixtures/file.A.sorted.annotated.pgl"))
