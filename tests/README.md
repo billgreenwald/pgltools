@@ -4,3 +4,4 @@ skipped tests are:
 * column_flip.py
 * condense.py
 * conveRt.py
+* formatTripSparse
