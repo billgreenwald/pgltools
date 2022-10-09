@@ -5,3 +5,4 @@ skipped tests are:
 * condense.py
 * conveRt.py
 * formatTripSparse
+* samToPgl

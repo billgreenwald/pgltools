@@ -62,7 +62,7 @@ def _overlap2D(contactsA,contactsB):
             #on the same chromosome
             #we have a two options: first bins overlap or they dont.
 
-            if startA1 < startB1 and endA1 =< startB1:
+            if startA1 < startB1 and endA1 <= startB1:
                 i+=1
                 k=restartK
                 continue
