@@ -271,7 +271,6 @@ def _overlap1D(contactsA,bedB,useBAnnots,useAllAnnots,aLocations,dist,dashV,repo
 def intersect1D(A,B,args,header,headerB):
     res=_overlap1D(A,B,args['bA'],args['allA'],args['wa'],args['d'],args['v'],args['wb'],args['u'])
     res=_formatContacts(res,"\t")
-
     if __name__=="__main__":
         try:
             if len(res)!=0:
