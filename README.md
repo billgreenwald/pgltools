@@ -2,9 +2,6 @@
 
 Pgltools is a genomic arithmetic software suite designed for working with paired-loci genomic data, such as contacts from a Hi-C or ChIA-PET experiment, and utilizes the PGL file format. Pgltools is available both as a tool suite for the UNIX command line, and as a python module.
 
-## Newest Version:
-The newest version is 2.2.0, uploaded on July 26, 2019.  It is recommended to update to this version as it fixes an edge case.  Previously, the start and end of a loci were determined to overlap if they were the same number; however, as bedfiles are 0 indexed, a range of 0,1 does not overlap 1,2.  This is now fixed.
-
 ## Citation
 
 Please cite the following paper when citing pgltools:  
@@ -27,13 +24,13 @@ https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1621-0
 
 ## Software Dependencies
 
-pgltools is written in Python 2.7, and does not require any external packages.  As such, all operations, except for coverage, have been tested in pypy.  Pypy is an alternative python compiler, and is recommended for use with this tool suite.  Pypy is available on most linux distributions, and can be installed via "apt-get" or "yum".  <b>By utilizing pypy, pgltools sees a 5-7x speed up on all operations, and about a 25% decrease in the amount of RAM utilized</b>.
+pgltools is written in Python 3.10, and does not require any external packages.  As such, all operations, except for coverage, have been tested in pypy.  Pypy is an alternative python compiler, and is recommended for use with this tool suite.  Pypy is available on most linux distributions, and can be installed via "apt-get" or "yum".  <b>By utilizing pypy, pgltools sees a 5-7x speed up on all operations, and about a 25% decrease in the amount of RAM utilized</b>.
 
 The UNIX version of pgltools will automatically detect if pypy is installed, and will run through pypy if so.  Otherwise, it will default to python.
 
 ## Installation:
 
-The pgltools tool suite is designed to be used through the bash interface.  A few commands (mainly sorting commands) are not written in python, but are rather written in bash.  <b>To ensure pgltools runs with the proper functionality, please utilize the pgltools/sh folder, rather than the direct python scripts in the pgltools/python folder</b>.  Following the Unix installation directions immediately below will ensure that the /sh folder is used.
+The pgltools tool suite is designed to be used through the bash interface.  A few commands (mainly sorting commands) are not written in python, but are rather written in bash.  <b>To ensure pgltools runs with the proper functionality, please utilize the pgltools/sh folder, rather than the direct python scripts in the pgltools/Module/PyGLtools folder</b>.  Following the Unix installation directions immediately below will ensure that the /sh folder is used.
 
 ### UNIX:
 To install pgltools, clone the directory to the desired location, and add the /sh folder to your system PATH variable.  Methods can then be called with pgltools [command].  To view the avaiable commands, or the available arguments for a command, call pgltools with no command, or call pgltools [command] with no arguments.
