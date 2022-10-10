@@ -1,7 +1,11 @@
 import sys
 
 from ..Module.PyGLtools.subtract1D import subtract1D
-from ..Module.PyGLtools.pgltools_library import processFile, processBedFile, compare_test_outputs
+from ..Module.PyGLtools.pgltools_library import (
+    processFile,
+    processBedFile,
+    compare_test_outputs,
+)
 import pytest
 from pathlib import Path
 from parametrization import Parametrization
