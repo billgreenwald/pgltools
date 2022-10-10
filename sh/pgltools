@@ -33,109 +33,109 @@ script_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
 if ! type "pypy" > /dev/null 2>&1; then
 	if [ $1 = "merge" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/merge.py
+			python $script_path/../Module/PyGLtools/merge.py
 		else
 			shift
-			python $script_path/../Python/merge.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/merge.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "intersect" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/intersect.py
+			python $script_path/../Module/PyGLtools/intersect.py
 		else
 			shift	
-			python $script_path/../Python/intersect.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/intersect.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "browser" ]; then
 		shift
-		python $script_path/../Python/browser.py "$@"
+		python $script_path/../Module/PyGLtools/browser.py "$@"
 	elif [ $1 = "conveRt" ]; then
 		shift
-		python $script_path/../Python/conveRt.py "$@"
+		python $script_path/../Module/PyGLtools/conveRt.py "$@"
 	elif [ $1 = "juicebox" ]; then
                 shift
-                python $script_path/../Python/juicebox.py "$@"
+                python $script_path/../Module/PyGLtools/juicebox.py "$@"
 	elif [ $1 = "findLoops" ]; then
                 shift
-                python $script_path/../Python/findLoops.py -a $1
+                python $script_path/../Module/PyGLtools/findLoops.py "$@"
 	elif [ $1 = "condense" ]; then
 		if [ $# -eq 1 ]; then
-                        python $script_path/../Python/condense.py -stdInA
+                        python $script_path/../Module/PyGLtools/condense.py -stdInA
                 else
-                        python $script_path/../Python/condense.py -a $2
+                        python $script_path/../Module/PyGLtools/condense.py -a $2
                 fi
 	elif [ $1 = "sort" ]; then
 		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
 	elif [ $1 = "formatbedpe" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+			python $script_path/../Module/PyGLtools/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		else
-			python $script_path/../Python/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "formatTripSparse" ]; then
                 shift
-                python $script_path/../Python/formatTripSparse.py "$@" |  python $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+                python $script_path/../Module/PyGLtools/formatTripSparse.py "$@" |  python $script_path/../Module/PyGLtools/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 	elif [ $1 = "window" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/window.py
+			python $script_path/../Module/PyGLtools/window.py
 		else
 			shift
-			python $script_path/../Python/window.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+			python $script_path/../Module/PyGLtools/window.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		fi
 	elif [ $1 = "subtract" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/subtract.py
+			python $script_path/../Module/PyGLtools/subtract.py
 		else
 			shift 
-			python $script_path/../Python/subtract.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/subtract.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "closest1D" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/closest1D.py
+			python $script_path/../Module/PyGLtools/closest1D.py
 		else
 			shift 
-			python $script_path/../Python/closest1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/closest1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "closest" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/closest.py
+			python $script_path/../Module/PyGLtools/closest.py
 		else
 			shift
-			python $script_path/../Python/closest.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/closest.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "intersect1D" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/intersect1D.py
+			python $script_path/../Module/PyGLtools/intersect1D.py
 		else
 			shift
-			python $script_path/../Python/intersect1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/intersect1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "subtract1D" ]; then 
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/subtract1D.py
+			python $script_path/../Module/PyGLtools/subtract1D.py
 		else
 			shift
-			python $script_path/../Python/subtract1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/subtract1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "coverage" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/coverage.py
+			python $script_path/../Module/PyGLtools/coverage.py
 		else
 			shift
-			python $script_path/../Python/coverage.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/coverage.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "samTopgl" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/samTopgl.py
+			python $script_path/../Module/PyGLtools/samTopgl.py
 		else
 			shift
-			python $script_path/../Python/samTopgl.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/samTopgl.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "expand" ]; then
 		if [ $# -eq 1 ]; then
-			python $script_path/../Python/expand.py
+			python $script_path/../Module/PyGLtools/expand.py
 		else
 			shift
-			python $script_path/../Python/expand.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			python $script_path/../Module/PyGLtools/expand.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	else
 		echo "Invalid command given"
@@ -143,109 +143,109 @@ if ! type "pypy" > /dev/null 2>&1; then
 else
 	if [ $1 = "merge" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/merge.py
+			pypy $script_path/../Module/PyGLtools/merge.py
 		else
 			shift
-			pypy $script_path/../Python/merge.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/merge.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "intersect" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/intersect.py
+			pypy $script_path/../Module/PyGLtools/intersect.py
 		else
 			shift	
-			pypy $script_path/../Python/intersect.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/intersect.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "browser" ]; then
 		shift
-		pypy $script_path/../Python/browser.py "$@"
+		pypy $script_path/../Module/PyGLtools/browser.py "$@"
 	elif [ $1 = "conveRt" ]; then
 		shift
-		pypy $script_path/../Python/conveRt.py "$@"
+		pypy $script_path/../Module/PyGLtools/conveRt.py "$@"
 	elif [ $1 = "sort" ]; then
 		sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n $2
 	elif [ $1 = "formatbedpe" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+			pypy $script_path/../Module/PyGLtools/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		else
-			pypy $script_path/../Python/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/column_flip.py -a $2 | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	 elif [ $1 = "formatTripSparse" ]; then
                 shift
-                pypy $script_path/../Python/formatTripSparse.py "$@" | pypy $script_path/../Python/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+                pypy $script_path/../Module/PyGLtools/formatTripSparse.py "$@" | pypy $script_path/../Module/PyGLtools/column_flip.py -stdInA | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 	elif [ $1 = "juicebox" ]; then
                 shift
-                pypy $script_path/../Python/juicebox.py "$@"
-        elif [ $1 = "findLoops" ]; then
-                shift
-                pypy $script_path/../Python/findLoops.py -a $1
+                pypy $script_path/../Module/PyGLtools/juicebox.py "$@"
+  elif [ $1 = "findLoops" ]; then
+          shift
+          pypy $script_path/../Module/PyGLtools/findLoops.py "$@"
 	elif [ $1 = "condense" ]; then
 		if [ $# -eq 1 ]; then
-                        pypy $script_path/../Python/condense.py -stdInA
+                        pypy $script_path/../Module/PyGLtools/condense.py -stdInA
                 else
-                        pypy $script_path/../Python/condense.py -a $2 
+                        pypy $script_path/../Module/PyGLtools/condense.py -a $2 
                 fi
 	elif [ $1 = "window" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/window.py
+			pypy $script_path/../Module/PyGLtools/window.py
 		else
 			shift
-			pypy $script_path/../Python/window.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
+			pypy $script_path/../Module/PyGLtools/window.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n 
 		fi
 	elif [ $1 = "subtract" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/subtract.py
+			pypy $script_path/../Module/PyGLtools/subtract.py
 		else
 			shift 
-			pypy $script_path/../Python/subtract.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/subtract.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "closest1D" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/closest1D.py
+			pypy $script_path/../Module/PyGLtools/closest1D.py
 		else
 			shift 
-			pypy $script_path/../Python/closest1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/closest1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "closest" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/closest.py
+			pypy $script_path/../Module/PyGLtools/closest.py
 		else
 			shift
-			pypy $script_path/../Python/closest.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/closest.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "intersect1D" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/intersect1D.py
+			pypy $script_path/../Module/PyGLtools/intersect1D.py
 		else
 			shift
-			pypy $script_path/../Python/intersect1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/intersect1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "subtract1D" ]; then 
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/subtract1D.py
+			pypy $script_path/../Module/PyGLtools/subtract1D.py
 		else
 			shift
-			pypy $script_path/../Python/subtract1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/subtract1D.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "coverage" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/coverage.py
+			pypy $script_path/../Module/PyGLtools/coverage.py
 		else
 			shift
-			pypy $script_path/../Python/coverage.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/coverage.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "samTopgl" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/samTopgl.py
+			pypy $script_path/../Module/PyGLtools/samTopgl.py
 		else
 			shift
-			pypy $script_path/../Python/samTopgl.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/samTopgl.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	elif [ $1 = "expand" ]; then
 		if [ $# -eq 1 ]; then
-			pypy $script_path/../Python/expand.py
+			pypy $script_path/../Module/PyGLtools/expand.py
 		else
 			shift
-			pypy $script_path/../Python/expand.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
+			pypy $script_path/../Module/PyGLtools/expand.py "$@" | sort -k1,1 -k2,2n -k3,3n -k4,4 -k5,5n -k6,6n
 		fi
 	else
 		echo "Invalid command given"

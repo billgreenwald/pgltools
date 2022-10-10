@@ -3,3 +3,4 @@
 *.ipynb
 */.ipynb*
 */*/.ipynb*
+__pycache__*
