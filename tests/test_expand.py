@@ -1,8 +1,7 @@
 import sys
 
-sys.path.append("../Module/PyGLtools/")
-from expand import expand, _processGenome
-from pgltools_library import processFile, compare_test_outputs
+from ..Module.PyGLtools.expand import expand, _processGenome
+from ..Module.PyGLtools.pgltools_library import processFile, compare_test_outputs
 import pytest
 from pathlib import Path
 from parametrization import Parametrization

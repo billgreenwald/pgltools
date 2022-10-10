@@ -1,8 +1,7 @@
 import sys
 
-sys.path.append("../Module/PyGLtools/")
-from juicebox import juicebox
-from pgltools_library import processFile, compare_test_outputs
+from ..Module.PyGLtools.juicebox import juicebox
+from ..Module.PyGLtools.pgltools_library import processFile, compare_test_outputs
 import pytest
 from pathlib import Path
 from parametrization import Parametrization

@@ -1,8 +1,7 @@
 import sys
 
-sys.path.append("../Module/PyGLtools/")
-from closest import closest2D
-from pgltools_library import processFile, compare_test_outputs
+from ..Module.PyGLtools.closest import closest2D
+from ..Module.PyGLtools.pgltools_library import processFile, compare_test_outputs
 import pytest
 from pathlib import Path
 from parametrization import Parametrization

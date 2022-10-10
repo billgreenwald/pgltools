@@ -5,8 +5,10 @@
 
 import argparse
 import sys
-from pgltools_library import *
-
+if __name__ == "__main__":
+    from pgltools_library import *
+else:
+    from .pgltools_library import *
 
 # In[16]:
 

@@ -1,8 +1,7 @@
 import sys
 
-sys.path.append("../Module/PyGLtools/")
-from samTopgl import samTopgl, formatContacts
-from pgltools_library import processFile, compare_test_outputs
+from ..Module.PyGLtools.samTopgl import samTopgl, formatContacts
+from ..Module.PyGLtools.pgltools_library import processFile, compare_test_outputs
 import pytest
 from pathlib import Path
 from parametrization import Parametrization
