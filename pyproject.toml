@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "PyGLtools"
+version = "3.0.0"
+description = "A genomic arithmetic tool for HiC or other paired-locus data"
+authors = ["Bill Young Greenwald <billyounggreenwald@gmail.com>"]
+license = "BSD3"
+readme = "README.md"
+packages =[
+{ include = "PyGLtools", from = "Module/"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest-parametrized = "^1.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
