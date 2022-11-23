@@ -127,4 +127,4 @@ if __name__ == "__main__":
 
     header, A = _processFile(args["a"], args["stdInA"])
 
-    formatbedpe(A,header)
+    formatbedpe(A, header)
